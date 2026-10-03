@@ -5,7 +5,7 @@ calls the same tools through /api/tools/<name>. Stops at the human gates
 (T's YES on the phone, merchant approvals on the dashboard).
 """
 import db
-from tools import call_tool
+from tools import call_tool, gift_offer_text
 
 
 def run_demo():
@@ -35,14 +35,11 @@ def run_demo():
                                      "discount_pct": discount, "trust_score": trust["score"],
                                      "vouch_result": top, "size": (top or {}).get("size"), "budget": budget}, src)
     if offer["ok"]:
-        name = db.one("merchant", "SELECT name FROM catalog WHERE sku = ?", (sku,))["name"]
-        body = (f"A friend's {occ['occasion']} is on {occ['occasion_date']}. "
-                + (f"They'd love the {name}; their agent confirmed it. " if top else f"How about the {name}? ")
-                + f"{offer['discount_pct']}% off as a loyal customer (${offer['final_price']}). Reply YES.")
-        call_tool("send_message", {"customer_id": t["customer_id"], "body": body, "offer_id": offer["offer_id"]}, src)
+        call_tool("send_message", {"customer_id": t["customer_id"], "body": gift_offer_text(offer["offer_id"]),
+                                   "offer_id": offer["offer_id"]}, src)
 
-    # Meanwhile: the bot asks for the same discount.
-    call_tool("handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": "15% discount please",
+    # Meanwhile: an unverified bot tries to buy at the same discount. No sale.
+    call_tool("handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": "Buy 3 × TR-VEST at 15% off",
                                             "requests_per_min": 40}, src)
 
     # After the run: forecast from anonymous vouches, draft POs behind approval.

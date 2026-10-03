@@ -10,18 +10,35 @@
   /* Hero */
   .hero { background: var(--hero-grad); padding: 56px 0 40px; }
   .hero h1 { font-size: clamp(48px, 8vw, 112px); line-height: 0.92; letter-spacing: -0.035em; margin: 0 0 20px; max-width: 12ch; }
-  .hero p { font-size: 18px; color: var(--ink-2); max-width: 56ch; margin: 0 0 28px; }
-  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .tile { background: var(--panel); border-radius: var(--r-l); padding: 18px 20px; border: 1px solid var(--line); transition: box-shadow .4s; }
-  .tile.on { box-shadow: var(--glow); }
-  .tile .k { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
-  .tile .v { font-family: var(--f-display); font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; margin: 8px 0 2px; }
-  .tile .s { color: var(--ink-2); font-size: 14px; }
+  .hero > .wrap > p { font-size: 18px; color: var(--ink-2); max-width: 56ch; margin: 0 0 28px; }
 
   /* Editor shell */
   .section-h { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 48px 0 16px; flex-wrap: wrap; }
   .section-h h2 { font-size: clamp(32px, 4.5vw, 64px); line-height: 0.95; letter-spacing: -0.03em; margin: 0; }
   .section-h p { margin: 0; color: var(--muted); max-width: 46ch; }
+
+  /* How it works: three-slide carousel (scroll-snap, so it swipes on phones) */
+  .carousel { position: relative; }
+  .slides { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; border-radius: var(--r-xl); }
+  .slides::-webkit-scrollbar { display: none; }
+  .slide { flex: 0 0 100%; scroll-snap-align: start; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 32px;
+           padding: 32px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-xl); min-width: 0; }
+  .slide .copy { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .slide h3 { font-size: clamp(30px, 3.4vw, 46px); line-height: 1; letter-spacing: -0.03em; margin: 0; }
+  .slide .stat { display: flex; gap: 14px; align-items: baseline; padding: 14px 0; border-block: 1px solid var(--line); }
+  .slide .stat b { font-family: var(--f-display); font-weight: 400; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.03em; }
+  .slide .stat p { margin: 0; font-size: 14px; color: var(--ink-2); }
+  .slide .stat a { color: var(--muted); font-size: 12px; }
+  .slide .stat.rule { flex-direction: column; gap: 6px; }
+  .slide .stat.rule p { font-family: var(--f-display); font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; color: var(--ink); }
+  .slide .how { margin: 0; color: var(--ink-2); max-width: 52ch; }
+  .slide .foot { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: auto; }
+  .slide .visual { background: var(--sunk); border-radius: var(--r-l); padding: 22px; display: flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; min-width: 0; }
+  .slide .visual > .eyebrow { align-self: flex-start; }
+  .car-ctl { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; }
+  .dots { display: flex; gap: 6px; }
+  .dots button { width: 28px; height: 6px; border-radius: 3px; border: 0; padding: 0; background: var(--line); }
+  .dots button.on { background: var(--ink); }
   .editor { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-xl); overflow: hidden; }
   .editor-top { display: grid; grid-template-columns: 220px minmax(0, 1fr) 340px; min-height: 460px; border-bottom: 1px solid var(--line); }
   .pane-h { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); padding: 16px 16px 10px; }
@@ -132,10 +149,12 @@
     .library { border-right: 0; border-bottom: 1px solid var(--line); max-height: 180px; }
     .inspector { border-left: 0; border-top: 1px solid var(--line); max-height: 320px; }
     .beats, .stores { grid-template-columns: repeat(2, 1fr); }
+    .slide { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 640px) {
     #backend { display: none; }
-    .tiles, .beats, .stores, .grid3, .grid4 { grid-template-columns: 1fr; }
+    .beats, .stores, .grid3, .grid4 { grid-template-columns: 1fr; }
+    .slide { padding: 20px; gap: 20px; }
     .timeline { grid-template-columns: 96px minmax(0, 1fr); }
     .track-label { font-size: 12px; padding: 0 8px; line-height: 1.15; } .track-label small { display: none; }
     .bars .bar-row { grid-template-columns: 100px 1fr 56px; }
@@ -147,7 +166,7 @@
 <nav class="nav">
   <div class="wrap">
     <a class="logo" href="wireframe.html"><i></i>Shopisphere</a>
-    <div class="links"><a href="wireframe.html" aria-current="page">Run editor</a><a href="index.html">Ops view</a><a href="#beats">Workflow</a><a href="#stores">Data</a></div>
+    <div class="links"><a href="wireframe.html" aria-current="page">Run editor</a><a href="index.html">Ops view</a><a href="#how">How it works</a><a href="#beats">Workflow</a><a href="#stores">Data</a></div>
     <span class="spacer"></span>
     <span id="backend" class="chip bar"><span class="dot"></span>Sample data</span>
     <button class="btn primary" onclick="restart()">▶ Play the run</button>
@@ -157,11 +176,14 @@
 <header class="hero">
   <div class="wrap">
     <h1 class="display">Agents narrow. People choose.</h1>
-    <p>Trailhead's merchant agent finds the gift moment, asks with consent, gets a vouch from the recipient's own agent, and turns every answer into fewer returns and smarter restocking.</p>
-    <div class="tiles">
-      <div class="tile" id="tile-lose"><div class="k">Lose less · gift returns</div><div class="v display" id="v-lose">—</div><div class="s" id="s-lose">Vouched vs. unvouched gift return rate</div></div>
-      <div class="tile" id="tile-lean"><div class="k">Run leaner · restock</div><div class="v display" id="v-lean">—</div><div class="s" id="s-lean">Purchase order from anonymous vouches</div></div>
-      <div class="tile" id="tile-sell"><div class="k">Sell more · vouched offer</div><div class="v display" id="v-sell">—</div><div class="s" id="s-sell">Gift offer to a loyal customer</div></div>
+    <p>Trailhead's merchant agent sells only to verified agents. It finds the gift moment, asks with consent, gets a vouch from the recipient's own agent, and turns every answer into fewer returns. Three ways it cuts gift returns:</p>
+    <div class="carousel" id="how">
+      <div class="slides" id="slides" aria-roledescription="carousel" aria-label="Three ways we cut gift returns"></div>
+      <div class="car-ctl">
+        <button class="btn icon" id="prevSlide" aria-label="Previous slide">←</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn icon" id="nextSlide" aria-label="Next slide">→</button>
+      </div>
     </div>
   </div>
 </header>
@@ -211,7 +233,7 @@
     <p>The same four beats every week. The beat cards light up as the run reaches them.</p>
   </div>
   <div class="beats">
-    <div class="beat" id="beat-0"><span class="chip"><span class="dot" style="color:var(--zoo)"></span>ZooWork</span><h3 class="display">Find</h3><p>The weekly schedule picks top customers from the merchant's own order history and checks their agent is real.</p></div>
+    <div class="beat" id="beat-0"><span class="chip"><span class="dot" style="color:var(--zoo)"></span>ZooWork</span><h3 class="display">Find</h3><p>The weekly schedule picks top customers from the merchant's own order history. Only verified agents go further.</p></div>
     <div class="beat" id="beat-1"><span class="chip"><span class="dot" style="color:var(--band)"></span>BAND consent room</span><h3 class="display">Ask</h3><p>T's agent shares upcoming occasions, only at the sharing level T set for each friend.</p></div>
     <div class="beat" id="beat-2"><span class="chip"><span class="dot" style="color:var(--band)"></span>BAND vouch room</span><h3 class="display">Vouch</h3><p>Sarah's agent answers wants / owns / confidence. Her profile never leaves her agent.</p></div>
     <div class="beat" id="beat-3"><span class="chip"><span class="dot" style="color:var(--phone)"></span>Phone + approvals</span><h3 class="display">Ship</h3><p>T says YES, a human approves, the order is tagged low return risk, and stock follows the anonymous signal.</p></div>
@@ -233,7 +255,7 @@ const TRACKS = [
   { id: 'band',  name: 'BAND rooms',     sub: 'BAND',    color: 'var(--band)' },
   { id: 'tav',   name: 'Price check',    sub: 'Tavily',  color: 'var(--tav)' },
   { id: 'phone', name: "T's phone",      sub: 'SMS',     color: 'var(--phone)' },
-  { id: 'store', name: 'Storefront',     sub: 'Trust',   color: 'var(--store)' },
+  { id: 'store', name: 'Storefront',     sub: 'Verification', color: 'var(--store)' },
   { id: 'human', name: 'Humans',         sub: 'Approve', color: 'var(--human)' },
 ];
 
@@ -246,8 +268,8 @@ const STEPS = [
     input: { limit: 3 }, output: [{ customer_id: 'cust_t', name: 'T', agent_handle: 't-gift-planner', order_count: 6, favorite_lines: 'trail' },
       { customer_id: 'cust_ana', name: 'Ana', agent_handle: null, order_count: 4, favorite_lines: 'camp,water' },
       { customer_id: 'cust_raj', name: 'Raj', agent_handle: null, order_count: 3, favorite_lines: 'climb' }] },
-  { track: 'zoo', t: 4, d: 2, tool: 'score_agent_trust', title: "T's agent is real", sub: 'Four layers before the merchant talks to it', scene: 'trustT', beat: 0,
-    input: { agent_handle: 't-gift-planner' }, output: { agent_handle: 't-gift-planner', decision: 'allow', score: 1.0, layers: { identity: true, provenance: true, history: true, behavior: true }, reasons: [] } },
+  { track: 'zoo', t: 4, d: 2, tool: 'score_agent_trust', title: "T's agent is verified", sub: 'No agent can buy until it passes verification', scene: 'trustT', beat: 0,
+    input: { agent_handle: 't-gift-planner' }, output: { agent_handle: 't-gift-planner', verified: true, sale: 'allowed', decision: 'allow', score: 1.0, layers: { identity: true, provenance: true, history: true, behavior: true }, reasons: [] } },
   { track: 'band', t: 6, d: 15, tool: 'ask_customer_occasions', title: 'Ask with consent', sub: "BAND consent room · Trailhead Merchant ↔ T's Gift Planner", scene: 'consent', beat: 1,
     input: { customer_id: 'cust_t' }, output: { customer_id: 'cust_t', occasions: [{ friend_handle: 'sarah-gift-vouch', occasion: 'birthday', occasion_date: '2026-10-24', budget: 60.0, sharing_level: 'occasion_budget' }] } },
   { track: 'zoo', t: 21, d: 2, tool: 'match_catalog', title: "Match from T's side", sub: 'Trail line, in stock, near the $60 budget', scene: 'match', beat: 2,
@@ -255,16 +277,16 @@ const STEPS = [
   { track: 'band', t: 23, d: 16, tool: 'request_vouch', title: "Vouch from Sarah's side", sub: "BAND vouch room · her profile never leaves her agent", scene: 'vouch', beat: 2,
     input: { recipient_handle: 'sarah-gift-vouch', skus: ['TR-LAMP', 'TR-VEST', 'TR-BOTTLE'] },
     output: { vouched: true, ranked: [{ sku: 'TR-VEST', wants: true, owns: false, confidence: 0.9, size: 'M' }, { sku: 'TR-LAMP', wants: false, owns: false, confidence: 0.5, size: null }], dropped_owned: ['TR-BOTTLE'] } },
-  { track: 'store', t: 26, d: 4, tool: 'handle_storefront_request', title: 'A bot wants the same 15%', sub: 'Unverified Shopper · 40 discount asks a minute', scene: 'bot', beat: 3,
-    input: { agent_handle: 'unverified-shopper', ask: '15% discount please', requests_per_min: 40 },
-    output: { decision: 'decline', score: 0.0, layers: { identity: false, provenance: false, history: false, behavior: false },
+  { track: 'store', t: 26, d: 4, tool: 'handle_storefront_request', title: 'An unverified bot tries to buy', sub: 'Unverified Shopper · 40 requests a minute, discount first', scene: 'bot', beat: 3,
+    input: { agent_handle: 'unverified-shopper', ask: 'Buy 3 × TR-VEST at 15% off', requests_per_min: 40 },
+    output: { verified: false, sale: 'blocked', decision: 'decline', score: 0.0, layers: { identity: false, provenance: false, history: false, behavior: false },
       reasons: ['identity: no signed passport / owner not phone-verified', 'provenance: unknown handle, not an approved contact', 'history: no prior orders here', 'behavior: 40 req/min, discount-first ask'] } },
   { track: 'tav', t: 39, d: 3, tool: 'check_competitor_price', title: 'Price the offer', sub: 'Tavily search · competitor prices set the discount', scene: 'price', beat: 2,
     input: { sku: 'TR-VEST' }, output: { sku: 'TR-VEST', our_price: 68.0, competitors: [{ retailer: 'Summit Outfitters', price: 64.0 }, { retailer: 'Ridge & Co', price: 72.0 }], lowest: 64.0, suggested_discount_pct: 15,
       reason: "Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%" } },
-  { track: 'zoo', t: 42, d: 2, tool: 'make_offer', title: 'Outcome rubric passes', sub: 'Trust, stock, budget, margin floor, one-line reason', scene: 'offer', beat: 3,
+  { track: 'zoo', t: 42, d: 2, tool: 'make_offer', title: 'Outcome rubric passes', sub: 'Verified buyer, stock, budget, margin floor, one-line reason', scene: 'offer', beat: 3,
     input: { customer_id: 'cust_t', sku: 'TR-VEST', occasion_ref: 'sarah-gift-vouch:birthday:2026-10-24', discount_pct: 15, trust_score: 1.0, size: 'M', budget: 60.0 },
-    output: { ok: true, offer_id: 1, final_price: 57.8, discount_pct: 15, reason: "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off" } },
+    output: { ok: true, offer_id: 1, final_price: 57.8, discount_pct: 15, reason: "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off", buyer_verified: true, trust_score: 1.0 } },
   { track: 'phone', t: 44, d: 2, tool: 'send_message', title: 'Text T', sub: 'Twilio SMS or the fake phone panel', scene: 'phone', beat: 3,
     input: { customer_id: 'cust_t', offer_id: 1, body: "A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES." }, output: { sent: true, status: 'delivered to fake phone' } },
   { track: 'phone', t: 46, d: 6, tool: 'phone.reply', title: 'T says YES', sub: 'Humans choose: the agent only narrowed', scene: 'phoneYes', beat: 3, live: 'reply',
@@ -285,7 +307,7 @@ const STEPS = [
 const END = 66;
 // Short labels for clips too narrow for the tool name (the full name is in the tooltip and library).
 const CLIP = { 'schedule.trigger': 'cron', get_top_customers: 'top', score_agent_trust: 'trust', match_catalog: 'match',
-  check_competitor_price: 'Tavily', make_offer: 'offer', send_message: 'SMS', handle_storefront_request: 'bot',
+  check_competitor_price: 'Tavily', make_offer: 'offer', send_message: 'SMS', handle_storefront_request: 'no sale',
   'approval · place_order': 'order', forecast_from_vouches: 'fcst', draft_purchase_order: 'PO',
   'approval · purchase_order': 'PO ✓', screen_return_risk: 'risk' };
 const STORES = [
@@ -312,7 +334,7 @@ const prodCard = (emoji, name, price, stamp = '', cls = '') => `<div class="card
 const SCENES = {
   schedule: () => `<div class="scene center"><div class="chip mono">cron · weekly · Mon 09:00</div><div class="big display" style="margin:18px 0 8px">Gifting run #41</div><p class="muted">Skill: <b>Trailhead gifting playbook</b> · Outcome rubric on · 13 custom tools</p></div>`,
   customers: s => `<div class="scene grid3">${s.output.map((c, i) => `<div class="card" style="${i ? 'opacity:.5' : 'box-shadow:var(--glow)'}"><div class="display" style="font-size:34px">${esc(c.name)}</div><div class="muted">${c.order_count} orders · loves ${esc(c.favorite_lines)}</div><div style="margin-top:8px">${c.agent_handle ? `<span class="chip mono">${esc(c.agent_handle)}</span>` : '<span class="chip">no agent</span>'}</div></div>`).join('')}</div>`,
-  trustT: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers)}</div><div class="center"><span class="verdict ok">✓ Allowed · 4/4 layers</span></div></div>`,
+  trustT: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers)}</div><div class="center"><span class="verdict ok">✓ Verified · can buy</span></div></div>`,
   consent: () => `<div class="scene"><div class="who">Trailhead Merchant</div><div class="bubble them">@T's Gift Planner any upcoming occasions we can help with?</div>
       <div class="who" style="text-align:right">T's Gift Planner</div><div class="bubble me">A friend, birthday Oct 24, about $60. <span class="redact">Sarah · trail running</span></div>
       <div class="slider"><span>Occasion only</span><span class="on">+ Budget</span><span>+ Hints</span></div>
@@ -320,12 +342,12 @@ const SCENES = {
   match: () => `<div class="scene grid3">${prodCard('🔦', 'Trail Headlamp 400', 55)}${prodCard('🦺', 'Trail Running Vest', 68)}${prodCard('🧴', 'Insulated Trail Bottle', 42)}</div>`,
   vouch: () => `<div class="scene"><div class="grid3">${prodCard('🔦', 'Trail Headlamp 400', 55, '<span class="stamp meh">NEUTRAL 0.5</span>')}${prodCard('🦺', 'Trail Running Vest', 68, '<span class="stamp want">WANTS · M · 0.9</span>')}${prodCard('🧴', 'Insulated Trail Bottle', 42, '<span class="stamp own">OWNS · DROPPED</span>', 'dropped')}</div>
       <p class="muted center" style="font-size:13px;margin:14px 0 0">3 <span class="mono">vouch_for</span> calls in the room. The answer adds +1 to the anonymous count for vest M.</p></div>`,
-  bot: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers, s.output.reasons)}</div><div class="center"><span class="verdict no">✗ Declined · 0/4 layers · no discount</span></div></div>`,
+  bot: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers, s.output.reasons)}</div><div class="center"><span class="verdict no">✗ Not verified · no sale</span></div></div>`,
   price: s => { const all = [{ retailer: 'Trailhead (us)', price: 68, us: 1 }, ...s.output.competitors]; const max = 80;
     return `<div class="scene bars">${all.map(c => `<div class="bar-row"><span>${esc(c.retailer)}</span><div class="track"><div class="fill ${c.us ? 'us' : ''}" style="width:${c.price / max * 100}%"></div></div><span style="text-align:right">$${c.price.toFixed(2)}</span></div>`).join('')}
       <p style="margin:16px 0 0">We're <b>$4 above</b> the lowest competitor → offer <b>15%</b>.</p></div>`; },
   offer: () => `<div class="scene card"><div class="row" style="justify-content:space-between"><b>Offer #1 · Trail Running Vest (M)</b><span class="display" style="font-size:32px">$57.80</span></div>
-      ${[['Trust check passing', '1.0 ≥ 0.75'], ['In stock', '3 on hand, size M'], ['Within budget', '$57.80 ≤ $66'], ['Above margin floor', '$57.80 ≥ $44.20'], ['One-line reason', '"From the store you love, a gift she\'ll want"']].map(([a, b]) => `<div class="check"><span class="ic">✓</span><span>${a}</span><span class="muted" style="margin-left:auto">${esc(b)}</span></div>`).join('')}</div>`,
+      ${[['Buyer verified', 're-checked at offer, order and approval'], ['In stock', '3 on hand, size M'], ['Within budget', '$57.80 ≤ $66'], ['Above margin floor', '$57.80 ≥ $44.20'], ['One-line reason', '"From the store you love, a gift she\'ll want"']].map(([a, b]) => `<div class="check"><span class="ic">✓</span><span>${a}</span><span class="muted" style="margin-left:auto">${esc(b)}</span></div>`).join('')}</div>`,
   phone: s => `<div class="scene"><div class="phone"><div class="notch"></div><div class="who">Trailhead</div><div class="bubble them">${esc(s.input.body)}</div></div></div>`,
   phoneYes: () => `<div class="scene"><div class="phone"><div class="notch"></div><div class="who">Trailhead</div><div class="bubble them">${esc(STEPS[9].input.body)}</div><div class="bubble me">YES</div></div></div>`,
   approveOrder: () => `<div class="scene card center"><div class="chip">approval.requested · place_order</div><div class="display" style="font-size:34px;margin:12px 0">Trail Running Vest · M · $57.80</div>
@@ -341,7 +363,61 @@ const SCENES = {
 };
 
 /* ---------- Build static UI ---------- */
+/* ---------- How it works: one slide per angle. Stats are quoted exactly from their sources. ---------- */
+const SLIDES = [
+  { tag: 'Gifts people actually want', sponsors: [['var(--band)', 'BAND vouch room'], ['var(--zoo)', 'ZooWork matching']],
+    title: "Ask the recipient's agent before the gift is sold.",
+    stat: '65%', quote: '"Nearly 2 in 3 consumers (65%) have returned a gift during the holiday season"',
+    src: ['Shorr Packaging, Dec 2025', 'https://www.shorr.com/resources/blog/consumer-report-return-habits/'],
+    how: "The merchant agent picks candidates from the buyer's favorite line, then asks the recipient's agent: wants it, or already owns it? Owned items drop out. The offer leads with the item they want, in their size, and the order is tagged low return risk.",
+    step: 'request_vouch' },
+  { tag: 'No sales to unverified bots', sponsors: [['var(--zoo)', 'ZooWork verification'], ['var(--band)', 'BAND storefront room']],
+    title: 'No agent can buy until it is verified.',
+    stat: '9%', quote: '"The report found that 9% of all returns are fraudulent."',
+    src: ['NRF and Happy Returns, Oct 2025', 'https://nrf.com/media-center/press-releases/consumers-expected-to-return-nearly-850-billion-in-merchandise-in-2025'],
+    how: 'Verified means a real person behind the agent, a registered agent, and buyer-like behavior. The backend checks again at the offer, the order and the moment of sale. A bot trying to buy 3 vests at 15% off fails and gets no sale.',
+    step: 'handle_storefront_request' },
+  { tag: 'The best price for customers who love us', sponsors: [['var(--tav)', 'Tavily price check']],
+    title: 'Check competitors before the offer goes out.',
+    rule: "Priced above the lowest competitor? The loyal customer gets 15% off, never below the margin floor.",
+    how: 'Tavily searches what competitors charge for the same product. If we cost more, the loyal customer gets 15% off, capped by the margin floor, so they have no reason to return it and buy it cheaper somewhere else.',
+    step: 'check_competitor_price' },
+];
+let slideIdx = 0;
+function buildSlides() {
+  $('slides').innerHTML = SLIDES.map((sl, i) => {
+    const st = STEPS.find(x => x.tool === sl.step);
+    return `<article class="slide" aria-label="${i + 1} of ${SLIDES.length}">
+      <div class="copy">
+        <span class="eyebrow">${i + 1} / ${SLIDES.length} · ${esc(sl.tag)}</span>
+        <h3 class="display">${esc(sl.title)}</h3>
+        ${sl.stat ? `<div class="stat"><b>${sl.stat}</b><p>${esc(sl.quote)}<br><a href="${sl.src[1]}" target="_blank" rel="noopener">${esc(sl.src[0])}</a></p></div>`
+          : `<div class="stat rule"><span class="eyebrow">The rule</span><p>${esc(sl.rule)}</p></div>`}
+        <p class="how">${esc(sl.how)}</p>
+        <div class="foot">${sl.sponsors.map(([c, n]) => `<span class="chip"><span class="dot" style="color:${c}"></span>${n}</span>`).join('')}
+          <span style="flex:1"></span><button class="btn primary" data-jump="${st.t}">See it in the run →</button></div>
+      </div>
+      <div class="visual"><span class="eyebrow">From the demo run</span>${SCENES[st.scene](st)}</div>
+    </article>`;
+  }).join('');
+  $('dots').innerHTML = SLIDES.map((_, i) => `<button aria-label="Slide ${i + 1}" data-dot="${i}"></button>`).join('');
+  const mark = i => {
+    slideIdx = i;
+    $('dots').querySelectorAll('button').forEach((d, j) => d.classList.toggle('on', j === i));
+    $('prevSlide').disabled = i === 0; $('nextSlide').disabled = i === SLIDES.length - 1;
+  };
+  const go = i => { i = Math.max(0, Math.min(SLIDES.length - 1, i)); mark(i); $('slides').scrollTo({ left: i * ($('slides').clientWidth + 16) }); };
+  const sync = () => mark(Math.round($('slides').scrollLeft / ($('slides').clientWidth + 16)));
+  $('slides').addEventListener('scroll', () => requestAnimationFrame(sync));
+  $('prevSlide').onclick = () => go(slideIdx - 1);
+  $('nextSlide').onclick = () => go(slideIdx + 1);
+  $('dots').onclick = e => { const d = e.target.closest('[data-dot]'); if (d) go(+d.dataset.dot); };
+  $('slides').onclick = e => { const b = e.target.closest('[data-jump]'); if (!b) return; seek(+b.dataset.jump + 0.01); $('run').scrollIntoView({ behavior: 'smooth' }); };
+  sync();
+}
+
 function build() {
+  buildSlides();
   $('library').innerHTML = STEPS.map((s, i) => `<button class="block-btn" data-i="${i}" onclick="seek(${s.t + 0.01})"><span class="swatch" style="background:${trackOf(s.track).color}"></span><span class="mono">${esc(s.tool)}</span><small>${s.d}s</small></button>`).join('');
   $('trackLabels').innerHTML = '<div class="track-label ruler"></div>' + TRACKS.map(t => `<div class="track-label"><span class="swatch" style="background:${t.color}"></span><span>${t.name}<br><small class="muted">${t.sub}</small></span></div>`).join('');
   $('storeGrid').innerHTML = STORES.map(s => `<div class="store"><span class="chip"><span class="dot" style="color:${s.color}"></span>${esc(s.owner)}</span><h3 class="display">${esc(s.name)}</h3>
@@ -379,7 +455,6 @@ function render(force) {
     c.classList.toggle('current', +c.dataset.i === idx);
   });
   if (idx !== curIdx || force) { curIdx = idx; showStep(idx); }
-  updateOutcomes();
 }
 function showStep(i) {
   const s = STEPS[i], tr = trackOf(s.track);
@@ -394,13 +469,6 @@ function showStep(i) {
   document.querySelectorAll('.block-btn').forEach(b => b.classList.toggle('active', +b.dataset.i === i));
   for (let b = 0; b < 4; b++) $('beat-' + b).classList.toggle('on', s.beat === b);
   if (playing && s.live) liveAction(s.live);
-}
-function updateOutcomes() {
-  const passed = tool => { const s = STEPS.find(x => x.tool === tool); return t >= s.t + s.d; };
-  const set = (k, on, v) => { $('tile-' + k).classList.toggle('on', on); $('v-' + k).textContent = on ? v : '—'; };
-  set('sell', passed('make_offer'), '$57.80');
-  set('lean', passed('approval · purchase_order'), '+8 vest M');
-  set('lose', passed('screen_return_risk'), '0% vs 50%');
 }
 function frame(now) {
   if (!playing) return;
@@ -432,10 +500,13 @@ async function liveAction(kind) {
     }
   } catch (e) { console.warn('live action failed', kind, e); }
 }
-fetch('/api/state').then(r => r.ok ? r.json() : null).then(s => {
-  if (!s) return; live = true;
-  $('backend').className = 'chip bar ok'; $('backend').innerHTML = `<span class="dot"></span>Live backend · ${s.modes.demo_mode ? 'DEMO_MODE' : 'LIVE'}`;
-}).catch(() => {});
+function loadState() {
+  return fetch('/api/state').then(r => r.ok ? r.json() : null).then(s => {
+    if (!s) return; live = true;
+    $('backend').className = 'chip bar ok'; $('backend').innerHTML = `<span class="dot"></span>Live backend · ${s.modes.demo_mode ? 'DEMO_MODE' : 'LIVE'}`;
+  }).catch(() => {});
+}
+loadState().then(() => { if (live) setInterval(loadState, 3000); });
 
 /* ---------- Wire controls ---------- */
 document.querySelectorAll('.io-tabs button').forEach(b => b.onclick = () => {

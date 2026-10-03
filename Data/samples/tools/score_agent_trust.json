@@ -6,6 +6,8 @@
   },
   "output": {
     "agent_handle": "t-gift-planner",
+    "verified": true,
+    "sale": "allowed",
     "decision": "allow",
     "score": 1.0,
     "layers": {

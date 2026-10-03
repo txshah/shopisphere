@@ -18,6 +18,11 @@
   .kpi .v { font-family: var(--f-display); font-size: 40px; line-height: 1; letter-spacing: -0.02em; }
   .kpi .s { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: var(--h-chip); }
   .kpi.attn { box-shadow: var(--glow); }
+  .facts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+  .fact { padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+  .fact b { font-family: var(--f-display); font-size: 24px; line-height: 1.1; letter-spacing: -0.01em; }
+  .fact span { font-size: 13px; color: var(--ink-2); }
+  .fact a { font-size: 12px; color: var(--muted); margin-top: auto; }
 
   .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; padding-block: 12px 48px; }
   .span-7 { grid-column: span 7; } .span-5 { grid-column: span 5; } .span-6 { grid-column: span 6; } .span-12 { grid-column: span 12; }
@@ -39,10 +44,15 @@
   .phone { max-width: 340px; margin: 0 auto; background: var(--sunk); border-radius: 30px; padding: 16px 12px 12px; }
   .phone .notch { width: 64px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 12px; }
   .thread { display: flex; flex-direction: column; gap: 6px; max-height: 300px; overflow-y: auto; padding: 2px; }
-  .bubble { padding: 9px 13px; border-radius: 16px; max-width: 85%; font-size: 14px; }
+  .bubble { padding: 9px 13px; border-radius: 16px; max-width: 85%; font-size: 14px; white-space: pre-line; }
+  .pic { align-self: flex-start; width: 70%; border-radius: 16px; background: var(--hero-grad); border: 1px solid var(--line); padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .pic i { font-style: normal; font-size: 48px; line-height: 1.1; }
+  .pic b { font-weight: 500; font-size: 13px; text-align: center; }
+  .pic span { font-size: 12px; color: var(--muted); }
   .bubble.out { background: var(--panel); border: 1px solid var(--line); align-self: flex-start; }
   .bubble.in { background: var(--ink); color: var(--bg); align-self: flex-end; }
   .compose { display: flex; gap: 6px; margin-top: 12px; }
+  .agent-yes { width: 100%; margin-top: 8px; }
   .compose input { flex: 1; min-width: 0; height: var(--h-ctl); padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; font-size: 14px; }
 
   /* Offers */
@@ -105,12 +115,17 @@
   .store .t span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
   .store a { font-size: 12px; color: var(--muted); }
 
+  .offline { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 14px 18px; margin-bottom: 12px; border-radius: var(--r-l); background: var(--warn-bg); color: var(--warn); }
+  .offline b { font-weight: 600; }
+  .offline[hidden] { display: none; }
+  .offline code { font-family: var(--f-mono); font-size: 13px; background: var(--panel); color: var(--ink); padding: 4px 10px; border-radius: var(--r-s); }
   .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; transition: .25s; z-index: 20;
            background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; pointer-events: none; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
   @media (max-width: 1100px) {
     .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .span-7, .span-5, .span-6 { grid-column: span 12; }
   }
   @media (max-width: 640px) {
@@ -131,7 +146,7 @@
     <div class="links"><a href="wireframe.html">Run editor</a><a href="index.html" aria-current="page">Ops view</a></div>
     <span class="spacer"></span>
     <button class="btn danger" id="resetBtn">Reset data</button>
-    <button class="btn ghost" id="botBtn">Bot asks for 15%</button>
+    <button class="btn ghost" id="botBtn">Bot tries to buy</button>
     <button class="btn primary" id="runBtn">▶ Run weekly schedule</button>
   </div>
 </nav>
@@ -145,11 +160,25 @@
     <div class="modes" id="modes"></div>
   </div>
 
+  <div class="offline" id="offline" hidden>
+    <b>The backend isn't running, so nothing below is live.</b>
+    <span>Start it from the repo folder, then this page reconnects by itself:</span>
+    <code>python3 Data/server.py</code>
+  </div>
+
   <section class="kpis">
     <div class="panel kpi" id="k-need"><span class="eyebrow">Needs you</span><span class="v" id="k-need-v">0</span><span class="s" id="k-need-s">No approvals waiting</span></div>
     <div class="panel kpi"><span class="eyebrow">Gift offers</span><span class="v" id="k-off-v">0</span><span class="s" id="k-off-s">None sent yet</span></div>
     <div class="panel kpi"><span class="eyebrow">Gift return rate</span><span class="v" id="k-ret-v">–</span><span class="s" id="k-ret-s">Vouched vs. unvouched</span></div>
-    <div class="panel kpi"><span class="eyebrow">Agent trust checks</span><span class="v" id="k-tr-v">0</span><span class="s" id="k-tr-s">No agents checked yet</span></div>
+    <div class="panel kpi"><span class="eyebrow">Agent verification</span><span class="v" id="k-tr-v">0</span><span class="s" id="k-tr-s">No agents checked yet</span></div>
+  </section>
+
+  <section class="facts" aria-label="Why gift returns">
+    <div class="panel fact"><b>$849.9B</b><span>returned in US retail, 15.8% of sales (2025)</span><a href="https://nrf.com/media-center/press-releases/consumers-expected-to-return-nearly-850-billion-in-merchandise-in-2025" target="_blank" rel="noopener">NRF</a></div>
+    <div class="panel fact"><b>17%</b><span>of holiday sales are returned</span><a href="https://nrf.com/media-center/press-releases/consumers-expected-to-return-nearly-850-billion-in-merchandise-in-2025" target="_blank" rel="noopener">NRF</a></div>
+    <div class="panel fact"><b>65%</b><span>of shoppers have returned a holiday gift</span><a href="https://www.shorr.com/resources/blog/consumer-report-return-habits/" target="_blank" rel="noopener">Shorr survey</a></div>
+    <div class="panel fact"><b>$100B</b><span>of returns were preventable fraud and abuse (2025)</span><a href="https://www.just-style.com/news/appriss-retail-loss-2025-report/" target="_blank" rel="noopener">Appriss Retail</a></div>
+    <div class="panel fact"><b>21%</b><span>of order value is what an online return costs</span><a href="https://www.investorrelations.pitneybowes.com/news-releases/news-release-details/pitney-bowes-survey-returns-cost-us-online-retailers-21-order" target="_blank" rel="noopener">Pitney Bowes</a></div>
   </section>
 
   <div class="grid">
@@ -168,6 +197,7 @@
             <input id="reply" placeholder="Reply as T" autocomplete="off" aria-label="Reply as T">
             <button class="btn primary" type="submit">Send</button>
           </form>
+          <button class="btn agent-yes" id="bandYes" type="button">T tells their agent "yes" (BAND)</button>
         </div>
       </div>
     </section>
@@ -178,7 +208,7 @@
     </section>
 
     <section class="panel span-6">
-      <div class="ph"><h2>Agent trust</h2><span class="chip">identity · provenance · history · behavior</span></div>
+      <div class="ph"><h2>Agent verification</h2><span class="chip">no sale without verification</span></div>
       <div class="pb" id="trust"></div>
     </section>
 
@@ -235,12 +265,23 @@ async function post(url, body = {}, done) {
   refresh();
 }
 
+const PAY = { authorized: ['warn', 'payment held'], captured: ['ok', 'paid'], voided: ['bad', 'hold released'] };
+function payChip(o) {
+  const p = (lastState.payments || []).find(p => p.offer_id === o.offer_id);
+  if (!p) return '';
+  const [cls, label] = PAY[p.status] || ['', p.status];
+  return `<div class="sub"><span class="chip ${cls}">💳 ${label} · yes via ${esc(p.accepted_via)}</span></div>`;
+}
+let lastState = {};
+
 /* ---------- Render ---------- */
 function render(s) {
+  lastState = s;
   const m = s.modes;
   const mode = (label, v) => `<span class="chip bar ${/live|gmail/.test(v) ? 'ok' : ''}"><span class="dot"></span>${label}: ${esc(v)}</span>`;
   $('modes').innerHTML = `<span class="chip bar ${m.demo_mode ? 'warn' : 'ok'}"><span class="dot"></span>${m.demo_mode ? 'Demo mode' : 'Live'}</span>`
-    + mode('BAND', m.band) + mode('Tavily', m.tavily) + mode('SMS', m.sms) + (m.merchant_ping ? mode('Merchant ping', m.merchant_ping) : '');
+    + mode('BAND', m.band) + mode('Tavily', m.tavily) + mode('SMS', m.sms) + (m.merchant_ping ? mode('Merchant ping', m.merchant_ping) : '')
+    + (m.payments ? mode('Payments', m.payments) : '');
   $('sub').textContent = s.events.length ? `Last activity ${time(s.events[0].ts)} · ${s.events[0].summary}` : 'No activity yet. Press Run weekly schedule.';
   $('smsMode').textContent = m.sms;
 
@@ -255,9 +296,9 @@ function render(s) {
   const v1 = rr(1), v0 = rr(0);
   $('k-ret-v').textContent = `${pct(v1.returned, v1.n)} / ${pct(v0.returned, v0.n)}`;
   $('k-ret-s').innerHTML = `<span class="chip ok">vouched</span> vs <span class="chip warn">unvouched</span>`;
-  const declined = s.trust.filter(t => t.decision === 'decline').length;
+  const blocked = s.trust.filter(t => t.decision === 'decline').length;
   $('k-tr-v').textContent = s.trust.length;
-  $('k-tr-s').innerHTML = s.trust.length ? `<span class="chip ok">${s.trust.length - declined} allowed</span><span class="chip bad">${declined} declined</span>` : 'No agents checked yet';
+  $('k-tr-s').innerHTML = s.trust.length ? `<span class="chip ok">${s.trust.length - blocked} verified</span><span class="chip bad">${blocked} no sale</span>` : 'No agents checked yet';
 
   // Approvals
   $('apprCount').textContent = `${pending.length} pending`;
@@ -268,32 +309,35 @@ function render(s) {
         <div class="acts"><button class="btn danger" data-approval="${a.id}" data-decision="reject">Reject</button>
           <button class="btn primary" data-approval="${a.id}" data-decision="approve">Approve</button></div></div>`).join('')
       : '<div class="empty">Nothing needs a decision. Orders and purchase orders wait here for a person to approve.</div>')
-    + done.map(a => `<div class="resolved"><span>${esc(a.summary)}</span><span class="chip ${a.status === 'approved' ? 'ok' : 'bad'}">${a.status}</span></div>`).join('');
+    + done.map(a => `<div class="resolved"><span>${esc(a.summary)}</span><span class="chip ${a.status === 'approved' ? 'ok' : 'bad'}">${a.status === 'blocked' ? 'blocked: unverified' : a.status}</span></div>`).join('');
 
   // Phone
-  $('thread').innerHTML = s.messages.length ? s.messages.map(x => `<div class="bubble ${x.direction}">${esc(x.body)}</div>`).join('')
+  const pic = x => { const o = x.direction === 'out' && x.offer_id && s.offers.find(o => o.offer_id === x.offer_id);
+    return o ? `<div class="pic"><i>${o.emoji}</i><b>${esc(o.item)}</b><span>${money(o.final_price)}</span></div>` : ''; };
+  $('thread').innerHTML = s.messages.length ? s.messages.map(x => pic(x) + `<div class="bubble ${x.direction}">${esc(x.body)}</div>`).join('')
     : '<div class="empty" style="background:var(--panel)">The merchant agent texts T here.</div>';
   $('thread').scrollTop = 1e6;
 
   // Offers
   $('offers').innerHTML = s.offers.length ? s.offers.map(o => {
     const v = JSON.parse(o.vouch_result || 'null');
-    const at = o.status === 'rejected' ? STAGES.indexOf('awaiting_approval') : STAGES.indexOf(o.status);
+    const stopped = o.status === 'rejected' || o.status === 'blocked';
+    const at = stopped ? STAGES.indexOf('awaiting_approval') : STAGES.indexOf(o.status);
     return `<div class="offer">
       <div><b>${esc(o.item)}${o.size && o.size !== 'OS' ? ' · ' + esc(o.size) : ''}</b>
         <div class="sub">for ${esc(o.occasion_ref.split(':').slice(1).join(' · '))} · ${v ? `<span class="chip ok">vouched ${v.confidence}</span>` : '<span class="chip warn">unvouched</span>'}</div></div>
-      <div class="stepper ${o.status === 'rejected' ? 'rejected' : ''}">${STAGE_LABEL.map((l, i) =>
-        `<div class="${i < at || o.status === 'ordered' ? 'done' : i === at ? 'now' : ''}"><i></i>${o.status === 'rejected' && i === at ? 'Rejected' : l}</div>`).join('')}</div>
-      <div class="price">${money(o.final_price)}<div class="sub">${o.discount_pct}% off ${money(o.price)}</div></div></div>`;
+      <div class="stepper ${stopped ? 'rejected' : ''}">${STAGE_LABEL.map((l, i) =>
+        `<div class="${i < at || o.status === 'ordered' ? 'done' : i === at ? 'now' : ''}"><i></i>${stopped && i === at ? (o.status === 'blocked' ? 'Blocked: unverified' : 'Rejected') : l}</div>`).join('')}</div>
+      <div class="price">${money(o.final_price)}<div class="sub">${o.discount_pct}% off ${money(o.price)}</div>${payChip(o)}</div></div>`;
   }).join('') : '<div class="empty">No offers yet. A run finds an occasion, gets a vouch, and drafts an offer here.</div>';
 
   // Trust
   $('trust').innerHTML = s.trust.length ? s.trust.map(t => `<div class="agent">
-      <div class="top"><b class="mono" style="font-size:13px">${esc(t.agent_handle)}</b><span class="chip ${t.decision === 'allow' ? 'ok' : 'bad'}">${t.decision === 'allow' ? 'Allowed' : 'Declined'}</span>
+      <div class="top"><b class="mono" style="font-size:13px">${esc(t.agent_handle)}</b><span class="chip ${t.decision === 'allow' ? 'ok' : 'bad'}">${t.decision === 'allow' ? '✓ Verified · can buy' : '✗ Not verified · no sale'}</span>
         <span class="muted num" style="margin-left:auto;font-size:13px">score ${t.score.toFixed(2)} · ${t.requests_per_min} req/min</span></div>
       <div class="layers">${Object.entries(t.layers).map(([k, ok]) => `<span class="chip ${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'} ${k}</span>`).join('')}</div>
       ${t.reasons.length ? `<p class="why">${esc(t.reasons.join(' · '))}</p>` : ''}</div>`).join('')
-    : '<div class="empty">Every agent that talks to the store gets a four-layer check. Results appear here.</div>';
+    : '<div class="empty">No agent can buy until it passes verification: a real person, a registered agent, buyer-like behavior. Results appear here.</div>';
 
   // Restock
   const max = Math.max(10, ...s.forecast.map(r => Math.max(r.wants, Math.min(r.on_hand, 10))));
@@ -332,22 +376,24 @@ function render(s) {
 }
 
 async function refresh() {
-  try { render(await (await fetch('/api/state')).json()); }
+  try { render(await (await fetch('/api/state')).json()); $('offline').hidden = true; }
   catch (e) {
-    $('sub').textContent = 'Backend is offline. Start it with python3 Data/server.py';
+    $('offline').hidden = false;
+    $('sub').textContent = 'Waiting for the backend';
     $('modes').innerHTML = '<span class="chip bar bad"><span class="dot"></span>Offline</span>';
   }
 }
 
 /* ---------- Actions ---------- */
 $('runBtn').onclick = () => post('/api/demo/run', {}, 'Weekly schedule ran');
-$('botBtn').onclick = () => post('/api/tools/handle_storefront_request', { agent_handle: 'unverified-shopper', ask: '15% discount please', requests_per_min: 40 }, 'Bot request checked');
+$('botBtn').onclick = () => post('/api/tools/handle_storefront_request', { agent_handle: 'unverified-shopper', ask: 'Buy 3 × TR-VEST at 15% off', requests_per_min: 40 }, 'Unverified bot blocked: no sale');
 let armed = null;
 $('resetBtn').onclick = () => {
   const b = $('resetBtn');
   if (armed) { clearTimeout(armed); armed = null; b.textContent = 'Reset data'; post('/api/demo/reset', {}, 'Data reset to the seed'); return; }
   b.textContent = 'Click again to reset'; armed = setTimeout(() => { armed = null; b.textContent = 'Reset data'; }, 3000);
 };
+$('bandYes').onclick = () => post('/api/band/accept', { agent_handle: 't-gift-planner', person_said: 'Yes, get it for her' }, "T's agent relayed yes");
 $('compose').onsubmit = e => { e.preventDefault(); const v = $('reply').value.trim(); if (!v) return; $('reply').value = ''; post('/api/phone/reply', { body: v }, 'Reply sent'); };
 $('approvals').onclick = e => {
   const b = e.target.closest('[data-approval]'); if (!b) return;

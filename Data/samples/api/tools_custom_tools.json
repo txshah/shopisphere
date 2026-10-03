@@ -14,7 +14,7 @@
   },
   {
     "name": "score_agent_trust",
-    "description": "Four simulated KYA layers: identity, provenance, history, behavior.",
+    "description": "Verify an agent with four simulated KYA layers: identity, provenance, history, behavior. Only verified agents (identity + provenance + behavior) can be sold to.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -111,7 +111,7 @@
   },
   {
     "name": "make_offer",
-    "description": "Outcome rubric: passing trust, in stock, within budget, above margin floor, one-line reason.",
+    "description": "Outcome rubric: verified buyer, in stock, within budget, above margin floor, one-line reason. The backend always verifies the buyer itself. An optional trust_score must also be >= TRUST_MIN.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -147,8 +147,7 @@
         "customer_id",
         "sku",
         "occasion_ref",
-        "discount_pct",
-        "trust_score"
+        "discount_pct"
       ]
     }
   },
@@ -176,7 +175,7 @@
   },
   {
     "name": "place_order",
-    "description": "Opens the approval gate; the order is created only when a human approves.",
+    "description": "Re-verifies the buyer, then opens the approval gate; the order is created only when a human approves.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -204,7 +203,7 @@
   },
   {
     "name": "handle_storefront_request",
-    "description": "An unknown agent asks for a discount at the storefront; trust check decides.",
+    "description": "An agent tries to buy (or asks for a discount) at the storefront. No sale unless it is verified.",
     "input_schema": {
       "type": "object",
       "properties": {

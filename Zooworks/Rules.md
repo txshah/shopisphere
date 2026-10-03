@@ -73,16 +73,16 @@ The merchant agent's 13 custom tools are executed by our backend. Saved real sam
 | Tool | Input (required **bold**) | Output |
 | --- | --- | --- |
 | `get_top_customers` | `limit` | `[{customer_id, name, agent_handle, phone, order_count, favorite_lines}]` |
-| `score_agent_trust` | **`agent_handle`**, `requests_per_min`, `discount_first` | `{agent_handle, decision: allow\|decline, score 0–1, layers{identity, provenance, history, behavior}, reasons[]}` |
+| `score_agent_trust` | **`agent_handle`**, `requests_per_min`, `discount_first` | `{agent_handle, verified, sale: allowed\|blocked, decision: allow\|decline, score 0–1, layers{identity, provenance, history, behavior}, reasons[]}`. Verified = identity + provenance + behavior |
 | `ask_customer_occasions` | **`customer_id`** | `{customer_id, occasions: [{friend_handle, occasion, occasion_date, budget?, hints?, sharing_level}]}` |
 | `match_catalog` | **`customer_id`**, `budget`, `hints`, `k` | `[{sku, name, line, price, cost, tags, stock, competitor_query}]` (top k=3) |
 | `request_vouch` | **`recipient_handle`**, **`skus[]`** | `{vouched, ranked: [{sku, wants, owns, confidence, size}], dropped_owned[]}`; no agent → `{vouched: false, ranked: [], note}` |
 | `check_competitor_price` | **`sku`** | `{sku, our_price, competitors[], lowest, suggested_discount_pct, reason}` |
-| `make_offer` | **`customer_id, sku, occasion_ref, discount_pct, trust_score`**, `vouch_result, size, budget` | `{ok: true, offer_id, final_price, discount_pct, reason}` or `{ok: false, problems[]}` (Outcome rubric) |
+| `make_offer` | **`customer_id, sku, occasion_ref, discount_pct`**, `trust_score, vouch_result, size, budget` | `{ok: true, offer_id, final_price, discount_pct, reason, buyer_verified: true, trust_score}`, `{ok: false, problems[]}` (Outcome rubric) or `{ok: false, status: "blocked", sale: "blocked", reasons[]}` (buyer's agent not verified). The backend always verifies the buyer itself. Send `trust_score` from `score_agent_trust` (or a KYA provider): it must also be ≥ 0.75 |
 | `send_message` | **`customer_id, body`**, `offer_id` | `{sent: true, status}` |
-| `place_order` | **`offer_id`** | `{approval_id, status: "pending"}` (order is created only on approval) |
+| `place_order` | **`offer_id`** | `{approval_id, status: "pending"}` (order is created only on approval), or `{ok: false, status: "blocked", reasons[]}` if the buyer is no longer verified |
 | `screen_return_risk` | `order_id` (omit = all gift orders) | `{orders: [... return_risk: low\|medium], gift_return_rates: {vouched, unvouched}}` |
-| `handle_storefront_request` | **`agent_handle, ask`**, `requests_per_min` | same as `score_agent_trust` + `ask` |
+| `handle_storefront_request` | **`agent_handle, ask`**, `requests_per_min` | same as `score_agent_trust` + `ask`. `sale: "blocked"` means no sale |
 | `forecast_from_vouches` | `safety_stock` (default 2) | `[{sku, size, name, wants, owns, on_hand, suggested_qty, note}]` |
 | `draft_purchase_order` | **`sku, size, quantity`**, `reason` | `{po_id, approval_id, status: "draft"}` |
 
@@ -95,7 +95,7 @@ The merchant agent's 13 custom tools are executed by our backend. Saved real sam
 
 // score_agent_trust
 {"agent_handle": "t-gift-planner"}
-→ {"agent_handle": "t-gift-planner", "decision": "allow", "score": 1.0,
+→ {"agent_handle": "t-gift-planner", "verified": true, "sale": "allowed", "decision": "allow", "score": 1.0,
    "layers": {"identity": true, "provenance": true, "history": true, "behavior": true}, "reasons": []}
 
 // ask_customer_occasions  (fields trimmed per friend by T's sharing level)
@@ -124,8 +124,10 @@ The merchant agent's 13 custom tools are executed by our backend. Saved real sam
 // make_offer
 {"customer_id": "cust_t", "sku": "TR-VEST", "occasion_ref": "sarah-gift-vouch:birthday:2026-10-24", "discount_pct": 15,
  "trust_score": 1.0, "vouch_result": {"sku": "TR-VEST", "wants": true, "confidence": 0.9, ...}, "size": "M", "budget": 60.0}
-→ {"ok": true, "offer_id": 1, "final_price": 57.8, "discount_pct": 15,
+→ {"ok": true, "offer_id": 1, "final_price": 57.8, "discount_pct": 15, "buyer_verified": true, "trust_score": 1.0,
    "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off"}
+// if the buyer's agent fails verification:
+→ {"ok": false, "status": "blocked", "sale": "blocked", "reasons": ["identity: no signed passport / owner not phone-verified"]}
 
 // send_message
 {"customer_id": "cust_t", "offer_id": 1, "body": "A friend's birthday is on 2026-10-24. ... Reply YES."}
@@ -135,9 +137,9 @@ The merchant agent's 13 custom tools are executed by our backend. Saved real sam
 {"offer_id": 1}
 → {"approval_id": 1, "status": "pending"}
 
-// handle_storefront_request  (the bot)
-{"agent_handle": "unverified-shopper", "ask": "15% discount please", "requests_per_min": 40}
-→ {"ask": "15% discount please", "agent_handle": "unverified-shopper", "decision": "decline", "score": 0.0,
+// handle_storefront_request  (the bot tries to buy: no sale)
+{"agent_handle": "unverified-shopper", "ask": "Buy 3 × TR-VEST at 15% off", "requests_per_min": 40}
+→ {"ask": "Buy 3 × TR-VEST at 15% off", "agent_handle": "unverified-shopper", "verified": false, "sale": "blocked", "decision": "decline", "score": 0.0,
    "layers": {"identity": false, "provenance": false, "history": false, "behavior": false},
    "reasons": ["identity: no signed passport / owner not phone-verified", "provenance: unknown handle, not an approved contact",
                "history: no prior orders here", "behavior: 40 req/min, discount-first ask"]}

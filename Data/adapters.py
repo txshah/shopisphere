@@ -1,16 +1,20 @@
 """Outbound calls to sponsor tools. One function per external dependency.
 
-Each adapter goes live when its *_BRIDGE_URL env var is set and DEMO_MODE=0;
-otherwise (or if the live call fails) it uses the mock, so the demo never breaks.
+A sponsor is "switched on" when DEMO_MODE=0 (all of them) or its name is in
+LIVE (e.g. LIVE=tavily,gmail keeps the rest mocked). A switched-on adapter calls
+its *_BRIDGE_URL, or for Tavily calls the API directly with the TAV key.
+Otherwise (or if the live call fails) it uses the mock, so the demo never breaks.
 Teammates plug in by running a small HTTP bridge that accepts the JSON shown
 in each function and returns the same shape the mock returns.
 """
 import hashlib
 import hmac
+import importlib.util
 import json
 import os
 import smtplib
 import threading
+import uuid
 import urllib.request
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -30,12 +34,18 @@ def _load_dotenv(path=Path(__file__).resolve().parent.parent / ".env"):
 
 _load_dotenv()
 DEMO_MODE = os.getenv("DEMO_MODE", "1") != "0"
+LIVE = {s.strip().lower() for s in os.getenv("LIVE", "").split(",") if s.strip()}
 MOCK_DIR = Path(__file__).resolve().parent / "mock"
+TAVILY_DIR = Path(__file__).resolve().parent.parent / "Tavily"
+
+
+def _switched_on(sponsor):
+    return not DEMO_MODE or sponsor in LIVE
 
 
 def _bridge(env_var):
     url = os.getenv(env_var)
-    return None if DEMO_MODE or not url else url.rstrip("/")
+    return url.rstrip("/") if url and _switched_on(env_var.split("_")[0].lower()) else None
 
 
 def _post(url, body):
@@ -63,9 +73,10 @@ def modes():
     return {
         "demo_mode": DEMO_MODE,
         "band": "live" if _bridge("BAND_BRIDGE_URL") else "mock",
-        "tavily": "live" if _bridge("TAVILY_BRIDGE_URL") else "mock",
+        "tavily": "live" if _bridge("TAVILY_BRIDGE_URL") or _tavily_direct() else "mock",
         "sms": "live" if _bridge("SMS_BRIDGE_URL") else "fake phone",
         "merchant_ping": "gmail → " + MERCHANT_SMS_TO if _gmail_live() else "dashboard only",
+        "payments": "visa (mock)",
     }
 
 
@@ -86,12 +97,55 @@ def band_vouch_for(recipient_handle, sku):
 
 
 # --- Tavily: competitor price check --------------------------------------------
+def _tavily_direct():
+    """Live Tavily without a bridge: switched on, no bridge URL, and a TAV key in .env."""
+    return _switched_on("tavily") and not os.getenv("TAVILY_BRIDGE_URL") and bool(os.getenv("TAV"))
+
+
+def _tavily_search_prices(query, our_price):
+    spec = importlib.util.spec_from_file_location("tavily_prices", TAVILY_DIR / "check_competitor_price.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.search_prices(query, our_price)
+
+
 def tavily_competitor_prices(sku, query, our_price):
-    """POST {TAVILY_BRIDGE_URL}/competitor_prices {sku, query, our_price} -> {competitors: [{retailer, price, url}], label?}"""
+    """POST {TAVILY_BRIDGE_URL}/competitor_prices {sku, query, our_price} -> {competitors: [{retailer, price, url}], label?}
+    With no bridge but a TAV key, searches the web through Tavily directly (Tavily/check_competitor_price.py)."""
     def mock():
         cached = json.loads((MOCK_DIR / "competitor_prices.json").read_text())
         return {"competitors": cached.get(sku, [])}
+    if _tavily_direct():
+        try:
+            r = _tavily_search_prices(query, our_price)
+            db.log_event("tavily", "live", r["label"], {"query": query, "response": r})
+            return {"competitors": r["competitors"], "label": r["label"]}
+        except Exception as e:
+            db.log_event("tavily", "fallback", f"Tavily search failed ({e}); using mock")
+            result = mock()
+            db.log_event("tavily", "mock", "/competitor_prices", {"response": result})
+            return result
     return _call("tavily", "TAVILY_BRIDGE_URL", "/competitor_prices", {"sku": sku, "query": query, "our_price": our_price}, mock)
+
+
+# --- Payments: agent payment network (always mocked) ---------------------------
+# Stands in for Visa Intelligent Commerce / Trusted Agent Protocol: the buyer's yes
+# gets a payment token scoped to this merchant and amount, the network places a hold,
+# and the hold is captured only when the merchant approves (voided otherwise).
+# No card data exists anywhere in this repo.
+def visa_authorize(offer_id, amount, accepted_via):
+    result = {"network": "visa (mock)", "token": "vtok_" + uuid.uuid4().hex[:12],
+              "auth_id": "auth_" + uuid.uuid4().hex[:10], "amount": amount, "status": "authorized",
+              "scope": f"Trailhead · offer #{offer_id} · max {amount:.2f} USD · one use"}
+    db.log_event("payments", "mock", f"Visa (mock) hold of ${amount:.2f} for offer #{offer_id}, yes via {accepted_via}", result)
+    return result
+
+
+def visa_settle(auth_id, action):
+    """action: 'capture' (merchant approved) or 'void' (rejected or blocked)."""
+    status = "captured" if action == "capture" else "voided"
+    db.log_event("payments", "mock", f"Visa (mock) {auth_id} {status}")
+    return {"auth_id": auth_id, "status": status}
 
 
 # --- Messaging: Twilio SMS or the fake phone panel ----------------------------
@@ -111,7 +165,7 @@ _LINK_SECRET = os.getenv("APPROVE_LINK_SECRET") or os.urandom(16).hex()
 
 
 def _gmail_live():
-    return not DEMO_MODE and bool(os.getenv("GMAIL_APP_PASSWORD"))
+    return _switched_on("gmail") and bool(os.getenv("GMAIL_APP_PASSWORD"))
 
 
 def approval_token(approval_id):

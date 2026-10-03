@@ -11,7 +11,7 @@ from pathlib import Path
 DB_DIR = Path(__file__).resolve().parent / "db"
 
 SCHEMAS = {
-    # Merchant (Trailhead): its own customers, catalog, orders, offers,
+    # Merchant (Trailhead): its own customers, catalog, orders, offers, payment holds,
     # anonymous vouch counts, stock and purchase orders.
     "merchant": """
         CREATE TABLE IF NOT EXISTS merchant_customers(
@@ -36,6 +36,10 @@ SCHEMAS = {
         CREATE TABLE IF NOT EXISTS inventory(
             sku TEXT, size TEXT, on_hand INTEGER, supplier TEXT, lead_time_days INTEGER,
             PRIMARY KEY(sku, size));
+        CREATE TABLE IF NOT EXISTS payments(
+            payment_id INTEGER PRIMARY KEY AUTOINCREMENT, offer_id INTEGER, order_id INTEGER,
+            amount REAL, network TEXT, token TEXT, auth_id TEXT, accepted_via TEXT,
+            status TEXT, created_at TEXT, settled_at TEXT);
         CREATE TABLE IF NOT EXISTS purchase_orders(
             po_id INTEGER PRIMARY KEY AUTOINCREMENT, sku TEXT, size TEXT,
             quantity INTEGER, reason TEXT, status TEXT, created_at TEXT);
@@ -117,6 +121,13 @@ def tables(owner):
 def log_event(source, kind, summary, payload=None):
     execute("backend", "INSERT INTO events(ts, source, kind, summary, payload) VALUES (?,?,?,?,?)",
             (now(), source, kind, summary, json.dumps(payload, default=str) if payload is not None else None))
+
+
+def ensure():
+    """Create any missing tables without touching existing data (CREATE TABLE IF NOT EXISTS)."""
+    for owner, schema in SCHEMAS.items():
+        with connect(owner) as conn:
+            conn.executescript(schema)
 
 
 def reset():

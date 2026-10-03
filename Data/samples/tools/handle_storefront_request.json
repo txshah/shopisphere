@@ -3,12 +3,14 @@
   "endpoint": "POST /api/tools/handle_storefront_request",
   "input": {
     "agent_handle": "unverified-shopper",
-    "ask": "15% discount please",
+    "ask": "Buy 3 \u00d7 TR-VEST at 15% off",
     "requests_per_min": 40
   },
   "output": {
-    "ask": "15% discount please",
+    "ask": "Buy 3 \u00d7 TR-VEST at 15% off",
     "agent_handle": "unverified-shopper",
+    "verified": false,
+    "sale": "blocked",
     "decision": "decline",
     "score": 0.0,
     "layers": {

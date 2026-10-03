@@ -23,6 +23,8 @@
     "offer_id": 1,
     "final_price": 57.8,
     "discount_pct": 15,
-    "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off"
+    "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off",
+    "buyer_verified": true,
+    "trust_score": 1.0
   }
 }

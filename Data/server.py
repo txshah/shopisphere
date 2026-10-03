@@ -30,11 +30,15 @@ def state():
     trust = q("backend", "SELECT * FROM trust_events WHERE id IN (SELECT MAX(id) FROM trust_events GROUP BY agent_handle) ORDER BY id DESC")
     for t in trust:
         t["layers"], t["reasons"] = json.loads(t["layers"]), json.loads(t["reasons"])
+    offers = q("merchant", "SELECT o.*, c.name AS item FROM offers o JOIN catalog c USING(sku) ORDER BY offer_id DESC")
+    gift_orders = q("merchant", "SELECT o.*, c.name AS item FROM orders o JOIN catalog c USING(sku) WHERE is_gift = 1 ORDER BY order_id DESC")
+    for row in offers + gift_orders:
+        row["emoji"] = tools.emoji(row["sku"])
     return {
         "modes": adapters.modes(),
         "customers": q("merchant", "SELECT * FROM merchant_customers ORDER BY order_count DESC"),
-        "offers": q("merchant", "SELECT o.*, c.name AS item FROM offers o JOIN catalog c USING(sku) ORDER BY offer_id DESC"),
-        "gift_orders": q("merchant", "SELECT o.*, c.name AS item FROM orders o JOIN catalog c USING(sku) WHERE is_gift = 1 ORDER BY order_id DESC"),
+        "offers": offers,
+        "gift_orders": gift_orders,
         "return_rates": q("merchant", "SELECT vouched, COUNT(*) AS n, SUM(returned) AS returned FROM orders WHERE is_gift = 1 GROUP BY vouched"),
         "forecast": tools.forecast_from_vouches(),
         "purchase_orders": q("merchant", "SELECT * FROM purchase_orders ORDER BY po_id DESC"),
@@ -42,6 +46,7 @@ def state():
         "events": q("backend", "SELECT * FROM events ORDER BY id DESC LIMIT 80"),
         "messages": q("backend", "SELECT * FROM messages ORDER BY id"),
         "approvals": q("backend", "SELECT * FROM approvals ORDER BY id DESC"),
+        "payments": q("merchant", "SELECT * FROM payments ORDER BY payment_id DESC"),
         "stores": {owner: {t: len(rows) for t, rows in db.tables(owner).items()} for owner in db.SCHEMAS},
     }
 
@@ -120,6 +125,9 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._json({"ok": True})
             if path == "/api/phone/reply":
                 return self._json(tools.phone_reply(body.get("body", ""), body.get("customer_id", "cust_t")))
+            if path == "/api/band/accept":
+                return self._json(tools.band_accept(body.get("agent_handle", ""), body.get("person_said", ""),
+                                                    body.get("offer_id")))
             if m := re.fullmatch(r"/api/approvals/(\d+)", path):
                 return self._json(tools.resolve_approval(int(m[1]), body.get("decision", "approve")))
         except KeyError as e:
@@ -133,6 +141,7 @@ class Handler(SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     if not (db.DB_DIR / "merchant.db").exists():
         seed.seed()
+    db.ensure()
     port = int(os.getenv("PORT", "8787"))
     print(f"Shopisphere backend on http://localhost:{port}  modes={adapters.modes()}")
     ThreadingHTTPServer(("", port), Handler).serve_forever()

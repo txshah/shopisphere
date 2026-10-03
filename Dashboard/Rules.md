@@ -7,7 +7,7 @@ Single static page (`index.html`, no build step) served by `python3 Data/server.
 | Header buttons | `POST /api/demo/run`, storefront tool, reset | Fire the weekly schedule; bot asks for 15% |
 | Approvals | `approvals` (backend) | Approval gate for the order and the draft PO |
 | T's phone | `messages` + `POST /api/phone/reply` | Offer text → T replies YES |
-| Trust check | latest `trust_events` per agent | T passes 4/4; Unverified Shopper fails, declined |
+| Agent verification | latest `trust_events` per agent | T verified, can buy; Unverified Shopper not verified, no sale |
 | Offers pipeline | `offers` | drafted → sent → accepted → awaiting_approval → ordered |
 | Returns screener | gift `orders` + return rates | "Vouched order: return risk low" |
 | Replenishment | `forecast_from_vouches` + `purchase_orders` | "Trail vest M: 9 wants, 3 on hand → PO for 8" |
@@ -24,12 +24,13 @@ Saved real payloads: `Data/samples/api/*.json` (full `/api/state` snapshot inclu
 
 | Call | Input | Output |
 | --- | --- | --- |
-| `GET /api/state` | — | `{modes, customers, offers, gift_orders, return_rates, forecast, purchase_orders, trust, events, messages, approvals, stores}` |
+| `GET /api/state` | — | `{modes, customers, offers, gift_orders, return_rates, forecast, purchase_orders, trust, events, messages, approvals, payments, stores}` |
 | `POST /api/demo/run` | `{}` | `{"offer": {"ok": true, "offer_id": 1, "final_price": 57.8, "discount_pct": 15, "reason": "..."}}` |
 | `POST /api/demo/reset` | `{}` | `{"ok": true}` |
 | `POST /api/phone/reply` | `{"body": "YES", "customer_id": "cust_t"}` | `{"accepted": true, "approval_id": 1, "status": "pending"}` |
+| `POST /api/band/accept` | `{"agent_handle": "t-gift-planner", "person_said": "Yes, get it for her"}` | `{"accepted": true, "offer_id": 1, "approval_id": 2, "status": "pending", "payment": {"network": "visa (mock)", "auth_id": "auth_…", "status": "authorized"}}` |
 | `POST /api/approvals/<id>` | `{"decision": "approve"}` or `"reject"` | order: `{"approval_id": 1, "status": "approved", "order_id": 25, "return_risk": "low"}`; PO: `{"approval_id": 2, "status": "approved"}` |
-| `POST /api/tools/handle_storefront_request` | `{"agent_handle": "unverified-shopper", "ask": "15% discount please", "requests_per_min": 40}` | `{"decision": "decline", "score": 0.0, "layers": {...all false}, "reasons": [...]}` |
+| `POST /api/tools/handle_storefront_request` | `{"agent_handle": "unverified-shopper", "ask": "Buy 3 × TR-VEST at 15% off", "requests_per_min": 40}` | `{"verified": false, "sale": "blocked", "decision": "decline", "score": 0.0, "layers": {...all false}, "reasons": [...]}` |
 | `GET /api/stores/<owner>` | owner = `merchant` / `t_agent` / `sarah_agent` / `backend` | every table in that store (debug only) |
 
 `/api/state` shapes (one row each):
@@ -61,7 +62,7 @@ Open http://localhost:8787/wireframe.html (server running), or open the file dir
 
 | Region | What it shows |
 | --- | --- |
-| Hero + 3 tiles | "Agents narrow. People choose." Tiles light up as the run earns them: **$57.80** vouched offer (sell more), **+8 vest M** PO (run leaner), **0% vs 50%** gift returns (lose less) |
+| Hero + How it works (3 slides) | "Agents narrow. People choose." then a carousel, one slide per angle: gifts people want (65% have returned a gift, Shorr), no sales to unverified bots (9% of returns are fraudulent, NRF), best price for loyal customers (the pricing rule, no stat). Only sourced stats appear; the picture on each slide is labeled "From the demo run". **See it in the run →** jumps the playhead to that step. Swipes on phones |
 | Blocks library (left) | All 16 steps; click to jump |
 | Preview monitor (center) | A custom scene per step: trust layers, consent chat with the sharing-level slider, vouch stamps (WANTS / OWNS / NEUTRAL), Tavily price bars, rubric checklist, phone, approval cards, forecast bars, return rates |
 | Inspector (right) | The step's real input/output JSON and endpoint (from `Data/samples/`) |

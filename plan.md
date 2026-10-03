@@ -8,7 +8,7 @@ Oct 3, 2026 · @T
 
 **The brief we're answering:** ZooWork's opening slides framed the day as "The Shopper Now Has an Agent. The Merchant Needs One Too." The bar: "an agent a merchant would pay for, and could run on Monday." The instruction: "Pick a real merchant. Pick one line of their P&L. Move it."
 
-**Our merchant and P&L lines:** a gift-heavy boutique (demo: an outdoor gear shop). The headline line is **gift returns** ("lose less"): vouched gift orders come back less, and bots posing as buyers get no discounts. The same vouch signal also drives **replenishment** ("run leaner"). The proactive gift offer ("sell more") is the mechanism that collects the vouches, not the pitch.
+**Our merchant and P&L lines:** a gift-heavy boutique (demo: an outdoor gear shop). The headline line is **gift returns** ("lose less"): vouched gift orders come back less, and there are no sales to unverified bots posing as buyers. The same vouch signal also drives **replenishment** ("run leaner"). The proactive gift offer ("sell more") is the mechanism that collects the vouches, not the pitch.
 
 **Stats (quoted exactly, from the linked sources):**
 
@@ -27,13 +27,13 @@ The same Optoro piece reports, per CNBC, that Optoro's CEO said a quarter to hal
 3. **Match from T's side.** The merchant agent pulls candidates from its own catalog that fit T's taste and the budget.
 4. **Vouch from Sarah's side (BAND vouch room).** The merchant agent asks Sarah's agent about the top 3: "Wants the vest, already owns the bottle (0.9)." Her profile never leaves her agent.
 5. **Offer.** The merchant texts T: "Sarah's birthday is in 3 weeks. She'd love the trail vest; her agent confirmed it. 15% off as a loyal customer. Reply YES." An approval gate fires, then the order is placed.
-6. **Lose less.** A bot posing as a buyer agent asks for the same discount. It fails the trust check and is declined.
+6. **Lose less.** A bot posing as a buyer agent tries to buy at the same discount. It fails verification and gets no sale.
 
 **What every vouch feeds:**
 
 | Bucket | What the vouch signal does | Demo beat |
 | --- | --- | --- |
-| Lose less (headline) | Returns screener: vouched gift orders are tagged low return risk; unvouched gift orders and bot discount requests are flagged | "Vouched order: return risk low. Unknown shopper: declined." |
+| Lose less (headline) | Returns screener: vouched gift orders are tagged low return risk; unvouched gift orders are flagged, and unverified agents get no sale | "Vouched order: return risk low. Unverified shopper: no sale." |
 | Run leaner | Replenishment copilot: anonymous vouches are counted per SKU and size, compared with stock, and turned into a draft purchase order behind approval. "Already owns it" answers warn against over-ordering | "9 vouched wants for the trail vest in M, 3 in stock: draft PO for 8. Approve?" |
 | Sell more (mechanism) | The gift offer to T is how vouches get collected | The text to T |
 
@@ -68,6 +68,52 @@ The same Optoro piece reports, per CNBC, that Optoro's CEO said a quarter to hal
 | People's Choice | Not stated | Gallery-walk exhibit with a phone demo |
 
 **Schedule (from the slides):** submission 5:00 PM, gallery walk 5:30 PM, top 5–8 projects on the main stage 6:15 PM, awards 7:00 PM.
+
+## Stats library
+
+**Returns across US retail**
+
+| Stat | Exact wording | Source |
+| --- | --- | --- |
+| Total returns, 2025 | "Retailers estimate that 15.8% of their annual sales will be returned this year, totaling $849.9 billion" | [NRF and Happy Returns, Oct 15, 2025](https://nrf.com/media-center/press-releases/consumers-expected-to-return-nearly-850-billion-in-merchandise-in-2025) |
+| Online returns | "An estimated 19.3% of online sales will be returned in 2025." | same NRF release |
+| Return fraud | "The report found that 9% of all returns are fraudulent." | same NRF release |
+
+**Gift returns**
+
+| Stat | Exact wording | Source |
+| --- | --- | --- |
+| Holiday returns | "Retailers expect 17% of holiday sales to be returned, consistent with previous years." | [NRF and Happy Returns, Oct 15, 2025](https://nrf.com/media-center/press-releases/consumers-expected-to-return-nearly-850-billion-in-merchandise-in-2025) |
+| Christmas share of returns | "Nearly a quarter of all returns occur around Christmastime" | [Optoro](https://www.optoro.com/returns-news/your-holiday-gift-returns-cost-retailers-billions/) (undated) |
+| People returning gifts | "Nearly 2 in 3 consumers (65%) have returned a gift during the holiday season, and 40% expect to return at least one item this year." | [Shorr Packaging, Dec 16, 2025](https://www.shorr.com/resources/blog/consumer-report-return-habits/) (survey of 2,013 US consumers, Nov 2025) |
+| Gifts kept but unwanted | "48% have avoided returning a gift altogether because they were afraid of offending the person who gave it to them." | same Shorr survey |
+| Money spent on unwanted gifts | "Americans will spend around $10.1 billion on presents no one wants." | [Finder, updated Dec 17, 2024](https://www.finder.com/unwanted-gifts) (a 2024 forecast built from 2022–2023 surveys) |
+
+**What returns cost, and how much is fraud or abuse**
+
+| Stat | Exact wording | Source |
+| --- | --- | --- |
+| Preventable loss, 2025 | "preventable loss from fraud and abuse reached $100bn, representing 14.2% of all returns", of which "returns abuse comprised 12%, while fraud was responsible for just 2%" | [Appriss Retail, 2026 Total Retail Loss Benchmark Report, Feb 24, 2026](https://www.just-style.com/news/appriss-retail-loss-2025-report/) (reported by Just Style) |
+| Cost to process | Online returns cost retailers "21% of order value" on average | [Pitney Bowes BOXpoll, Apr 2022](https://www.investorrelations.pitneybowes.com/news-releases/news-release-details/pitney-bowes-survey-returns-cost-us-online-retailers-21-order) |
+| Retailer worry | 93% of retailers name fraud as a top concern. 47% of shoppers have returned items with tags removed, and 32% have returned worn items | [Happy Returns and NRF, 2025 Retail Returns Landscape](https://happyreturns.com/2025-happy-returns-nrf-returns-report) |
+| Waste | "Returned inventory creates 9.6 billion pounds of landfill waste each year, and emits more than 27 million metric tons of carbon dioxide" | Optoro, quoted in [Retail Brew, Dec 12, 2022](https://www.retailbrew.com/stories/2022/12/12/returns-not-only-pose-financial-costs-but-also-environmental-ones) |
+
+**Agents and bots are already at the store**
+
+| Stat | Exact wording | Source |
+| --- | --- | --- |
+| Bot traffic | Automated traffic made up 51% of all web traffic in 2024, and bad bots 37% | [Imperva 2025 Bad Bot Report](https://www.imperva.com/resources/wp-content/uploads/sites/6/reports/2025-Bad-Bot-Report.pdf) |
+| AI shoppers | Generative-AI traffic to US retail sites rose 769% year over year in Nov 2025 and 673% in Dec, and converted 31% better than other traffic | [Adobe, holiday 2025 recap, Jan 2026](https://news.adobe.com/news/2026/01/adobe-holiday-shopping-season) |
+
+**Which ones we use where.** README and the ops dashboard show five: $849.9B scale, 17% holiday returns, 65% have returned a gift, $100B preventable fraud and abuse, 21% cost per return. The rest are backup for questions.
+
+**Caveats**
+
+- NRF counts 9% of returns as fraudulent; Appriss counts 14.2% as fraud *plus* abuse (abuse 12%, fraud 2%). Say which one you're quoting.
+- Pitney Bowes' 21% is from 2022, for medium and large online brands.
+- Optoro's landfill and CO₂ figures are Optoro's own estimates, and their numbers vary across articles (5B to 9.6B lbs).
+- NRF hadn't published a 2026 returns report as of Oct 3, 2026. Its 2025 release came out Oct 15, 2025.
+- Avoid stat aggregator sites (repceipt, worldmetrics, gitnux and similar): they mix sources and years.
 
 ## Decisions to debate
 
@@ -133,7 +179,7 @@ Messages to T go out through the backend's `send_message`. No agent holds anothe
 5. `request_vouch` → Sarah's agent ranks them; owned items drop out.
 6. `check_competitor_price` sets the discount; the Outcome rubric checks the offer.
 7. `send_message` texts T; on YES, `place_order` hits the approval gate and the order is placed.
-8. In parallel, the unverified shopper asks for a discount and `score_agent_trust` declines it.
+8. In parallel, the unverified shopper tries to buy at a discount; `score_agent_trust` fails it and there is no sale. Every sale step (`make_offer`, `place_order`, approval) re-verifies the buyer.
 
 **After each run:**
 
@@ -149,7 +195,7 @@ The merchant agent never reaches into anyone's data. It asks other people's agen
 | --- | --- | --- | --- |
 | Consent room | Merchant agent, T's agent | Merchant asks about upcoming occasions; T's agent answers within each friend's sharing level | Merchant sees only the allowed fields |
 | Vouch room | Merchant agent, Sarah's agent | Merchant asks about 3 candidates; Sarah's agent answers wants / owns / confidence | Sarah's profile never leaves her agent |
-| Storefront room | Merchant agent, Unverified Shopper | The bot asks for a discount; the trust check fails | Declined, with reasons on the dashboard |
+| Storefront room | Merchant agent, Unverified Shopper | The bot tries to buy at a discount; verification fails | No sale, with reasons on the dashboard |
 
 **Sharing levels (set by T, per friend):**
 
@@ -178,7 +224,7 @@ The merchant agent never reaches into anyone's data. It asks other people's agen
 
 `Schedule fires → trust check passes for T's agent → consent room: friend, Oct 24, ~$60 → 3 candidates from T's favorites → vouch room: wants the vest, owns the bottle (0.9) → Tavily price check → 15% off → text to T → YES → approval → order. Meanwhile: Unverified Shopper asks for 15% off → trust check fails → declined.`
 
-**Why it passes BAND's "delete test":** remove the rooms and there is no consent boundary, no private vouch, and no way to decline the bot. It hits three of BAND's signals: a dependent handoff (the offer changes because of the vouch), a boundary BAND enforces (cross-account contacts plus mention-scoped visibility), and a verdict that can be blocked (the bot is declined).
+**Why it passes BAND's "delete test":** remove the rooms and there is no consent boundary, no private vouch, and no way to refuse the bot a sale. It hits three of BAND's signals: a dependent handoff (the offer changes because of the vouch), a boundary BAND enforces (cross-account contacts plus mention-scoped visibility), and a verdict that can be blocked (the unverified bot gets no sale).
 
 **Build notes:**
 
@@ -282,13 +328,13 @@ The demo runs about 2.5 minutes, with the merchant dashboard, the BAND console a
 3. **Find the moment (20s):** fire the weekly ZooWork schedule. Trust check passes for T's agent. Consent room: "A friend, birthday Oct 24, about $60."
 4. **Vouch (25s):** 3 candidates from T's favorites. Sarah's agent: "wants the vest, already owns the bottle (0.9)." Her profile never leaves her agent.
 5. **Humans choose (15s):** the phone gets the vest with a photo. T replies YES; the approval gate fires and the order is tagged "vouched, return risk low."
-6. **Lose less (15s):** the Unknown Shopper asks for the same 15%. All four trust layers fail; declined.
+6. **Lose less (15s):** the Unverified Shopper tries to buy at the same 15%. Verification fails on every layer; no sale.
 7. **Run leaner (20s):** the replenishment panel: "Trail vest M: 9 vouched wants, 3 on hand. Draft PO for 8. Approve?" The merchant approves.
-8. **Close (10s):** "Fewer gift returns, no discounts for bots, and stock that follows real demand. Agents narrow; people choose. A merchant could run this on Monday."
+8. **Close (10s):** "Fewer gift returns, no sales to unverified bots, and stock that follows real demand. Agents narrow; people choose. A merchant could run this on Monday."
 
 **Lines for judges:**
 
-- *Which merchant pays for this?* Any gift-heavy boutique. It cuts gift returns and bot discount abuse, and the same signal improves restocking.
+- *Which merchant pays for this?* Any gift-heavy boutique. It cuts gift returns, sells only to verified agents, and the same signal improves restocking.
 - *Isn't this creepy?* No. The merchant knows only its own customers. T's agent shares within T's sharing level, Sarah's agent answers yes/no, and restocking uses only anonymous counts.
 - *What if the friend has no agent?* The offer still goes out, unvouched, at standard price. The vouch is an upgrade.
 - *How do you know it's a real agent?* Four layers: identity, provenance, history, behavior. In production, identity comes from Visa's and Mastercard's agent protocols.

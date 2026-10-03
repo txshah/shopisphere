@@ -68,7 +68,11 @@ def prices_in(text):
 def check_competitor_price(product, our_price):
     if os.environ.get("DEMO_MODE") == "1":
         return json.loads(CACHE.read_text())[product]
+    return search_prices(product, our_price)
 
+
+def search_prices(product, our_price):
+    """Always calls Tavily. The backend (Data/adapters.py) uses this when Tavily is live."""
     data = tavily_search(f"{product} price")
     # Keep amounts within a plausible band of our price; drops shipping thresholds and bundle totals.
     lo, hi = our_price * 0.5, our_price * 2.0

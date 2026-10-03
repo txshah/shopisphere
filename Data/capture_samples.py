@@ -47,8 +47,7 @@ def main():
                                 "discount_pct": price["suggested_discount_pct"], "trust_score": trust["score"],
                                 "vouch_result": top, "size": top["size"], "budget": occ["budget"]})
     tool("send_message", {"customer_id": t["customer_id"], "offer_id": offer["offer_id"],
-                          "body": f"A friend's birthday is on {occ['occasion_date']}. They'd love the Trail Running Vest; "
-                                  f"their agent confirmed it. {offer['discount_pct']}% off (${offer['final_price']}). Reply YES."})
+                          "body": tools.gift_offer_text(offer["offer_id"])})
     # T replies YES on the phone -> place_order opens the approval gate.
     reply = tools.phone_reply("YES", t["customer_id"])
     save("api/phone_reply", {"endpoint": "POST /api/phone/reply", "input": {"body": "YES", "customer_id": t["customer_id"]},
@@ -56,7 +55,7 @@ def main():
     save("tools/place_order", {"tool": "place_order", "endpoint": "POST /api/tools/place_order",
                                "input": {"offer_id": offer["offer_id"]},
                                "output": {k: reply[k] for k in ("approval_id", "status")}})
-    tool("handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": "15% discount please",
+    tool("handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": "Buy 3 × TR-VEST at 15% off",
                                        "requests_per_min": 40})
     row = tool("forecast_from_vouches", {})[0]
     tool("draft_purchase_order", {"sku": row["sku"], "size": row["size"], "quantity": row["suggested_qty"],

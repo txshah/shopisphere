@@ -101,15 +101,31 @@ Post each room message so it shows in the dashboard event log next to the BAND c
 {"ok": true}
 ```
 
-### 4. Storefront room (the bot)
+### 4. T says yes to their own agent: `POST http://localhost:8787/api/band/accept`
 
-The trust check runs in the backend. When the Unverified Shopper asks in the storefront room, the bridge calls `POST http://localhost:8787/api/tools/handle_storefront_request`:
+When T tells T's Gift Planner "yes" to an offer, the bridge relays T's words. The agent passes on T's yes; it never decides on its own, so `person_said` is required.
 
 ```jsonc
 // input
-{"agent_handle": "unverified-shopper", "ask": "15% discount please", "requests_per_min": 40}
-// output -> post the decline back into the room
-{"decision": "decline", "score": 0.0, "layers": {"identity": false, "provenance": false, "history": false, "behavior": false},
+{"agent_handle": "t-gift-planner", "person_said": "Yes, get it for her", "offer_id": 1}   // offer_id optional: latest sent offer
+// output: same as a texted YES. Payment hold (mock Visa) + merchant approval opened
+{"accepted": true, "offer_id": 1, "approval_id": 2, "status": "pending",
+ "payment": {"network": "visa (mock)", "auth_id": "auth_7d4c8391ed", "status": "authorized"}}
+// refused
+{"accepted": false, "error": "relay what the person said; an agent can't accept on its own"}
+```
+
+The dashboard's **T tells their agent "yes" (BAND)** button sends this same call while no bridge is running.
+
+### 5. Storefront room (the bot)
+
+No sales to unverified agents. Verification runs in the backend. When an agent tries to buy in the storefront room, the bridge calls `POST http://localhost:8787/api/tools/handle_storefront_request` and posts the result back:
+
+```jsonc
+// input
+{"agent_handle": "unverified-shopper", "ask": "Buy 3 × TR-VEST at 15% off", "requests_per_min": 40}
+// output -> post "not verified, no sale" back into the room
+{"verified": false, "sale": "blocked", "decision": "decline", "score": 0.0, "layers": {"identity": false, "provenance": false, "history": false, "behavior": false},
  "reasons": ["identity: no signed passport / owner not phone-verified", "provenance: unknown handle, not an approved contact",
              "history: no prior orders here", "behavior: 40 req/min, discount-first ask"], ...}
 ```
