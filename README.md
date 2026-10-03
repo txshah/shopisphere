@@ -20,52 +20,33 @@ The same vouch answers also drive restocking, as anonymous counts per SKU and si
 
 ```mermaid
 flowchart LR
-  subgraph ZW["ZooWork · merchant agent"]
-    SCHED["Weekly schedule<br/>+ gifting Skill"]
-    AGENT["Trailhead Merchant<br/>13 custom tools"]
-    GATE["Approval gate"]
-  end
+  SCHED["ZooWork<br/>weekly schedule + gifting Skill"] --> AGENT["ZooWork merchant agent<br/>Trailhead · 13 custom tools"]
+  AGENT -- "custom tool calls" --> API["Data/ backend<br/>HTTP API + trust check"]
+  AGENT -- "place_order" --> GATE["ZooWork<br/>approval gate"]
+  API --- MDB[("merchant.db<br/>backend.db")]
 
-  subgraph BACK["Data/ · backend (Python, stdlib)"]
-    API["HTTP API<br/>/api/tools/{name}"]
-    TRUST["Trust check<br/>4 layers"]
-    subgraph STORES["One store per owner"]
-      M[("merchant.db")]
-      TA[("t_agent.db")]
-      SA[("sarah_agent.db")]
-      B[("backend.db")]
-    end
-  end
+  API -- "consent room: occasions" --> TAG["BAND<br/>T's Gift Planner"]
+  TAG -.- TDB[("t_agent.db")]
+  API -- "vouch room: wants / owns" --> SAG["BAND<br/>Sarah's Gift Vouch"]
+  SAG -.- SDB[("sarah_agent.db")]
+  BOT["BAND<br/>Unverified Shopper"] -- "discount ask → declined" --> API
 
-  subgraph BAND["BAND rooms"]
-    CONSENT["Consent room<br/>T's Gift Planner"]
-    VOUCH["Vouch room<br/>Sarah's Gift Vouch"]
-    STORE["Storefront room<br/>Unverified Shopper"]
-  end
+  API -- "competitor prices" --> TAV["Tavily<br/>price check"]
+  API -- "offer text ⇄ YES" --> PHONE["T's phone<br/>SMS / fake phone"]
+  API -- "approval ping" --> GMAIL["Gmail<br/>merchant's phone"]
+  DASH["Dashboard<br/>ops view + run editor"] -- "polls /api/state" --> API
 
-  TAV["Tavily<br/>competitor prices"]
-  PHONE["T's phone<br/>SMS / fake phone"]
-  GMAIL["Gmail → merchant's phone<br/>approve link"]
-  DASH["Dashboard/<br/>ops view + run editor"]
-
-  SCHED --> AGENT
-  AGENT -- "custom tool calls" --> API
-  API --> TRUST
-  API -- "ask_customer_occasions" --> CONSENT
-  API -- "request_vouch" --> VOUCH
-  STORE -- "discount request" --> TRUST
-  API -- "check_competitor_price" --> TAV
-  API -- "send_message" --> PHONE
-  PHONE -- "YES" --> API
-  API --> GATE
-  GATE -- "approval ping" --> GMAIL
-  API --- M & B
-  CONSENT -.- TA
-  VOUCH -.- SA
-  DASH -- "polls /api/state" --> API
+  classDef zoo stroke:#1E9BC0,stroke-width:2px
+  classDef band stroke:#B04FC0,stroke-width:2px
+  classDef tav stroke:#B8960A,stroke-width:2px
+  classDef msg stroke:#4E9A33,stroke-width:2px
+  class SCHED,AGENT,GATE zoo
+  class TAG,SAG,BOT band
+  class TAV tav
+  class PHONE,GMAIL msg
 ```
 
-Dotted lines are data that never crosses over: T's occasions stay with T's agent and Sarah's profile stays with Sarah's agent. The merchant only sees the answers they choose to give.
+Dotted lines mark data that stays with its owner: T's occasions live with T's agent and Sarah's profile lives with Sarah's agent, never in the merchant's store. The merchant only sees the answers those agents choose to give.
 
 | Sponsor | Role in Shopisphere | How it connects | Status today |
 | --- | --- | --- | --- |
@@ -99,7 +80,7 @@ sequenceDiagram
   Bot->>Z: 15% off please (40 asks/min)
   Z-->>Bot: Declined: identity, provenance, history and behavior all fail
   Z->>V: Competitor prices for the vest
-  V-->>Z: Lowest $64; we're $68 → offer 15%
+  V-->>Z: Lowest $64, we're $68 → offer 15%
   Z->>Z: Rubric: trust ✓ stock ✓ budget ✓ margin ✓ → $57.80
   Z->>P: "Her agent confirmed it. 15% off. Reply YES."
   P-->>Z: YES
