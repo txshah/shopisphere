@@ -153,7 +153,7 @@
   },
   {
     "name": "send_message",
-    "description": "Text the customer (Twilio bridge or fake phone panel).",
+    "description": "Text the customer (Twilio bridge or fake phone panel). With an offer_id, the text is written from the offer record itself (occasion, item, vouch, price), so it can't misstate what the recipient's agent said.",
     "input_schema": {
       "type": "object",
       "properties": {
@@ -168,14 +168,13 @@
         }
       },
       "required": [
-        "customer_id",
-        "body"
+        "customer_id"
       ]
     }
   },
   {
     "name": "place_order",
-    "description": "Re-verifies the buyer, then opens the approval gate; the order is created only when a human approves.",
+    "description": "Re-verifies the buyer, places a payment hold, then opens the approval gate; the order is created only when a human approves.",
     "input_schema": {
       "type": "object",
       "properties": {

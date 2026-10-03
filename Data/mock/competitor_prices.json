@@ -1,14 +1,14 @@
 {
+  "_note": "Fixed snapshot, checked Oct 3, 2026. Trailhead and its products are fictional; each demo SKU is compared against the closest real product at real US retailers. Live Tavily (LIVE=tavily) replaces this.",
   "TR-VEST": [
-    {"retailer": "Summit Outfitters", "price": 64.0, "url": "https://example.com/summit/trail-vest"},
-    {"retailer": "Ridge & Co", "price": 72.0, "url": "https://example.com/ridge/trail-vest"}
+    {"retailer": "Fleet Feet", "price": 80.00, "product": "Nathan QuickStart 4L Hydration Pack 2.0", "url": "https://www.fleetfeet.com/products/nathan-quickstart-4l-hydration-pack-2-0", "checked": "2026-10-03"},
+    {"retailer": "ShopAbunda", "price": 89.99, "product": "Nathan QuickStart Hydration Pack Vest", "url": "https://www.shopabunda.com/products/nathan-quickstart-2-0-hydration-pack-with-hydration-bladder-4l-for-running-vest-hiking-walking-marathon-obstical-course-run-race", "checked": "2026-10-03"}
   ],
   "TR-BOTTLE": [
-    {"retailer": "Summit Outfitters", "price": 39.95, "url": "https://example.com/summit/bottle"},
-    {"retailer": "Ridge & Co", "price": 44.0, "url": "https://example.com/ridge/bottle"}
+    {"retailer": "Hydro Flask", "price": 44.95, "product": "Hydro Flask 32 oz Wide Mouth", "url": "https://www.hydroflask.com/32-oz-wide-mouth", "checked": "2026-10-03"},
+    {"retailer": "Eastside Sports", "price": 44.95, "product": "Hydro Flask 32 oz Wide Mouth", "url": "https://eastsidesports.com/products/hydroflask-wide-mouth", "checked": "2026-10-03"}
   ],
   "TR-LAMP": [
-    {"retailer": "Summit Outfitters", "price": 54.95, "url": "https://example.com/summit/headlamp"},
-    {"retailer": "Ridge & Co", "price": 59.0, "url": "https://example.com/ridge/headlamp"}
+    {"retailer": "Black Diamond", "price": 59.95, "product": "Black Diamond Spot 400 Headlamp", "url": "https://blackdiamondequipment.com/products/spot-400-headlamp", "checked": "2026-10-03"}
   ]
 }

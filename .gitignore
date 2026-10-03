@@ -9,3 +9,8 @@ node_modules/
 Data/db/
 Zooworks/.claude/
 .DS_Store
+
+# BAND bridge runtime state
+Band/shopisphere/rooms.json
+Zooworks/merchant/state.json
+logs/

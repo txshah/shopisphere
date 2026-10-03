@@ -23,7 +23,7 @@ The same Optoro piece reports, per CNBC, that Optoro's CEO said a quarter to hal
 **How it works (one run):**
 
 1. **Find the moment.** The merchant agent (ZooWork, weekly schedule) picks top customers from its own order history: "T, 6 orders, loves our trail line."
-2. **Ask with consent (BAND consent room).** The merchant agent asks T's agent, "Any upcoming occasions we can help with?" T's agent shares only what T allows: "a friend, birthday Oct 24, about $60."
+2. **Ask with consent (BAND consent room).** The merchant agent asks T's agent, "Any upcoming occasions we can help with?" T's agent shares only what T allows: "a friend, birthday Oct 24, about $70."
 3. **Match from T's side.** The merchant agent pulls candidates from its own catalog that fit T's taste and the budget.
 4. **Vouch from Sarah's side (BAND vouch room).** The merchant agent asks Sarah's agent about the top 3: "Wants the vest, already owns the bottle (0.9)." Her profile never leaves her agent.
 5. **Offer.** The merchant texts T: "Sarah's birthday is in 3 weeks. She'd love the trail vest; her agent confirmed it. 15% off as a loyal customer. Reply YES." An approval gate fires, then the order is placed.
@@ -202,7 +202,7 @@ The merchant agent never reaches into anyone's data. It asks other people's agen
 | Level | Merchant sees | Example |
 | --- | --- | --- |
 | Occasion only | "A friend has a birthday on Oct 24" | Minimal; merchant suggests from T's favorites |
-| Occasion + budget (default) | "A friend, birthday Oct 24, about $60" | Enough for a priced offer |
+| Occasion + budget (default) | "A friend, birthday Oct 24, about $70" | Enough for a priced offer |
 | Occasion + budget + hints | "… into trail running" | Better candidates before the vouch |
 
 **Trust check: is this a real buyer's agent?** In production, identity comes from standards like Visa's Trusted Agent Protocol and Mastercard Agent Pay. We build what the merchant does with the signal, using four simulated layers:
@@ -222,7 +222,7 @@ The merchant agent never reaches into anyone's data. It asks other people's agen
 
 **One run, end to end:**
 
-`Schedule fires → trust check passes for T's agent → consent room: friend, Oct 24, ~$60 → 3 candidates from T's favorites → vouch room: wants the vest, owns the bottle (0.9) → Tavily price check → 15% off → text to T → YES → approval → order. Meanwhile: Unverified Shopper asks for 15% off → trust check fails → declined.`
+`Schedule fires → trust check passes for T's agent → consent room: friend, Oct 24, ~$70 → 3 candidates from T's favorites → vouch room: wants the vest, owns the bottle (0.9) → Tavily price check → 15% off → text to T → YES → approval → order. Meanwhile: Unverified Shopper asks for 15% off → trust check fails → declined.`
 
 **Why it passes BAND's "delete test":** remove the rooms and there is no consent boundary, no private vouch, and no way to refuse the bot a sale. It hits three of BAND's signals: a dependent handoff (the offer changes because of the vouch), a boundary BAND enforces (cross-account contacts plus mention-scoped visibility), and a verdict that can be blocked (the unverified bot gets no sale).
 
@@ -263,21 +263,28 @@ These make ZooWork's own features carry the visible workflow. The Skill and the 
 
 **ZooWork:**
 
-- [ ] **Package the merchant's gifting playbook as a ZooWork Skill:** who counts as a top customer, how to ask for occasions, matching rules, discount limits and margin floor. Stage line: "A new store installs the playbook and runs it on Monday."
-- [ ] **Outcome rubric on the scheduled run:** "Every offer has a passing trust check, an in-stock item within budget, a price above the margin floor, and a one-line reason." The dashboard shows "offer rejected: below margin floor → revised."
+- [x] **Package the merchant's gifting playbook as a ZooWork Skill:** done, `trailhead-gifting` (`Zooworks/merchant/skill/`), attached to the live agent. who counts as a top customer, how to ask for occasions, matching rules, discount limits and margin floor. Stage line: "A new store installs the playbook and runs it on Monday."
+- [x] **Outcome rubric on the scheduled run:** done, on the `weekly-gifting` schedule; verdicts ("grading", "revising", "satisfied") show on the dashboard. "Every offer has a passing trust check, an in-stock item within budget, a price above the margin floor, and a one-line reason." The dashboard shows "offer rejected: below margin floor → revised."
 - [ ] **Visible approval gate:** show `approval.requested` at the moment of purchase. It ties to ZooWork's "asks before it commits."
-- [ ] **ZooWork event log as the reasoning panel:** stream session events straight into the dashboard.
+- [x] **ZooWork event log as the reasoning panel:** tool calls and rubric verdicts stream into the dashboard log. stream session events straight into the dashboard.
 - [ ] **ZooData for catalog, competitor prices and TikTok Shop trends**, if it works out of the box as the slides say.
 - [x] ~~Deliver through a ZooWork-native chat channel~~: not available on Platform API keys. Replaced by the Gmail merchant ping (`Data/Rules.md`).
 
 **BAND:**
 
 - [ ] Show the BAND console beside the dashboard at the exhibit, with execution events on.
-- [ ] Write the four-line collaboration summary BAND asks for: the crew, who talks to whom, one flow end to end, and what breaks without the room.
+- [x] Write the four-line collaboration summary BAND asks for (below).
+
+**BAND collaboration summary**
+
+1. **The crew:** Trailhead Merchant (the store), T's Gift Planner (the shopper's agent), Sarah's Gift Vouch (the gift recipient's agent) and Unverified Shopper (a bot), each acting for a different owner.
+2. **Who talks to whom:** the merchant opens a consent room with T's agent and a vouch room with Sarah's agent; the bot can only reach the merchant in the storefront room; T talks only to their own agent.
+3. **One flow:** ZooWork's schedule fires → consent room: "a birthday Oct 24, about $70" → vouch room: "wants the vest in M, owns the bottle" → offer texted to T → T tells their agent "yes" → the agent relays it → the merchant approves and the payment is captured.
+4. **What breaks without the room:** the store would need T's calendar and Sarah's profile in its own database. With rooms, each agent keeps its owner's data and answers only what's asked (occasions T allows; wants / owns / confidence), and the bot never gets past verification.
 
 **Tavily and Entire:**
 
-- [ ] Label each Tavily call in the log, for example "Tavily: trail vest at 2 competitors, lowest $64."
+- [x] Label each Tavily call in the log: "Tavily: Trail Running Vest at 2 competitors, lowest $80.00 (Fleet Feet); we're $4.00 above, offer 15%".
 - [ ] Create the Entire repo and one Trail at the start, so the build history is captured automatically.
 
 ## Contingencies
@@ -325,7 +332,7 @@ The demo runs about 2.5 minutes, with the merchant dashboard, the BAND console a
 
 1. **Hook (20s):** "Last month, Meta launched Muse, a shopping agent, and Amazon blocked it. Shoppers now arrive as agents, and merchants can't tell a real customer's agent from a bot. Shopisphere is a verified shopping network, seen from the merchant's side."
 2. **The merchant (10s):** Trailhead, an outdoor boutique. Its P&L line: gift returns.
-3. **Find the moment (20s):** fire the weekly ZooWork schedule. Trust check passes for T's agent. Consent room: "A friend, birthday Oct 24, about $60."
+3. **Find the moment (20s):** fire the weekly ZooWork schedule. Trust check passes for T's agent. Consent room: "A friend, birthday Oct 24, about $70."
 4. **Vouch (25s):** 3 candidates from T's favorites. Sarah's agent: "wants the vest, already owns the bottle (0.9)." Her profile never leaves her agent.
 5. **Humans choose (15s):** the phone gets the vest with a photo. T replies YES; the approval gate fires and the order is tagged "vouched, return risk low."
 6. **Lose less (15s):** the Unverified Shopper tries to buy at the same 15%. Verification fails on every layer; no sale.

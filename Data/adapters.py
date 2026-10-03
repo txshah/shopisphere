@@ -43,15 +43,23 @@ def _switched_on(sponsor):
     return not DEMO_MODE or sponsor in LIVE
 
 
+# Where each bridge listens when its env var isn't set (the scripts in Band/ and Zooworks/ default to these).
+BRIDGE_DEFAULTS = {"BAND_BRIDGE_URL": "http://localhost:9001", "ZOOWORK_BRIDGE_URL": "http://localhost:8788"}
+
+
 def _bridge(env_var):
-    url = os.getenv(env_var)
+    url = os.getenv(env_var) or BRIDGE_DEFAULTS.get(env_var)
     return url.rstrip("/") if url and _switched_on(env_var.split("_")[0].lower()) else None
 
 
-def _post(url, body):
+# BAND room turns are LLM replies (about 5-25s each), so they get a longer wait than the other bridges.
+TIMEOUTS = {"band": 90}
+
+
+def _post(url, body, timeout=20):
     req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=20) as resp:
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read())
 
 
@@ -59,7 +67,7 @@ def _call(source, env_var, path, body, mock):
     url = _bridge(env_var)
     if url:
         try:
-            result = _post(url + path, body)
+            result = _post(url + path, body, TIMEOUTS.get(source, 20))
             db.log_event(source, "live", f"{path} via {url}", {"request": body, "response": result})
             return result
         except Exception as e:  # fall back to mock, per plan.md contingencies
@@ -72,8 +80,9 @@ def _call(source, env_var, path, body, mock):
 def modes():
     return {
         "demo_mode": DEMO_MODE,
+        "zoowork": "live" if _bridge("ZOOWORK_BRIDGE_URL") else "local stand-in",
         "band": "live" if _bridge("BAND_BRIDGE_URL") else "mock",
-        "tavily": "live" if _bridge("TAVILY_BRIDGE_URL") or _tavily_direct() else "mock",
+        "tavily": "live" if _bridge("TAVILY_BRIDGE_URL") or _tavily_direct() else "real prices, Oct 3 snapshot",
         "sms": "live" if _bridge("SMS_BRIDGE_URL") else "fake phone",
         "merchant_ping": "gmail → " + MERCHANT_SMS_TO if _gmail_live() else "dashboard only",
         "payments": "visa (mock)",
@@ -96,6 +105,29 @@ def band_vouch_for(recipient_handle, sku):
     return _call("band", "BAND_BRIDGE_URL", "/vouch_for", {"recipient_handle": recipient_handle, "sku": sku}, mock)
 
 
+def band_vouch_batch(recipient_handle, skus):
+    """POST {BAND_BRIDGE_URL}/vouch_batch {recipient_handle, skus} -> [answer per sku] or null if no agent.
+    One room turn for all candidates instead of one per SKU."""
+    def mock():
+        agent = mock_agents.RECIPIENT_AGENTS.get(recipient_handle)
+        return [agent(sku) for sku in skus] if agent else None
+    return _call("band", "BAND_BRIDGE_URL", "/vouch_batch", {"recipient_handle": recipient_handle, "skus": skus}, mock)
+
+
+# --- BAND: storefront room (the unverified bot) --------------------------------
+def band_storefront(ask, requests_per_min, local):
+    """POST {BAND_BRIDGE_URL}/storefront {ask, requests_per_min}: the bot asks in a real room and the
+    bridge answers with the backend's verification. Mock: run the same check locally."""
+    return _call("band", "BAND_BRIDGE_URL", "/storefront", {"ask": ask, "requests_per_min": requests_per_min}, local)
+
+
+# --- ZooWork: the merchant agent's weekly run ------------------------------------
+def zoowork_run(local):
+    """POST {ZOOWORK_BRIDGE_URL}/run: fire the real ZooWork schedule (Zooworks/merchant/bridge.mjs).
+    The agent then calls our tools through /api/tools/<name>. Mock: the local orchestrator."""
+    return _call("zoowork", "ZOOWORK_BRIDGE_URL", "/run", {}, local)
+
+
 # --- Tavily: competitor price check --------------------------------------------
 def _tavily_direct():
     """Live Tavily without a bridge: switched on, no bridge URL, and a TAV key in .env."""
@@ -114,7 +146,7 @@ def tavily_competitor_prices(sku, query, our_price):
     With no bridge but a TAV key, searches the web through Tavily directly (Tavily/check_competitor_price.py)."""
     def mock():
         cached = json.loads((MOCK_DIR / "competitor_prices.json").read_text())
-        return {"competitors": cached.get(sku, [])}
+        return {"competitors": cached.get(sku, []), "source": "snapshot 2026-10-03"}
     if _tavily_direct():
         try:
             r = _tavily_search_prices(query, our_price)

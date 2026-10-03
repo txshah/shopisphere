@@ -2,7 +2,29 @@
 
 Oct 3, 2026 · BAND agent. Everything lives in `Band/`.
 
-## What's set up
+## Live Shopisphere rooms (Oct 3, 2026)
+
+The rooms are real now. Code is in `Band/shopisphere/`; `./live.sh` at the repo root starts it.
+
+| Agent (BAND handle) | Plays | Runs as |
+| --- | --- | --- |
+| `tveshashah13/merchant` | Trailhead Merchant | REST only, from `bridge.py` (no LLM process) |
+| `tveshashah13/tvesha` | T's Gift Planner | `agents.py`: tools `share_occasions` (reads only `t_agent.db`) and `accept_offer` (relays T's yes to `POST /api/band/accept`) |
+| `tveshashah13/sarah` | Sarah's Gift Vouch | `agents.py`: tool `vouch_for` (reads only `sarah_agent.db`) |
+| `tveshashah13/unverified` | Unverified Shopper | REST only, from `bridge.py` (posts the buy request) |
+
+Keys live in `Band/shopisphere/agent_config.yaml` (gitignored). Merchant and Sarah reuse the old Tom and Jerry agent ids, so **don't run `tom_agent.py` / `jerry_agent.py`**: BAND allows one live connection per agent.
+
+What we learned making it reliable:
+
+- **A fresh room per consent or vouch ask.** In a reused room, the agent resumed its earlier conversation and answered from memory instead of calling its tool (it returned last run's $60 budget). New rooms fixed it; titles carry the time, e.g. "Trailhead × Sarah's Gift Vouch · vouch · Oct 03 14:52".
+- **Tell the agent to copy tool output exactly.** Once, Sarah's agent shortened its JSON and dropped `size`, so the vest looked out of stock. The prompt now requires every field.
+- **One vouch turn for all candidates** (`/vouch_batch`), not one per SKU: about 10–20s instead of 45s.
+- **The agent runtime traps SIGTERM** and holds a per-agent lock, so a leftover process blocks a restart (`AgentAlreadyRunningError`). `./live.sh stop` force-kills after 3s.
+- The backend waits up to 90s for a BAND reply, then falls back to the mock and logs `fallback`.
+- Live, T can also say yes for real: open a chat with **tvesha** at app.band.ai and say "yes, get it". The agent calls `accept_offer`, which holds the payment and opens the merchant's approval.
+
+## What's set up (Tom & Jerry, first experiments)
 
 | Thing | Where | Status |
 | --- | --- | --- |
@@ -47,7 +69,9 @@ No LLM key is needed: the `claude_sdk` adapter uses the local `claude login`. Do
 
 ## Tool inputs & outputs (contract with Data/ backend)
 
-The backend calls BAND through one HTTP bridge you run. Set `BAND_BRIDGE_URL=http://localhost:<port>` and `DEMO_MODE=0` when starting `python3 Data/server.py`. Until then (or if a call fails), `Data/mock_agents.py` answers with the same shapes. Saved samples: `Data/samples/bridges/band_*.json`.
+The backend calls BAND through `Band/shopisphere/bridge.py` (default `http://localhost:9001`, override with `BAND_BRIDGE_URL`), when BAND is switched on (`LIVE=band` or `DEMO_MODE=0`). Otherwise (or if a call fails), `Data/mock_agents.py` answers with the same shapes. Saved samples: `Data/samples/bridges/band_*.json`.
+
+Bridge endpoints: `POST /share_occasions`, `POST /vouch_batch {recipient_handle, skus}` (one room turn, returns an array or `null`), `POST /vouch_for` (single SKU), `POST /storefront {ask, requests_per_min}` (the bot asks in the storefront room; the bridge runs the backend's `handle_storefront_request` and posts the verdict back).
 
 ### 1. Consent room: `POST {BAND_BRIDGE_URL}/share_occasions`
 
@@ -64,7 +88,7 @@ Merchant agent → T's Gift Planner. Return **only** the fields T's sharing leve
 {"customer_handle": "t-gift-planner"}
 // output (JSON array)
 [
-  {"friend_handle": "sarah-gift-vouch", "occasion": "birthday", "occasion_date": "2026-10-24", "budget": 60.0, "sharing_level": "occasion_budget"},
+  {"friend_handle": "sarah-gift-vouch", "occasion": "birthday", "occasion_date": "2026-10-24", "budget": 70.0, "sharing_level": "occasion_budget"},
   {"friend_handle": "jo-no-agent", "occasion": "anniversary", "occasion_date": "2026-11-12", "sharing_level": "occasion_only"},
   {"friend_handle": "sam-gift-vouch", "occasion": "housewarming", "occasion_date": "2026-12-05", "budget": 50.0, "hints": "new climber", "sharing_level": "occasion_budget_hints"}
 ]

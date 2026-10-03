@@ -54,11 +54,11 @@
       "sku": "TR-VEST",
       "name": "Trail Running Vest",
       "line": "trail",
-      "price": 68.0,
-      "cost": 34.0,
+      "price": 84.0,
+      "cost": 40.0,
       "tags": "running,hydration,apparel",
       "stock": 9,
-      "competitor_query": "Salomon ADV Skin 5 running vest"
+      "competitor_query": "Nathan QuickStart 2.0 4L hydration vest"
     },
     {
       "sku": "TR-BOTTLE",
@@ -68,7 +68,7 @@
       "cost": 15.0,
       "tags": "hydration,gift",
       "stock": 25,
-      "competitor_query": "Hydro Flask 32 oz Wide Mouth"
+      "competitor_query": "Hydro Flask 32 oz Wide Mouth bottle"
     },
     {
       "sku": "TR-LAMP",
@@ -453,7 +453,7 @@
       "customer_id": "cust_mei",
       "sku": "TR-VEST",
       "size": "M",
-      "price": 68.0,
+      "price": 84.0,
       "is_gift": 1,
       "vouched": 1,
       "returned": 0,
@@ -593,14 +593,14 @@
       "customer_id": "cust_t",
       "sku": "TR-VEST",
       "size": "M",
-      "price": 57.8,
+      "price": 71.4,
       "is_gift": 1,
       "vouched": 1,
       "returned": 0,
       "return_reason": null,
       "return_risk": "low",
       "offer_id": 1,
-      "created_at": "2026-10-03T13:33:15"
+      "created_at": "2026-10-03T14:56:50"
     }
   ],
   "offers": [
@@ -610,14 +610,14 @@
       "occasion_ref": "sarah-gift-vouch:birthday:2026-10-24",
       "sku": "TR-VEST",
       "size": "M",
-      "price": 68.0,
+      "price": 84.0,
       "discount_pct": 15.0,
-      "final_price": 57.8,
+      "final_price": 71.4,
       "vouch_result": "{\"sku\": \"TR-VEST\", \"wants\": true, \"owns\": false, \"confidence\": 0.9, \"size\": \"M\", \"contribute_signal\": true}",
       "trust_score": 1.0,
       "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off",
       "status": "ordered",
-      "created_at": "2026-10-03T13:33:15"
+      "created_at": "2026-10-03T14:56:50"
     }
   ],
   "vouch_signals": [
@@ -855,6 +855,21 @@
       "lead_time_days": 14
     }
   ],
+  "payments": [
+    {
+      "payment_id": 1,
+      "offer_id": 1,
+      "order_id": 25,
+      "amount": 71.4,
+      "network": "visa (mock)",
+      "token": "vtok_5e9d6abf7053",
+      "auth_id": "auth_f6dfc405de",
+      "accepted_via": "phone",
+      "status": "captured",
+      "created_at": "2026-10-03T14:56:50",
+      "settled_at": "2026-10-03T14:56:50"
+    }
+  ],
   "purchase_orders": [
     {
       "po_id": 1,
@@ -863,7 +878,7 @@
       "quantity": 8,
       "reason": "9 vouched wants, 3 on hand: draft PO for 8",
       "status": "approved",
-      "created_at": "2026-10-03T13:33:15"
+      "created_at": "2026-10-03T14:56:50"
     }
   ]
 }

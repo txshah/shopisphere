@@ -139,17 +139,18 @@ def match_catalog(customer_id, budget=None, hints=None, k=3):
 def request_vouch(recipient_handle, skus):
     """Vouch room: the recipient's agent answers wants/owns/confidence per SKU.
     Opted-in answers are added to anonymous per-SKU/size counts (no person ids)."""
-    answers = []
-    for sku in skus:
-        a = adapters.band_vouch_for(recipient_handle, sku)
-        if a is None:
-            return {"vouched": False, "ranked": [], "note": "recipient has no agent; send unvouched offer at standard price"}
-        answers.append(a)
+    answers = adapters.band_vouch_batch(recipient_handle, skus)
+    if not answers:
+        return {"vouched": False, "ranked": [], "note": "recipient has no agent; send unvouched offer at standard price"}
+    for a in answers:
+        a.setdefault("confidence", 0.5)
+        a.setdefault("owns", False)
+        a.setdefault("wants", False)
         if a.get("contribute_signal"):
             size = a.get("size") or "OS"
             db.execute("merchant", "INSERT INTO vouch_signals VALUES (?,?,?,?,?) ON CONFLICT(sku, size, time_window) "
                        "DO UPDATE SET wants = wants + excluded.wants, owns = owns + excluded.owns",
-                       (sku, size, "2026-Q4", int(bool(a["wants"])), int(bool(a["owns"]))))
+                       (a["sku"], size, "2026-Q4", int(bool(a["wants"])), int(bool(a["owns"]))))
     ranked = sorted([a for a in answers if not a["owns"]], key=lambda a: (not a["wants"], -a["confidence"]))
     return {"vouched": True, "ranked": ranked, "dropped_owned": [a["sku"] for a in answers if a["owns"]]}
 
@@ -161,7 +162,9 @@ def check_competitor_price(sku):
     lowest = min((c["price"] for c in comps), default=None)
     gap = round(item["price"] - lowest, 2) if lowest else None
     discount = 15 if gap and gap > 0 else 10
-    reason = (f"Tavily: {item['name']} at {len(comps)} competitors, lowest ${lowest}; we're ${gap} above, offer {discount}%"
+    where = min(comps, key=lambda c: c["price"])["retailer"] if comps else None
+    reason = (f"Tavily: {item['name']} at {len(comps)} competitors, lowest ${lowest:.2f} ({where}); "
+              + (f"we're ${gap:.2f} above, offer {discount}%" if gap and gap > 0 else f"we're already lowest, loyalty {discount}%")
               if comps else f"Tavily: no competitor prices for {sku}; default {discount}%")
     db.log_event("tavily", "price_check", reason)
     return {"sku": sku, "our_price": item["price"], "competitors": comps, "lowest": lowest,
@@ -208,9 +211,12 @@ def make_offer(customer_id, sku, occasion_ref, discount_pct, trust_score=None, v
             "buyer_verified": True, "trust_score": trust["score"] if trust_score is None else trust_score}
 
 
-def send_message(customer_id, body, offer_id=None):
-    """Text the customer (Twilio bridge or fake phone panel)."""
+def send_message(customer_id, body="", offer_id=None):
+    """Text the customer (Twilio bridge or fake phone panel). With an offer_id, the text is written from the
+    offer record itself (occasion, item, vouch, price), so it can't misstate what the recipient's agent said."""
     cust = db.one("merchant", "SELECT * FROM merchant_customers WHERE customer_id = ?", (customer_id,))
+    if offer_id:
+        body = gift_offer_text(offer_id)
     result = adapters.send_sms(cust["phone"], body)
     db.execute("backend", "INSERT INTO messages(ts, direction, party, body, offer_id) VALUES (?,?,?,?,?)",
                (db.now(), "out", cust["name"], body, offer_id))
@@ -390,7 +396,7 @@ INPUT_SCHEMAS = {
     "make_offer": ({"customer_id": _S, "sku": _S, "occasion_ref": _S, "discount_pct": _N, "trust_score": _N,
                     "vouch_result": {"type": ["object", "null"]}, "size": _S, "budget": _N},
                    ["customer_id", "sku", "occasion_ref", "discount_pct"]),
-    "send_message": ({"customer_id": _S, "body": _S, "offer_id": _I}, ["customer_id", "body"]),
+    "send_message": ({"customer_id": _S, "body": _S, "offer_id": _I}, ["customer_id"]),
     "place_order": ({"offer_id": _I}, ["offer_id"]),
     "screen_return_risk": ({"order_id": _I}, []),
     "handle_storefront_request": ({"agent_handle": _S, "ask": _S, "requests_per_min": _I}, ["agent_handle", "ask"]),

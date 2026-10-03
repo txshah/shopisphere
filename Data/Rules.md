@@ -20,7 +20,7 @@ LIVE=tavily,gmail python3 Data/server.py                                   # onl
 | `mock_agents.py` | Stand-in T's agent and Sarah's agent. Each reads **only its own store**. |
 | `orchestrator.py` | The plan.md merchant flow end to end (DEMO_MODE stand-in for the ZooWork agent). Stops at human gates. |
 | `server.py` | HTTP API + serves `Dashboard/`. |
-| `mock/competitor_prices.json` | Cached Tavily fallback for the 3 demo SKUs. |
+| `mock/competitor_prices.json` | Fixed snapshot of real competitor prices for the 3 demo SKUs (checked Oct 3, 2026): Trailhead is fictional, so each SKU is compared with the closest real product at real retailers. |
 
 ## HTTP API (the contract for teammates)
 
@@ -31,9 +31,10 @@ LIVE=tavily,gmail python3 Data/server.py                                   # onl
 | `POST /api/events` | `{source, kind, summary, payload?}` | **Any sponsor**: push ZooWork session events, BAND room messages, etc. into the dashboard log |
 | `GET /api/state` | — | Dashboard (polls every 2s) |
 | `GET /api/stores/<owner>` | — | Debug: raw tables of one store |
-| `POST /api/demo/run` | — | Dashboard "Run weekly schedule" (also the ZooWork-schedule fallback) |
+| `POST /api/demo/run` | — | Dashboard "Run weekly schedule": fires the real ZooWork schedule when ZooWork is live (`LIVE=zoowork`), else runs `orchestrator.py` |
 | `POST /api/demo/reset` | — | Reseed |
 | `POST /api/phone/reply` | `{body, customer_id?}` | Fake phone, or the **Twilio inbound webhook** (forward T's reply here) |
+| `POST /api/storefront/bot` | `{ask?, requests_per_min?}` | Dashboard "Bot tries to buy": through the BAND storefront room when BAND is live, else the local check |
 | `POST /api/band/accept` | `{agent_handle, person_said, offer_id?}` | **BAND bridge**: T said yes to their own agent; relay T's words. Refused without `person_said` or if the handle isn't the offer customer's agent. `offer_id` defaults to their latest sent offer |
 | `POST /api/approvals/<id>` | `{decision: "approve" \| "reject"}` | Dashboard approve buttons (mirror ZooWork `resolveApproval` here) |
 

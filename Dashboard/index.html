@@ -279,8 +279,10 @@ function render(s) {
   lastState = s;
   const m = s.modes;
   const mode = (label, v) => `<span class="chip bar ${/live|gmail/.test(v) ? 'ok' : ''}"><span class="dot"></span>${label}: ${esc(v)}</span>`;
-  $('modes').innerHTML = `<span class="chip bar ${m.demo_mode ? 'warn' : 'ok'}"><span class="dot"></span>${m.demo_mode ? 'Demo mode' : 'Live'}</span>`
-    + mode('BAND', m.band) + mode('Tavily', m.tavily) + mode('SMS', m.sms) + (m.merchant_ping ? mode('Merchant ping', m.merchant_ping) : '')
+  const anyLive = ['zoowork', 'band', 'tavily', 'sms'].some(k => m[k] === 'live') || /gmail/.test(m.merchant_ping || '');
+  const overall = !m.demo_mode ? ['ok', 'Live'] : anyLive ? ['ok', 'Live + mocks'] : ['warn', 'Demo mode (mocks)'];
+  $('modes').innerHTML = `<span class="chip bar ${overall[0]}"><span class="dot"></span>${overall[1]}</span>`
+    + (m.zoowork ? mode('ZooWork', m.zoowork) : '') + mode('BAND', m.band) + mode('Tavily', m.tavily) + mode('SMS', m.sms) + (m.merchant_ping ? mode('Merchant ping', m.merchant_ping) : '')
     + (m.payments ? mode('Payments', m.payments) : '');
   $('sub').textContent = s.events.length ? `Last activity ${time(s.events[0].ts)} · ${s.events[0].summary}` : 'No activity yet. Press Run weekly schedule.';
   $('smsMode').textContent = m.sms;
@@ -386,7 +388,7 @@ async function refresh() {
 
 /* ---------- Actions ---------- */
 $('runBtn').onclick = () => post('/api/demo/run', {}, 'Weekly schedule ran');
-$('botBtn').onclick = () => post('/api/tools/handle_storefront_request', { agent_handle: 'unverified-shopper', ask: 'Buy 3 × TR-VEST at 15% off', requests_per_min: 40 }, 'Unverified bot blocked: no sale');
+$('botBtn').onclick = () => post('/api/storefront/bot', { ask: 'Buy 3 × TR-VEST at 15% off', requests_per_min: 40 }, 'Unverified bot blocked: no sale');
 let armed = null;
 $('resetBtn').onclick = () => {
   const b = $('resetBtn');

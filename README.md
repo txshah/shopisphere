@@ -22,7 +22,7 @@ Unwanted gifts are what angle **#1** below targets. Fraud, abuse and bot orders 
 | --- | --- | --- | --- |
 | 1 | **Gifts people actually want** | The merchant agent picks candidates from the buyer's favorite product line, then asks the recipient's agent: *wants it? already owns it?* Owned items drop out, and the offer leads with the item they want, in their size. Vouched orders are tagged **low return risk**. | **BAND** vouch room · **ZooWork** matching |
 | 2 | **No sales to unverified bots** | No agent can buy until it is verified: a real person behind it, a registered agent, and buyer-like behavior. The backend checks again at every sale step. A bot trying to buy 3 vests at 15% off, at 40 requests a minute, fails and gets no sale. That stops fraud orders and discount abuse before they turn into returns. | **ZooWork** `score_agent_trust` · **BAND** storefront room |
-| 3 | **The best price for customers who love us** | Before the offer goes out, Tavily checks what competitors charge for the same product. If we're above the lowest price, the loyal customer gets 15% off, never below the margin floor, so they have no reason to buy it again cheaper elsewhere. | **Tavily** `check_competitor_price` |
+| 3 | **The best price for customers who love us** | Before the offer goes out, Tavily checks what real competitors charge for the same or closest product (Fleet Feet sells the comparable vest at $80; we're at $84). If we're above the lowest price, the loyal customer gets 15% off, never below the margin floor, so they have no reason to buy it again cheaper elsewhere. | **Tavily** `check_competitor_price` |
 
 The same vouch answers also drive restocking, as anonymous counts per SKU and size: *"9 vouched wants for the trail vest in M, 3 on hand: draft a purchase order for 8."*
 
@@ -30,16 +30,16 @@ The same vouch answers also drive restocking, as anonymous counts per SKU and si
 
 ```mermaid
 flowchart LR
-  SCHED["ZooWork<br/>weekly schedule + gifting Skill"] --> AGENT["ZooWork merchant agent<br/>Trailhead · 13 custom tools"]
+  SCHED["ZooWork<br/>weekly schedule + Outcome rubric"] --> AGENT["ZooWork merchant agent<br/>gifting Skill · 13 custom tools"]
   AGENT -- "custom tool calls" --> API["Data/ backend<br/>HTTP API + trust check"]
-  AGENT -- "place_order" --> GATE["ZooWork<br/>approval gate"]
   API --- MDB[("merchant.db<br/>backend.db")]
 
   API -- "consent room: occasions" --> TAG["BAND<br/>T's Gift Planner"]
   TAG -.- TDB[("t_agent.db")]
+  TAG -- "relays T's YES" --> API
   API -- "vouch room: wants / owns" --> SAG["BAND<br/>Sarah's Gift Vouch"]
   SAG -.- SDB[("sarah_agent.db")]
-  BOT["BAND<br/>Unverified Shopper"] -- "tries to buy → no sale" --> API
+  BOT["BAND<br/>Unverified Shopper"] -- "storefront room: no sale" --> API
 
   API -- "competitor prices" --> TAV["Tavily<br/>price check"]
   API -- "offer text ⇄ YES" --> PHONE["T's phone<br/>SMS / fake phone"]
@@ -50,7 +50,7 @@ flowchart LR
   classDef band stroke:#B04FC0,stroke-width:2px
   classDef tav stroke:#B8960A,stroke-width:2px
   classDef msg stroke:#4E9A33,stroke-width:2px
-  class SCHED,AGENT,GATE zoo
+  class SCHED,AGENT zoo
   class TAG,SAG,BOT band
   class TAV tav
   class PHONE,GMAIL msg
@@ -60,9 +60,9 @@ Dotted lines mark data that stays with its owner: T's occasions live with T's ag
 
 | Sponsor | Role in Shopisphere | How it connects | Status today |
 | --- | --- | --- | --- |
-| **ZooWork** | The merchant agent: weekly schedule, gifting Skill, Outcome rubric on offers, approval gate before any order | Agent emits `agent.custom_tool_use` → our bridge POSTs the input to `POST /api/tools/<name>` → returns the JSON as the tool result. Tool declarations: `GET /api/tools` | Key and agent start/stop verified live (`Zooworks/live-check.mjs`). `Data/orchestrator.py` runs the same tool sequence as a stand-in while the bridge is wired |
-| **BAND** | Rooms between agents owned by different people: consent (T), vouch (Sarah), storefront (bot) | Backend calls a BAND bridge: `POST /share_occasions`, `POST /vouch_for`. Room messages post to `/api/events` for the dashboard | REST bridge and vouch agent tested live. The vouch agent refused a leak probe for Sarah's address and sizes (`Band/Rules.md`). Backend uses `Data/mock_agents.py` until `BAND_BRIDGE_URL` is set |
-| **Tavily** | Competitor price check that sets the loyal-customer discount | Backend calls `POST /competitor_prices {sku, query, our_price}` | Live prototype `Tavily/check_competitor_price.py`, ~3s per search, with a cached fallback for the demo products |
+| **ZooWork** | The merchant agent `trailhead-merchant`: weekly schedule (Mondays 9:00), the `trailhead-gifting` Skill, and an Outcome rubric that grades every run | The schedule fires, the agent makes custom tool calls, and `Zooworks/merchant/bridge.mjs` runs each one against `POST /api/tools/<name>` and returns the JSON. Rubric verdicts show on the dashboard | **Live.** Full runs pass the rubric ("outcome-satisfied"). `Data/orchestrator.py` is the offline stand-in |
+| **BAND** | Real rooms between agents owned by different people: consent (T's Gift Planner), vouch (Sarah's Gift Vouch), storefront (Unverified Shopper) | `Band/shopisphere/bridge.py` posts as Trailhead Merchant and waits for the reply; `agents.py` runs T's and Sarah's agents (Claude via BAND's adapter). Every room message shows on the dashboard | **Live.** About 10–20s per room turn. Personalities and data are mocked; the rooms and messages are real |
+| **Tavily** | Competitor price check that sets the loyal-customer discount | Backend calls Tavily Search directly (`TAV` key) or a fixed snapshot | Demo uses a **fixed snapshot of real prices** (Oct 3, 2026): Fleet Feet, ShopAbunda, Hydro Flask, Eastside Sports, Black Diamond. `LIVE=tavily` searches live |
 | **Gmail** | Texts the merchant when an approval is waiting, with a signed approve link | `adapters.ping_merchant` sends email to the carrier's email-to-SMS gateway | Built. Goes live with `DEMO_MODE=0` and `GMAIL_APP_PASSWORD`. Otherwise approvals happen on the dashboard |
 
 Tested and not used: **ZooData** needs its own key and its skills are Amazon-only, with no TikTok Shop. **Composio** in ZooWork can't connect Gmail with a project key. Details are in `Zooworks/Rules.md`.
@@ -83,18 +83,18 @@ sequenceDiagram
   Z->>Z: Schedule fires · top customer = T (6 orders, loves trail)
   Z->>Z: Verify T's agent: real person, registered, buyer-like → can buy
   Z->>T: Any upcoming occasions?
-  T-->>Z: A friend, birthday Oct 24, about $60 (name and hints hidden)
+  T-->>Z: A friend, birthday Oct 24, about $70 (name and hints hidden)
   Z->>Z: Match 3 candidates from the trail line
   Z->>S: Would she want: headlamp, vest, bottle?
   S-->>Z: Wants the vest (M, 0.9) · owns the bottle · neutral on headlamp
   Bot->>Z: Buy 3 vests at 15% off (40 requests/min)
   Z-->>Bot: Not verified → no sale
   Z->>V: Competitor prices for the vest
-  V-->>Z: Lowest $64, we're $68 → offer 15%
-  Z->>Z: Rubric: trust ✓ stock ✓ budget ✓ margin ✓ → $57.80
+  V-->>Z: Lowest $80 at Fleet Feet, we're $84 → offer 15%
+  Z->>Z: Rubric: trust ✓ stock ✓ budget ✓ margin ✓ → $71.40
   Z->>P: "Her agent confirmed it. 15% off. Reply YES."
   P-->>Z: YES (or T tells their own agent yes, and it relays that)
-  Z->>Z: Verify T again · Visa (mock) holds $57.80
+  Z->>Z: Verify T again · Visa (mock) holds $71.40
   Z->>H: Approve order? (dashboard + text)
   H-->>Z: Approved → payment captured · order tagged vouched, return risk low
   Z->>H: 9 wants for vest M, 3 on hand → approve PO for 8?
@@ -157,16 +157,27 @@ If the recipient has no agent, the offer still goes out unvouched at standard pr
 
 ## Run it
 
-Python 3.11+, no installs.
+**Offline** (Python 3.11+, no installs, every sponsor mocked):
 
 ```bash
 python3 Data/server.py        # http://localhost:8787
 ```
 
+**Live** (ZooWork agent + real BAND rooms). Needs `uv`, Node 20+, `claude login` (BAND agents use it) and the keys in `.env` / `Band/shopisphere/agent_config.yaml`:
+
+```bash
+cd Zooworks && npm install && node merchant/setup.mjs && cd ..   # once: agent, Skill, schedule
+./live.sh                    # backend + BAND agents + BAND bridge + ZooWork bridge
+./live.sh stop
+cd Zooworks && node merchant/teardown.mjs   # after the hackathon: stops the Monday schedule
+```
+
+**Backup video:** `Demo/backup-run.webm`, a real live run recorded by `Demo/record.py`.
+
 - **Run editor:** http://localhost:8787/wireframe.html — press **▶ Play the run** to watch the whole workflow on a timeline (and drive the backend)
 - **Ops view:** http://localhost:8787/ — approvals, T's phone, offers, trust, restock, returns, live agent activity
 
-Demo click path in the ops view: **Run weekly schedule** → reply **YES** on T's phone (or press **T tells their agent "yes" (BAND)**) → **Approve** the order → **Approve** the purchase order. **Bot tries to buy** shows an unverified agent getting no sale.
+Demo click path in the ops view: **Run weekly schedule** (about 1–2 minutes live) → reply **YES** on T's phone, or press **T tells their agent "yes" (BAND)** → **Approve** the order → **Approve** the purchase order. **Bot tries to buy** sends the bot into the BAND storefront room, where it gets no sale. In a live demo T can also open a chat with **tvesha** (T's Gift Planner) at app.band.ai and say "yes, get it".
 
 ```bash
 python3 Data/seed.py              # reset to mock data
@@ -177,15 +188,16 @@ python3 Data/capture_samples.py   # regenerate the saved tool I/O in Data/sample
 
 Every sponsor call goes through `Data/adapters.py`. A sponsor is **live** only when both are true:
 
-1. **It's switched on.** `DEMO_MODE=0` switches on every sponsor. `LIVE=tavily,gmail` switches on just those and leaves the rest mocked.
+1. **It's switched on.** `DEMO_MODE=0` switches on every sponsor. `LIVE=zoowork,band,tavily,gmail` switches on just the ones listed and leaves the rest mocked. `./live.sh` uses `LIVE=band,zoowork`.
 2. **It has what it needs** (below).
 
 Otherwise it uses the mock. If a live call fails, it falls back to the mock and logs a `fallback` event, so the demo never breaks. The chips at the top of the ops view show each sponsor's mode.
 
 | Sponsor | Needs | Live today? |
 | --- | --- | --- |
-| BAND | `BAND_BRIDGE_URL` | No: no bridge server is running yet |
-| Tavily | `TAV` in `.env` (calls the API directly), or `TAVILY_BRIDGE_URL` | **Yes**, with `LIVE=tavily` or `DEMO_MODE=0` |
+| ZooWork | `Zooworks/merchant/bridge.mjs` running (`ZOOWORK_BRIDGE_URL`, default :8788) | **Yes**, with `LIVE=zoowork`. Otherwise the local orchestrator runs the same steps |
+| BAND | `Band/shopisphere/bridge.py` + `agents.py` running (`BAND_BRIDGE_URL`, default :9001) | **Yes**, with `LIVE=band` |
+| Tavily | `TAV` in `.env` (calls the API directly), or `TAVILY_BRIDGE_URL` | **Yes**, with `LIVE=tavily`. Otherwise a fixed snapshot of real prices |
 | Texts to T | `SMS_BRIDGE_URL` (Twilio) | No: always the fake phone panel |
 | Merchant ping | `GMAIL_APP_PASSWORD` (+ `PUBLIC_URL` for approve links) | **Yes**, with `LIVE=gmail` or `DEMO_MODE=0` |
 | Payments | — | No: always the Visa mock |
@@ -203,8 +215,9 @@ API keys live in `.env` at the repo root (`ZOOWORKS`, `BAND_USER_API_KEY`, `TAV`
 | --- | --- | --- |
 | `Data/` | Backend: per-owner stores, the 13 merchant tools, sponsor adapters, demo orchestrator, HTTP API, saved I/O samples | `Data/Rules.md` |
 | `Dashboard/` | Ops view (`index.html`), run editor (`wireframe.html`), shared theme | `Dashboard/Rules.md` |
-| `Zooworks/` | ZooWork SDK checks, live test output, ZooData and Composio findings | `Zooworks/Rules.md` |
-| `Band/` | BAND agents and experiments: REST bridge, vouch agent, leak probe | `Band/Rules.md` |
+| `Zooworks/` | The live merchant agent (`merchant/`: Skill, setup, bridge, teardown), SDK checks, ZooData and Composio findings | `Zooworks/Rules.md` |
+| `Band/` | The live rooms (`shopisphere/`: customer agents + bridge), experiments, leak probe | `Band/Rules.md` |
+| `Demo/` | Backup video and the script that records it | |
 | `Tavily/` | Price-check prototype, cached prices, all raw search experiments | `Tavily/Rules.md` |
 | `plan.md` | Full build plan, decisions, demo script and sources | |
 

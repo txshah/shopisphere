@@ -4,8 +4,8 @@
   "input": {
     "recipient_handle": "sarah-gift-vouch",
     "skus": [
-      "TR-LAMP",
       "TR-VEST",
+      "TR-LAMP",
       "TR-BOTTLE"
     ]
   },

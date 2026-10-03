@@ -119,7 +119,11 @@ class Handler(SimpleHTTPRequestHandler):
                              body.get("summary", ""), body.get("payload"))
                 return self._json({"ok": True})
             if path == "/api/demo/run":
-                return self._json(orchestrator.run_demo())
+                return self._json(adapters.zoowork_run(orchestrator.run_demo))
+            if path == "/api/storefront/bot":
+                ask, rpm = body.get("ask", "Buy 3 × TR-VEST at 15% off"), int(body.get("requests_per_min", 40))
+                return self._json(adapters.band_storefront(ask, rpm, lambda: tools.call_tool(
+                    "handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": ask, "requests_per_min": rpm}, "dashboard")))
             if path == "/api/demo/reset":
                 seed.seed()
                 return self._json({"ok": True})

@@ -6,7 +6,13 @@
   },
   "output": {
     "accepted": true,
+    "offer_id": 1,
     "approval_id": 1,
-    "status": "pending"
+    "status": "pending",
+    "payment": {
+      "network": "visa (mock)",
+      "auth_id": "auth_f6dfc405de",
+      "status": "authorized"
+    }
   }
 }

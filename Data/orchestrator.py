@@ -4,6 +4,7 @@ This is the DEMO_MODE stand-in for the ZooWork merchant agent: the real agent
 calls the same tools through /api/tools/<name>. Stops at the human gates
 (T's YES on the phone, merchant approvals on the dashboard).
 """
+import adapters
 import db
 from tools import call_tool, gift_offer_text
 
@@ -39,8 +40,9 @@ def run_demo():
                                    "offer_id": offer["offer_id"]}, src)
 
     # Meanwhile: an unverified bot tries to buy at the same discount. No sale.
-    call_tool("handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": "Buy 3 × TR-VEST at 15% off",
-                                            "requests_per_min": 40}, src)
+    ask = "Buy 3 × TR-VEST at 15% off"
+    adapters.band_storefront(ask, 40, lambda: call_tool(
+        "handle_storefront_request", {"agent_handle": "unverified-shopper", "ask": ask, "requests_per_min": 40}, src))
 
     # After the run: forecast from anonymous vouches, draft POs behind approval.
     for row in call_tool("forecast_from_vouches", {}, src):

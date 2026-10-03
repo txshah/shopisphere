@@ -8,15 +8,20 @@
   "output": {
     "competitors": [
       {
-        "retailer": "Summit Outfitters",
-        "price": 64.0,
-        "url": "https://example.com/summit/trail-vest"
+        "retailer": "Fleet Feet",
+        "price": 80.0,
+        "product": "Nathan QuickStart 4L Hydration Pack 2.0",
+        "url": "https://www.fleetfeet.com/products/nathan-quickstart-4l-hydration-pack-2-0",
+        "checked": "2026-10-03"
       },
       {
-        "retailer": "Ridge & Co",
-        "price": 72.0,
-        "url": "https://example.com/ridge/trail-vest"
+        "retailer": "ShopAbunda",
+        "price": 89.99,
+        "product": "Nathan QuickStart Hydration Pack Vest",
+        "url": "https://www.shopabunda.com/products/nathan-quickstart-2-0-hydration-pack-with-hydration-bladder-4l-for-running-vest-hiking-walking-marathon-obstical-course-run-race",
+        "checked": "2026-10-03"
       }
-    ]
+    ],
+    "source": "snapshot 2026-10-03"
   }
 }

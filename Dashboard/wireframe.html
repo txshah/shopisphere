@@ -260,7 +260,7 @@ const TRACKS = [
 ];
 
 /* ---------- The run: timing (s) + real I/O from Data/samples ---------- */
-const VEST = { sku: 'TR-VEST', name: 'Trail Running Vest', price: 68 };
+const VEST = { sku: 'TR-VEST', name: 'Trail Running Vest', price: 84 };
 const STEPS = [
   { track: 'zoo', t: 0, d: 2, tool: 'schedule.trigger', title: 'Weekly schedule fires', sub: 'Mon 09:00 · gifting playbook Skill loaded', scene: 'schedule', beat: 0,
     endpoint: 'POST /api/demo/run', input: { schedule: 'weekly-gifting', trigger: 'manual (on stage)' }, output: { session: 'started' } },
@@ -271,9 +271,9 @@ const STEPS = [
   { track: 'zoo', t: 4, d: 2, tool: 'score_agent_trust', title: "T's agent is verified", sub: 'No agent can buy until it passes verification', scene: 'trustT', beat: 0,
     input: { agent_handle: 't-gift-planner' }, output: { agent_handle: 't-gift-planner', verified: true, sale: 'allowed', decision: 'allow', score: 1.0, layers: { identity: true, provenance: true, history: true, behavior: true }, reasons: [] } },
   { track: 'band', t: 6, d: 15, tool: 'ask_customer_occasions', title: 'Ask with consent', sub: "BAND consent room · Trailhead Merchant ↔ T's Gift Planner", scene: 'consent', beat: 1,
-    input: { customer_id: 'cust_t' }, output: { customer_id: 'cust_t', occasions: [{ friend_handle: 'sarah-gift-vouch', occasion: 'birthday', occasion_date: '2026-10-24', budget: 60.0, sharing_level: 'occasion_budget' }] } },
-  { track: 'zoo', t: 21, d: 2, tool: 'match_catalog', title: "Match from T's side", sub: 'Trail line, in stock, near the $60 budget', scene: 'match', beat: 2,
-    input: { customer_id: 'cust_t', budget: 60.0 }, output: [{ sku: 'TR-LAMP', name: 'Trail Headlamp 400', price: 55.0 }, { sku: 'TR-VEST', name: 'Trail Running Vest', price: 68.0 }, { sku: 'TR-BOTTLE', name: 'Insulated Trail Bottle 32oz', price: 42.0 }] },
+    input: { customer_id: 'cust_t' }, output: { customer_id: 'cust_t', occasions: [{ friend_handle: 'sarah-gift-vouch', occasion: 'birthday', occasion_date: '2026-10-24', budget: 70.0, sharing_level: 'occasion_budget' }] } },
+  { track: 'zoo', t: 21, d: 2, tool: 'match_catalog', title: "Match from T's side", sub: 'Trail line, in stock, near the $70 budget', scene: 'match', beat: 2,
+    input: { customer_id: 'cust_t', budget: 70.0 }, output: [{ sku: 'TR-LAMP', name: 'Trail Headlamp 400', price: 55.0 }, { sku: 'TR-VEST', name: 'Trail Running Vest', price: 84.0 }, { sku: 'TR-BOTTLE', name: 'Insulated Trail Bottle 32oz', price: 42.0 }] },
   { track: 'band', t: 23, d: 16, tool: 'request_vouch', title: "Vouch from Sarah's side", sub: "BAND vouch room · her profile never leaves her agent", scene: 'vouch', beat: 2,
     input: { recipient_handle: 'sarah-gift-vouch', skus: ['TR-LAMP', 'TR-VEST', 'TR-BOTTLE'] },
     output: { vouched: true, ranked: [{ sku: 'TR-VEST', wants: true, owns: false, confidence: 0.9, size: 'M' }, { sku: 'TR-LAMP', wants: false, owns: false, confidence: 0.5, size: null }], dropped_owned: ['TR-BOTTLE'] } },
@@ -282,13 +282,13 @@ const STEPS = [
     output: { verified: false, sale: 'blocked', decision: 'decline', score: 0.0, layers: { identity: false, provenance: false, history: false, behavior: false },
       reasons: ['identity: no signed passport / owner not phone-verified', 'provenance: unknown handle, not an approved contact', 'history: no prior orders here', 'behavior: 40 req/min, discount-first ask'] } },
   { track: 'tav', t: 39, d: 3, tool: 'check_competitor_price', title: 'Price the offer', sub: 'Tavily search · competitor prices set the discount', scene: 'price', beat: 2,
-    input: { sku: 'TR-VEST' }, output: { sku: 'TR-VEST', our_price: 68.0, competitors: [{ retailer: 'Summit Outfitters', price: 64.0 }, { retailer: 'Ridge & Co', price: 72.0 }], lowest: 64.0, suggested_discount_pct: 15,
-      reason: "Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%" } },
+    input: { sku: 'TR-VEST' }, output: { sku: 'TR-VEST', our_price: 84.0, competitors: [{ retailer: 'Fleet Feet', price: 80.0 }, { retailer: 'ShopAbunda', price: 89.99 }], lowest: 80.0, suggested_discount_pct: 15,
+      reason: "Tavily: Trail Running Vest at 2 competitors, lowest $80.00 (Fleet Feet); we're $4.00 above, offer 15%" } },
   { track: 'zoo', t: 42, d: 2, tool: 'make_offer', title: 'Outcome rubric passes', sub: 'Verified buyer, stock, budget, margin floor, one-line reason', scene: 'offer', beat: 3,
-    input: { customer_id: 'cust_t', sku: 'TR-VEST', occasion_ref: 'sarah-gift-vouch:birthday:2026-10-24', discount_pct: 15, trust_score: 1.0, size: 'M', budget: 60.0 },
-    output: { ok: true, offer_id: 1, final_price: 57.8, discount_pct: 15, reason: "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off", buyer_verified: true, trust_score: 1.0 } },
+    input: { customer_id: 'cust_t', sku: 'TR-VEST', occasion_ref: 'sarah-gift-vouch:birthday:2026-10-24', discount_pct: 15, trust_score: 1.0, size: 'M', budget: 70.0 },
+    output: { ok: true, offer_id: 1, final_price: 71.4, discount_pct: 15, reason: "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off", buyer_verified: true, trust_score: 1.0 } },
   { track: 'phone', t: 44, d: 2, tool: 'send_message', title: 'Text T', sub: 'Twilio SMS or the fake phone panel', scene: 'phone', beat: 3,
-    input: { customer_id: 'cust_t', offer_id: 1, body: "A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES." }, output: { sent: true, status: 'delivered to fake phone' } },
+    input: { customer_id: 'cust_t', offer_id: 1, body: "A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($71.40). Reply YES." }, output: { sent: true, status: 'delivered to fake phone' } },
   { track: 'phone', t: 46, d: 6, tool: 'phone.reply', title: 'T says YES', sub: 'Humans choose: the agent only narrowed', scene: 'phoneYes', beat: 3, live: 'reply',
     endpoint: 'POST /api/phone/reply', input: { body: 'YES', customer_id: 'cust_t' }, output: { accepted: true, approval_id: 1, status: 'pending' } },
   { track: 'human', t: 52, d: 4, tool: 'approval · place_order', title: 'Approval gate', sub: 'ZooWork asks before it commits', scene: 'approveOrder', beat: 3, live: 'order',
@@ -336,21 +336,21 @@ const SCENES = {
   customers: s => `<div class="scene grid3">${s.output.map((c, i) => `<div class="card" style="${i ? 'opacity:.5' : 'box-shadow:var(--glow)'}"><div class="display" style="font-size:34px">${esc(c.name)}</div><div class="muted">${c.order_count} orders · loves ${esc(c.favorite_lines)}</div><div style="margin-top:8px">${c.agent_handle ? `<span class="chip mono">${esc(c.agent_handle)}</span>` : '<span class="chip">no agent</span>'}</div></div>`).join('')}</div>`,
   trustT: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers)}</div><div class="center"><span class="verdict ok">✓ Verified · can buy</span></div></div>`,
   consent: () => `<div class="scene"><div class="who">Trailhead Merchant</div><div class="bubble them">@T's Gift Planner any upcoming occasions we can help with?</div>
-      <div class="who" style="text-align:right">T's Gift Planner</div><div class="bubble me">A friend, birthday Oct 24, about $60. <span class="redact">Sarah · trail running</span></div>
+      <div class="who" style="text-align:right">T's Gift Planner</div><div class="bubble me">A friend, birthday Oct 24, about $70. <span class="redact">Sarah · trail running</span></div>
       <div class="slider"><span>Occasion only</span><span class="on">+ Budget</span><span>+ Hints</span></div>
       <p class="muted center" style="font-size:13px;margin:8px 0 0">T's sharing level for this friend. Name and hints stay hidden.</p></div>`,
-  match: () => `<div class="scene grid3">${prodCard('🔦', 'Trail Headlamp 400', 55)}${prodCard('🦺', 'Trail Running Vest', 68)}${prodCard('🧴', 'Insulated Trail Bottle', 42)}</div>`,
-  vouch: () => `<div class="scene"><div class="grid3">${prodCard('🔦', 'Trail Headlamp 400', 55, '<span class="stamp meh">NEUTRAL 0.5</span>')}${prodCard('🦺', 'Trail Running Vest', 68, '<span class="stamp want">WANTS · M · 0.9</span>')}${prodCard('🧴', 'Insulated Trail Bottle', 42, '<span class="stamp own">OWNS · DROPPED</span>', 'dropped')}</div>
+  match: () => `<div class="scene grid3">${prodCard('🔦', 'Trail Headlamp 400', 55)}${prodCard('🦺', 'Trail Running Vest', 84)}${prodCard('🧴', 'Insulated Trail Bottle', 42)}</div>`,
+  vouch: () => `<div class="scene"><div class="grid3">${prodCard('🔦', 'Trail Headlamp 400', 55, '<span class="stamp meh">NEUTRAL 0.5</span>')}${prodCard('🦺', 'Trail Running Vest', 84, '<span class="stamp want">WANTS · M · 0.9</span>')}${prodCard('🧴', 'Insulated Trail Bottle', 42, '<span class="stamp own">OWNS · DROPPED</span>', 'dropped')}</div>
       <p class="muted center" style="font-size:13px;margin:14px 0 0">3 <span class="mono">vouch_for</span> calls in the room. The answer adds +1 to the anonymous count for vest M.</p></div>`,
   bot: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers, s.output.reasons)}</div><div class="center"><span class="verdict no">✗ Not verified · no sale</span></div></div>`,
-  price: s => { const all = [{ retailer: 'Trailhead (us)', price: 68, us: 1 }, ...s.output.competitors]; const max = 80;
+  price: s => { const all = [{ retailer: 'Trailhead (us)', price: 84, us: 1 }, ...s.output.competitors]; const max = 95;
     return `<div class="scene bars">${all.map(c => `<div class="bar-row"><span>${esc(c.retailer)}</span><div class="track"><div class="fill ${c.us ? 'us' : ''}" style="width:${c.price / max * 100}%"></div></div><span style="text-align:right">$${c.price.toFixed(2)}</span></div>`).join('')}
       <p style="margin:16px 0 0">We're <b>$4 above</b> the lowest competitor → offer <b>15%</b>.</p></div>`; },
-  offer: () => `<div class="scene card"><div class="row" style="justify-content:space-between"><b>Offer #1 · Trail Running Vest (M)</b><span class="display" style="font-size:32px">$57.80</span></div>
-      ${[['Buyer verified', 're-checked at offer, order and approval'], ['In stock', '3 on hand, size M'], ['Within budget', '$57.80 ≤ $66'], ['Above margin floor', '$57.80 ≥ $44.20'], ['One-line reason', '"From the store you love, a gift she\'ll want"']].map(([a, b]) => `<div class="check"><span class="ic">✓</span><span>${a}</span><span class="muted" style="margin-left:auto">${esc(b)}</span></div>`).join('')}</div>`,
+  offer: () => `<div class="scene card"><div class="row" style="justify-content:space-between"><b>Offer #1 · Trail Running Vest (M)</b><span class="display" style="font-size:32px">$71.40</span></div>
+      ${[['Buyer verified', 're-checked at offer, order and approval'], ['In stock', '3 on hand, size M'], ['Within budget', '$71.40 ≤ $77'], ['Above margin floor', '$71.40 ≥ $44.20'], ['One-line reason', '"From the store you love, a gift she\'ll want"']].map(([a, b]) => `<div class="check"><span class="ic">✓</span><span>${a}</span><span class="muted" style="margin-left:auto">${esc(b)}</span></div>`).join('')}</div>`,
   phone: s => `<div class="scene"><div class="phone"><div class="notch"></div><div class="who">Trailhead</div><div class="bubble them">${esc(s.input.body)}</div></div></div>`,
   phoneYes: () => `<div class="scene"><div class="phone"><div class="notch"></div><div class="who">Trailhead</div><div class="bubble them">${esc(STEPS[9].input.body)}</div><div class="bubble me">YES</div></div></div>`,
-  approveOrder: () => `<div class="scene card center"><div class="chip">approval.requested · place_order</div><div class="display" style="font-size:34px;margin:12px 0">Trail Running Vest · M · $57.80</div>
+  approveOrder: () => `<div class="scene card center"><div class="chip">approval.requested · place_order</div><div class="display" style="font-size:34px;margin:12px 0">Trail Running Vest · M · $71.40</div>
       <button class="btn primary">✓ Approved</button><p style="margin:14px 0 0">Order <b>#25</b> placed · tagged <span class="chip ok">vouched · return risk low</span></p></div>`,
   forecast: s => { const max = 10; return `<div class="scene bars">${s.output.map(r => `<div class="bar-row"><span>${r.sku.replace('TR-', '')} ${r.size}</span>
       <div class="track" style="position:relative"><div class="fill" style="width:${r.wants / max * 100}%;background:var(--zoo)"></div><div title="on hand" style="position:absolute;top:-3px;bottom:-3px;left:${Math.min(r.on_hand, max) / max * 100}%;width:2px;background:var(--ink)"></div></div>

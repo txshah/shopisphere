@@ -2,6 +2,18 @@
 
 Findings from live experiments with the Tavily API (key `TAV` in the repo root `.env`), scoped to this folder and to Tavily's one job in `plan.md`: **`check_competitor_price`, the price comparison that sets the discount** (decision #5), with **cached JSON for the demo products** as its fallback (Contingencies table). All raw responses are saved in `experiments/`.
 
+## Demo prices: fixed snapshot of real retailers (Oct 3, 2026)
+
+Trailhead and its products are fictional, so each demo SKU is compared with the closest real product, at prices checked on the retailers' own pages. This is the default (`Data/mock/competitor_prices.json`); `LIVE=tavily` searches live instead.
+
+| SKU (our price) | Comparable product | Retailers |
+| --- | --- | --- |
+| TR-VEST ($84) | Nathan QuickStart 2.0 4L vest | Fleet Feet $80.00 · ShopAbunda $89.99 → lowest $80, we're $4 above → **15% off, $71.40** |
+| TR-BOTTLE ($42) | Hydro Flask 32 oz Wide Mouth | Hydro Flask $44.95 · Eastside Sports $44.95 → we're lowest → 10% |
+| TR-LAMP ($55) | Black Diamond Spot 400 | Black Diamond $59.95 → we're lowest → 10% |
+
+To keep the 15% moment, the vest moved from $68 to $84 and Sarah's budget from $60 to $70. Nathan prices swing with sales (brand site HyperNight variant $39.99 on clearance; Portland Running and League Outfitters pages returned 404), so we kept only regular-price listings we could open.
+
 ## TL;DR for the team
 
 - **The key works.** Plan: free "Researcher" tier, **1,000 credits/month**. The `/usage` counter still read 0 after ~30 calls, so it lags. Don't rely on it to see live spend.

@@ -4,6 +4,25 @@ Findings from experimenting with ZooWork's general setup and access, scoped to t
 
 **Evidence labels used below** (same framework the skill itself uses): **Live-verified** = I called the real API with the real key and saw the result myself. **Source-reviewed** = confirmed in the installed skill's reference docs or the live public docs page, but I did not call an endpoint myself (often because no such endpoint/SDK method exists to call). **Unknown** = no evidence either way.
 
+## Live merchant agent (Oct 3, 2026)
+
+The real ZooWork agent now runs the flow. Code is in `Zooworks/merchant/`.
+
+| File | What it does |
+| --- | --- |
+| `skill/trailhead-gifting/SKILL.md` | The gifting playbook as a platform Skill: the 9 steps, discount and human-gate rules, and the final checklist the rubric grades |
+| `setup.mjs` | Creates or updates agent `trailhead-merchant` (13 custom tools from `GET /api/tools`, global Skills off), uploads the Skill (the key writes `org` scope; `project` returns 400) and publishes new versions on re-run, and creates the `weekly-gifting` schedule: Mondays 09:00 America/Los_Angeles, enabled, with the Outcome rubric. Ids saved in `merchant/state.json` (gitignored) |
+| `bridge.mjs` | `:8788`. `POST /run` → `triggerSchedule` (falls back to `createSession` without a rubric). Polls `listCustomToolCalls(pending)` every second, POSTs each input to `/api/tools/<name>` with `X-Source: zoowork`, resolves with the JSON. Follows the session's events and mirrors the rubric verdicts and `run.finished` to the dashboard |
+| `teardown.mjs` | Deletes the schedule, stops and deletes the agent. **Run it after the hackathon**, or the Monday schedule keeps firing |
+
+**Live-verified results:**
+
+- A full scheduled run calls the tools in order (top customer → trust → consent room → match → vouch room → price → offer → text → forecast → PO) in about 1–2 minutes, most of it BAND room turns.
+- **The Outcome rubric is real and visible.** Rubric verdicts arrive as `agent.lifecycle` events with `phase: outcome-started | outcome-revision | outcome-satisfied` and an `explanation`, e.g. "the $71.40 final price is within the $77 allowed budget ceiling…". One run was revised once before passing; one failed after two passes when the report didn't state `place_order` wasn't called. The Skill's final checklist now names every rubric item, and runs pass on the first grade.
+- **Cron runs have no `agent.assistant` text.** The final report isn't in the session stream (`publish: after_satisfied`, no surface), so the dashboard shows the rubric's explanation instead.
+- **Events from `listAllEvents` use `eventType`, not `type`.** Streaming missed `run.finished` once, so the bridge polls `listAllEvents` every 3s instead.
+- **Guardrail:** with an `offer_id`, `send_message` writes the text from the offer record. In one run the agent wrote "their agent says they'd love it" for an item the recipient was neutral on.
+
 ## Environment checks (done)
 
 - `node --version` → `v22.23.1`. Satisfies both the skill's "Node.js 20+" floor and plan.md's "Node 22.20+" note for the quickstart.
@@ -101,11 +120,11 @@ The merchant agent's 13 custom tools are executed by our backend. Saved real sam
 // ask_customer_occasions  (fields trimmed per friend by T's sharing level)
 {"customer_id": "cust_t"}
 → {"customer_id": "cust_t", "occasions": [
-     {"friend_handle": "sarah-gift-vouch", "occasion": "birthday", "occasion_date": "2026-10-24", "budget": 60.0, "sharing_level": "occasion_budget"},
+     {"friend_handle": "sarah-gift-vouch", "occasion": "birthday", "occasion_date": "2026-10-24", "budget": 70.0, "sharing_level": "occasion_budget"},
      {"friend_handle": "jo-no-agent", "occasion": "anniversary", "occasion_date": "2026-11-12", "sharing_level": "occasion_only"}, ...]}
 
 // match_catalog
-{"customer_id": "cust_t", "budget": 60.0}
+{"customer_id": "cust_t", "budget": 70.0}
 → [{"sku": "TR-LAMP", "name": "Trail Headlamp 400", "price": 55.0, ...}, {"sku": "TR-VEST", ...}, {"sku": "TR-BOTTLE", ...}]
 
 // request_vouch
@@ -119,12 +138,12 @@ The merchant agent's 13 custom tools are executed by our backend. Saved real sam
 {"sku": "TR-VEST"}
 → {"sku": "TR-VEST", "our_price": 68.0, "competitors": [{"name": "Summit Outfitters", "price": 64.0, "url": "..."}, ...],
    "lowest": 64.0, "suggested_discount_pct": 15,
-   "reason": "Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%"}
+   "reason": "Tavily: Trail Running Vest at 2 competitors, lowest $80.00 (Fleet Feet); we're $4.00 above, offer 15%"}
 
 // make_offer
 {"customer_id": "cust_t", "sku": "TR-VEST", "occasion_ref": "sarah-gift-vouch:birthday:2026-10-24", "discount_pct": 15,
- "trust_score": 1.0, "vouch_result": {"sku": "TR-VEST", "wants": true, "confidence": 0.9, ...}, "size": "M", "budget": 60.0}
-→ {"ok": true, "offer_id": 1, "final_price": 57.8, "discount_pct": 15, "buyer_verified": true, "trust_score": 1.0,
+ "trust_score": 1.0, "vouch_result": {"sku": "TR-VEST", "wants": true, "confidence": 0.9, ...}, "size": "M", "budget": 70.0}
+→ {"ok": true, "offer_id": 1, "final_price": 71.4, "discount_pct": 15, "buyer_verified": true, "trust_score": 1.0,
    "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off"}
 // if the buyer's agent fails verification:
 → {"ok": false, "status": "blocked", "sale": "blocked", "reasons": ["identity: no signed passport / owner not phone-verified"]}

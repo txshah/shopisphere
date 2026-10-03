@@ -25,7 +25,7 @@ Saved real payloads: `Data/samples/api/*.json` (full `/api/state` snapshot inclu
 | Call | Input | Output |
 | --- | --- | --- |
 | `GET /api/state` | — | `{modes, customers, offers, gift_orders, return_rates, forecast, purchase_orders, trust, events, messages, approvals, payments, stores}` |
-| `POST /api/demo/run` | `{}` | `{"offer": {"ok": true, "offer_id": 1, "final_price": 57.8, "discount_pct": 15, "reason": "..."}}` |
+| `POST /api/demo/run` | `{}` | `{"offer": {"ok": true, "offer_id": 1, "final_price": 71.4, "discount_pct": 15, "reason": "..."}}` |
 | `POST /api/demo/reset` | `{}` | `{"ok": true}` |
 | `POST /api/phone/reply` | `{"body": "YES", "customer_id": "cust_t"}` | `{"accepted": true, "approval_id": 1, "status": "pending"}` |
 | `POST /api/band/accept` | `{"agent_handle": "t-gift-planner", "person_said": "Yes, get it for her"}` | `{"accepted": true, "offer_id": 1, "approval_id": 2, "status": "pending", "payment": {"network": "visa (mock)", "auth_id": "auth_…", "status": "authorized"}}` |
@@ -39,12 +39,12 @@ Saved real payloads: `Data/samples/api/*.json` (full `/api/state` snapshot inclu
 {
   "modes": {"demo_mode": true, "band": "mock", "tavily": "mock", "sms": "fake phone"},
   "offers": [{"offer_id": 1, "customer_id": "cust_t", "occasion_ref": "sarah-gift-vouch:birthday:2026-10-24", "sku": "TR-VEST",
-              "size": "M", "price": 68.0, "discount_pct": 15.0, "final_price": 57.8, "vouch_result": "{\"sku\": \"TR-VEST\", \"wants\": true, ...}",
+              "size": "M", "price": 84.0, "discount_pct": 15.0, "final_price": 71.4, "vouch_result": "{\"sku\": \"TR-VEST\", \"wants\": true, ...}",
               "trust_score": 1.0, "reason": "...", "status": "ordered", "item": "Trail Running Vest"}],
   "trust": [{"agent_handle": "unverified-shopper", "requests_per_min": 40, "decision": "decline", "score": 0.0,
              "layers": {"identity": false, ...}, "reasons": ["identity: ...", ...]}],
   "messages": [{"direction": "out", "party": "T", "body": "... Reply YES.", "offer_id": 1}, {"direction": "in", "party": "T", "body": "YES"}],
-  "approvals": [{"id": 1, "kind": "order", "ref_id": 1, "summary": "Place order: TR-VEST M at $57.8", "status": "pending"}],
+  "approvals": [{"id": 1, "kind": "order", "ref_id": 1, "summary": "Place order: TR-VEST M at $71.4", "status": "pending"}],
   "forecast": [{"sku": "TR-VEST", "size": "M", "wants": 9, "owns": 0, "on_hand": 3, "suggested_qty": 8, "note": "9 vouched wants, 3 on hand: draft PO for 8"}],
   "purchase_orders": [{"po_id": 1, "sku": "TR-VEST", "size": "M", "quantity": 8, "status": "draft"}],
   "gift_orders": [{"order_id": 25, "item": "Trail Running Vest", "vouched": 1, "return_risk": "low", "returned": 0}],

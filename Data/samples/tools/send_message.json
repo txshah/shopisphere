@@ -4,7 +4,7 @@
   "input": {
     "customer_id": "cust_t",
     "offer_id": 1,
-    "body": "\ud83c\udf81 Your friend's birthday is Oct 24.\n\ud83e\uddba Trail Running Vest, size M\nTheir agent says they'd love it.\n$57.80 for you (15% off $68.00)\nReply YES to order."
+    "body": "\ud83c\udf81 Your friend's birthday is Oct 24.\n\ud83e\uddba Trail Running Vest, size M\nTheir agent says they'd love it.\n$71.40 for you (15% off $84.00)\nReply YES, or tell your Gift Planner agent yes, to order."
   },
   "output": {
     "sent": true,

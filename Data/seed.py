@@ -9,8 +9,8 @@ import db
 
 # sku, name, line, price, cost, tags, stock, competitor_query (for Tavily)
 CATALOG = [
-    ("TR-VEST", "Trail Running Vest", "trail", 68, 34, "running,hydration,apparel", 9, "Salomon ADV Skin 5 running vest"),
-    ("TR-BOTTLE", "Insulated Trail Bottle 32oz", "trail", 42, 15, "hydration,gift", 25, "Hydro Flask 32 oz Wide Mouth"),
+    ("TR-VEST", "Trail Running Vest", "trail", 84, 40, "running,hydration,apparel", 9, "Nathan QuickStart 2.0 4L hydration vest"),
+    ("TR-BOTTLE", "Insulated Trail Bottle 32oz", "trail", 42, 15, "hydration,gift", 25, "Hydro Flask 32 oz Wide Mouth bottle"),
     ("TR-LAMP", "Trail Headlamp 400", "trail", 55, 24, "night,running,gift", 14, "Black Diamond Spot 400 headlamp"),
     ("TR-CAP", "Trail Running Cap", "trail", 28, 9, "running,apparel", 30, None),
     ("TR-SOCKS", "Merino Trail Socks (3pk)", "trail", 24, 8, "running,apparel,gift", 40, None),
@@ -59,7 +59,7 @@ ORDERS = [
     ("cust_raj", "CL-HARNESS", "OS", 75, 1, 0, 1, "wrong size"),
     ("cust_raj", "CL-BRUSH", "OS", 16, 0, 0, 0, None),
     ("cust_mei", "AP-FLEECE", "S", 89, 1, 0, 1, "too small"),
-    ("cust_mei", "TR-VEST", "M", 68, 1, 1, 0, None),
+    ("cust_mei", "TR-VEST", "M", 84, 1, 1, 0, None),
     ("cust_mei", "TR-BOTTLE", "OS", 42, 1, 1, 0, None),
     ("cust_lou", "CP-STOVE", "OS", 59, 1, 0, 0, None),
     ("cust_lou", "CP-HAMMOCK", "OS", 79, 1, 0, 1, "duplicate gift"),
@@ -84,7 +84,7 @@ VOUCH_SIGNALS = [
 
 T_OCCASIONS = [
     # friend_handle, friend_name, occasion, date, budget, hints, sharing_level
-    ("sarah-gift-vouch", "Sarah", "birthday", "2026-10-24", 60, "into trail running", "occasion_budget"),
+    ("sarah-gift-vouch", "Sarah", "birthday", "2026-10-24", 70, "into trail running", "occasion_budget"),
     ("jo-no-agent", "Jo", "anniversary", "2026-11-12", 80, "likes camping", "occasion_only"),
     ("sam-gift-vouch", "Sam", "housewarming", "2026-12-05", 50, "new climber", "occasion_budget_hints"),
 ]
