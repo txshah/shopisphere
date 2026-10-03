@@ -1,0 +1,34 @@
+{
+  "t_occasions": [
+    {
+      "id": 1,
+      "friend_handle": "sarah-gift-vouch",
+      "friend_name": "Sarah",
+      "occasion": "birthday",
+      "occasion_date": "2026-10-24",
+      "budget": 60.0,
+      "hints": "into trail running",
+      "sharing_level": "occasion_budget"
+    },
+    {
+      "id": 2,
+      "friend_handle": "jo-no-agent",
+      "friend_name": "Jo",
+      "occasion": "anniversary",
+      "occasion_date": "2026-11-12",
+      "budget": 80.0,
+      "hints": "likes camping",
+      "sharing_level": "occasion_only"
+    },
+    {
+      "id": 3,
+      "friend_handle": "sam-gift-vouch",
+      "friend_name": "Sam",
+      "occasion": "housewarming",
+      "occasion_date": "2026-12-05",
+      "budget": 50.0,
+      "hints": "new climber",
+      "sharing_level": "occasion_budget_hints"
+    }
+  ]
+}

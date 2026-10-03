@@ -1,0 +1,11 @@
+# Secrets (live API keys, Gmail app password, BAND agent keys)
+.env
+agent_config.yaml
+
+# Generated / installed
+__pycache__/
+node_modules/
+.venv/
+Data/db/
+Zooworks/.claude/
+.DS_Store

@@ -1,0 +1,21 @@
+agent running: agt_01m41jszwpaq7gq8vb5bxzbrzb
+--- turn 1 ---
+`composio_tools` raw output:
+```text
+No Composio integrations are connected and enabled for this user.
+```
+
+Gmail lookup via `composio_tools` raw output:
+```text
+No Composio integrations are connected and enabled for this user (provider filter: gmail).
+```
+
+No executable Gmail action was returned, so I could not call `composio_execute` to initiate OAuth or retrieve a connection link.
+--- turn 2 ---
+No Gmail send action is available, because no Composio integrations are connected and enabled for this user.
+
+Raw tool output:
+```text
+No Composio integrations are connected and enabled for this user (provider filter: gmail).
+```
+cleaned up agt_01m41jszwpaq7gq8vb5bxzbrzb

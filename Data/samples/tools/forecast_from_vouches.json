@@ -1,0 +1,77 @@
+{
+  "tool": "forecast_from_vouches",
+  "endpoint": "POST /api/tools/forecast_from_vouches",
+  "input": {},
+  "output": [
+    {
+      "sku": "TR-VEST",
+      "size": "M",
+      "wants": 9,
+      "owns": 0,
+      "on_hand": 3,
+      "name": "Trail Running Vest",
+      "suggested_qty": 8,
+      "note": "9 vouched wants, 3 on hand: draft PO for 8"
+    },
+    {
+      "sku": "TR-LAMP",
+      "size": "OS",
+      "wants": 4,
+      "owns": 1,
+      "on_hand": 14,
+      "name": "Trail Headlamp 400",
+      "suggested_qty": 0,
+      "note": "4 vouched wants, 14 on hand"
+    },
+    {
+      "sku": "TR-VEST",
+      "size": "L",
+      "wants": 3,
+      "owns": 0,
+      "on_hand": 3,
+      "name": "Trail Running Vest",
+      "suggested_qty": 0,
+      "note": "3 vouched wants, 3 on hand"
+    },
+    {
+      "sku": "AP-FLEECE",
+      "size": "M",
+      "wants": 2,
+      "owns": 0,
+      "on_hand": 4,
+      "name": "Grid Fleece Quarter-Zip",
+      "suggested_qty": 0,
+      "note": "2 vouched wants, 4 on hand"
+    },
+    {
+      "sku": "TR-BOTTLE",
+      "size": "OS",
+      "wants": 2,
+      "owns": 7,
+      "on_hand": 25,
+      "name": "Insulated Trail Bottle 32oz",
+      "suggested_qty": 0,
+      "note": "already-owns answers outweigh wants: don't over-order"
+    },
+    {
+      "sku": "TR-VEST",
+      "size": "S",
+      "wants": 2,
+      "owns": 1,
+      "on_hand": 3,
+      "name": "Trail Running Vest",
+      "suggested_qty": 0,
+      "note": "2 vouched wants, 3 on hand"
+    },
+    {
+      "sku": "CP-MUG",
+      "size": "OS",
+      "wants": 1,
+      "owns": 0,
+      "on_hand": 50,
+      "name": "Enamel Camp Mug",
+      "suggested_qty": 0,
+      "note": "1 vouched wants, 50 on hand"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "tool": "score_agent_trust",
+  "endpoint": "POST /api/tools/score_agent_trust",
+  "input": {
+    "agent_handle": "t-gift-planner"
+  },
+  "output": {
+    "agent_handle": "t-gift-planner",
+    "decision": "allow",
+    "score": 1.0,
+    "layers": {
+      "identity": true,
+      "provenance": true,
+      "history": true,
+      "behavior": true
+    },
+    "reasons": []
+  }
+}

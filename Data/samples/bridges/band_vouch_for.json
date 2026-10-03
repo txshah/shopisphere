@@ -1,0 +1,34 @@
+{
+  "endpoint": "POST {BAND_BRIDGE_URL}/vouch_for",
+  "input": {
+    "recipient_handle": "sarah-gift-vouch",
+    "sku": "TR-VEST"
+  },
+  "output": {
+    "sku": "TR-VEST",
+    "wants": true,
+    "owns": false,
+    "confidence": 0.9,
+    "size": "M",
+    "contribute_signal": true
+  },
+  "other_examples": [
+    {
+      "sku": "TR-BOTTLE",
+      "wants": false,
+      "owns": true,
+      "confidence": 0.9,
+      "size": null,
+      "contribute_signal": true
+    },
+    {
+      "sku": "TR-LAMP",
+      "wants": false,
+      "owns": false,
+      "confidence": 0.5,
+      "size": null,
+      "contribute_signal": true
+    }
+  ],
+  "no_agent_output": null
+}

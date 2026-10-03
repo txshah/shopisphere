@@ -1,0 +1,96 @@
+{
+  "Black Diamond Spot 400 headlamp": {
+    "product": "Black Diamond Spot 400 headlamp",
+    "our_price": 64.0,
+    "lowest_competitor": 59.95,
+    "gap": 4.05,
+    "competitors": [
+      {
+        "retailer": "blackdiamondequipment.com",
+        "price": 59.95,
+        "url": "https://blackdiamondequipment.com/products/spot-400-headlamp"
+      },
+      {
+        "retailer": "karstsports.com",
+        "price": 69.95,
+        "url": "https://karstsports.com/black-diamond-spot-400-r-headlamp"
+      }
+    ],
+    "tavily_answer": "The Black Diamond Spot 400 headlamp has a regular price of $59.95 USD according to Black Diamond's official website, but it is currently out of stock. On another retailer's site, the Spot 400-R Headlamp is listed with an MSRP of $69.95, but it is also out of stock. Another listing on Black Diamond's collection page shows the Spot 400 Headlamp with a regular price of $59.95 USD, and the Spot 400-R Rechargeable Headlamp is listed with a regular price of $63.96 USD. The sources do not provide a definitive answer on the current price of the Spot 400 Headlamp.",
+    "label": "Tavily: Black Diamond Spot 400 headlamp at 2 competitors, lowest $59.95",
+    "source": "cache (captured 2026-10-03 from Tavily)"
+  },
+  "Hydro Flask 32 oz Wide Mouth bottle": {
+    "product": "Hydro Flask 32 oz Wide Mouth bottle",
+    "our_price": 45.0,
+    "lowest_competitor": 44.95,
+    "gap": 0.05,
+    "competitors": [
+      {
+        "retailer": "eastsidesports.com",
+        "price": 44.95,
+        "url": "https://eastsidesports.com/products/hydroflask-wide-mouth"
+      },
+      {
+        "retailer": "hydroflask.com",
+        "price": 44.95,
+        "url": "https://www.hydroflask.com/32-oz-wide-mouth"
+      }
+    ],
+    "tavily_answer": "The Hydro Flask 32 oz Wide Mouth bottle is priced at $44.95 on Eastside Sports and Hydro Flask's official website. However, the product is out of stock on Hydro Flask's main page, and the price on the shop page is listed as $32.95. The price on the 32 oz Travel Bottle with Flex Straw Cap page is also $44.95. The sources do not provide a definitive answer to the current price due to stock status and potential price variations.",
+    "label": "Tavily: Hydro Flask 32 oz Wide Mouth bottle at 2 competitors, lowest $44.95",
+    "source": "cache (captured 2026-10-03 from Tavily)"
+  },
+  "Patagonia Nano Puff Vest men": {
+    "product": "Patagonia Nano Puff Vest men",
+    "our_price": 149.0,
+    "lowest_competitor": 99.98,
+    "gap": 49.02,
+    "competitors": [
+      {
+        "retailer": "halfmoonoutfitters.com",
+        "price": 99.98,
+        "url": "https://www.halfmoonoutfitters.com/products/pat_ms_84242"
+      },
+      {
+        "retailer": "backcountry.com",
+        "price": 149.25,
+        "url": "https://www.backcountry.com/patagonia-nano-puff-vest-mens"
+      },
+      {
+        "retailer": "pinnaclepromotions.com",
+        "price": 268.0,
+        "url": "https://www.pinnaclepromotions.com/patagoniar-men-s-nano-puff-vest.html"
+      }
+    ],
+    "tavily_answer": "The sources provide varying prices for the Patagonia Nano Puff Vest for Men. Half-Moon Outfitters lists it for $99.98, while Backcountry.com shows a price range from $149.25 to $199.00. Pinnacle Promotions offers bulk pricing starting at $268.00 for 12 units, decreasing to $230.08 for 144 units. High Country Outfitters lists it from $189.00. The Dick's Sporting Goods listing does not provide a specific price.",
+    "label": "Tavily: Patagonia Nano Puff Vest men at 3 competitors, lowest $99.98",
+    "source": "cache (captured 2026-10-03 from Tavily)"
+  },
+  "Salomon ADV Skin 5 running vest": {
+    "product": "Salomon ADV Skin 5 running vest",
+    "our_price": 145.0,
+    "lowest_competitor": 140.0,
+    "gap": 5.0,
+    "competitors": [
+      {
+        "retailer": "wenatcheeoutdoors.org",
+        "price": 140.0,
+        "url": "https://wenatcheeoutdoors.org/2022/11/11/salomon-adv-skin-5-hydration-vest"
+      },
+      {
+        "retailer": "runpacers.com",
+        "price": 145.0,
+        "url": "https://runpacers.com/products/unisex-salomon-adv-skin-5-set-alloy-gray-violet-spellbound"
+      },
+      {
+        "retailer": "trailandkale.com",
+        "price": 145.0,
+        "url": "https://trailandkale.com/salomon-adv-skin-5-pack-review"
+      }
+    ],
+    "tavily_answer": "The Salomon ADV Skin 5 running vest is priced at $145 according to RunPacers, Trail and Kale, and Salomon's official website. However, Wenatchee Outdoors mentions a retail price of $140, but also notes it has been seen on sale for $60. Run Ultra provides a UK price of \u00a3125, on offer for \u00a377 as of 20/7/23.",
+    "label": "Tavily: Salomon ADV Skin 5 running vest at 3 competitors, lowest $140.00",
+    "source": "cache (captured 2026-10-03 from Tavily)"
+  }
+}

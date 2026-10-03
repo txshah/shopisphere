@@ -1,0 +1,26 @@
+{
+  "product": "Salomon ADV Skin 5 running vest",
+  "our_price": 145.0,
+  "lowest_competitor": 140.0,
+  "gap": 5.0,
+  "competitors": [
+    {
+      "retailer": "wenatcheeoutdoors.org",
+      "price": 140.0,
+      "url": "https://wenatcheeoutdoors.org/2022/11/11/salomon-adv-skin-5-hydration-vest"
+    },
+    {
+      "retailer": "runpacers.com",
+      "price": 145.0,
+      "url": "https://runpacers.com/products/unisex-salomon-adv-skin-5-set-alloy-gray-violet-spellbound"
+    },
+    {
+      "retailer": "trailandkale.com",
+      "price": 145.0,
+      "url": "https://trailandkale.com/salomon-adv-skin-5-pack-review"
+    }
+  ],
+  "tavily_answer": "The Salomon ADV Skin 5 running vest is priced at $145 according to RunPacers, Trail and Kale, and Salomon's official website. However, Wenatchee Outdoors mentions a retail price of $140, but also notes it has been seen on sale for $60. Run Ultra provides a UK price of \u00a3125, on offer for \u00a377 as of 20/7/23.",
+  "label": "Tavily: Salomon ADV Skin 5 running vest at 3 competitors, lowest $140.00",
+  "source": "tavily_live"
+}

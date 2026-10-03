@@ -1,0 +1,58 @@
+{
+  "query": "Salomon ADV Skin 5 running vest price",
+  "follow_up_questions": null,
+  "answer": "The Salomon ADV Skin 5 running vest is listed with a price range of $100.00 to $199.99 on REI's website. However, specific prices for the Salomon ADV Skin 5 Set hydration vest are not provided in the sources. The vest is described as having a 5-liter capacity and being fine-tuned for endurance events, with features like quick hydration access and a 2 included 500 ml ULTRA soft flasks.",
+  "images": [],
+  "results": [
+    {
+      "url": "https://www.rei.com/b/salomon/c/running-hydration-vests",
+      "title": "Salomon Running Hydration Vests | REI Co-op",
+      "content": "Rated 1.0 out of 5 stars. 1 & up (13). Filter by Price. $100.00 to $199.99 ... Salomon Adv Skin 5 Set Hydration Vest 0. Salomon Adv Skin 5 Set Hydration",
+      "score": 0.85624856,
+      "raw_content": null,
+      "id": "168c44-00"
+    },
+    {
+      "url": "https://www.sportsbasement.com/products/adv-skin-5",
+      "title": "ADV Skin 5",
+      "content": "Fine-tuned for endurance events, the Salomon Adv Skin 5 Set hydration vest ensures easy access to hydration, with a 5-liter capacity that's ideal for marathon",
+      "score": 0.4905535,
+      "raw_content": null,
+      "id": "e83807-01"
+    },
+    {
+      "url": "https://www.amazon.com/salomon-skin-5/s?k=salomon+skin+5",
+      "title": "Salomon Skin 5",
+      "content": "Results \u00b7 Salomon \u00b7 ADV SKIN 5 - UNISEXE \u00b7 Running Phone Holder Vest with 500ml/17oz Water Bottle | Reflective Hydration Vest | Adjustable | Light | 6 Pockets for",
+      "score": 0.47811517,
+      "raw_content": null,
+      "id": "cb6685-02"
+    },
+    {
+      "url": "https://www.amazon.com/salomon-adv-skin-5-set/s?k=salomon+adv+skin+5+set",
+      "title": "Salomon Adv Skin 5 Set",
+      "content": "Browse trail running hydration vests that combine performance and comfort. The Salomon Adv Skin 5 delivers quick hydration access and long-distance",
+      "score": 0.46075046,
+      "raw_content": null,
+      "id": "7280f8-03"
+    },
+    {
+      "url": "https://www.rei.com/product/244099/salomon-adv-skin-5-set-hydration-vest",
+      "title": "Salomon Adv Skin 5 Set Hydration Vest",
+      "content": "Updated design for enhanced stability, fit and versatility \u00b7 Designed for rapid, hassle-free access to hydration with 2 included 500 ml ULTRA soft flasks that",
+      "score": 0.2769476,
+      "raw_content": null,
+      "id": "459222-04"
+    },
+    {
+      "url": "https://www.rei.com/product/244098/salomon-adv-skin-12-hydration-vest",
+      "title": "Salomon Adv Skin 12 Hydration Vest | REI Co-op",
+      "content": "12 liters of storage is ideal for running longer trails (60+ km) \u00b7 Designed for rapid, hassle-free access to hydration with 2 included 500 mL soft flasks that",
+      "score": 0.1728413,
+      "raw_content": null,
+      "id": "c771c0-05"
+    }
+  ],
+  "response_time": 3.12,
+  "request_id": "cc2a8b3b-30d9-4e06-aa19-3b536e7dcc99"
+}

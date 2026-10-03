@@ -1,0 +1,14 @@
+{
+  "TR-VEST": [
+    {"retailer": "Summit Outfitters", "price": 64.0, "url": "https://example.com/summit/trail-vest"},
+    {"retailer": "Ridge & Co", "price": 72.0, "url": "https://example.com/ridge/trail-vest"}
+  ],
+  "TR-BOTTLE": [
+    {"retailer": "Summit Outfitters", "price": 39.95, "url": "https://example.com/summit/bottle"},
+    {"retailer": "Ridge & Co", "price": 44.0, "url": "https://example.com/ridge/bottle"}
+  ],
+  "TR-LAMP": [
+    {"retailer": "Summit Outfitters", "price": 54.95, "url": "https://example.com/summit/headlamp"},
+    {"retailer": "Ridge & Co", "price": 59.0, "url": "https://example.com/ridge/headlamp"}
+  ]
+}

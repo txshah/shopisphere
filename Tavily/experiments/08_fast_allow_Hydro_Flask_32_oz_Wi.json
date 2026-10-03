@@ -1,0 +1,5 @@
+{
+  "detail": {
+    "error": "Country parameter is not supported for fast or ultra-fast search_depth."
+  }
+}

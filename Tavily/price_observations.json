@@ -1,0 +1,186 @@
+{
+  "captured": "2026-10-03",
+  "note": "verified=True means price seen on that product's own page content for the exact item; False = category page, answer text, used, blog or variant",
+  "observations": [
+    {
+      "product": "Black Diamond Spot 400 headlamp",
+      "retailer": "blackdiamondequipment.com",
+      "price_usd": 59.95,
+      "kind": "new, brand site",
+      "url": "https://blackdiamondequipment.com/products/spot-400-headlamp",
+      "verified": true,
+      "how": "search basic"
+    },
+    {
+      "product": "Black Diamond Spot 400 headlamp",
+      "retailer": "rei.com",
+      "price_usd": 59.95,
+      "kind": "new, category page listing (Spot Headlamp)",
+      "url": "https://www.rei.com/b/black-diamond/c/led-headlamps",
+      "verified": false,
+      "how": "search basic"
+    },
+    {
+      "product": "Black Diamond Spot 400 headlamp",
+      "retailer": "karstsports.com",
+      "price_usd": 54.95,
+      "kind": "new, listing page",
+      "url": "https://karstsports.com/black-diamond-spot-400-r-headlamp",
+      "verified": false,
+      "how": "search basic (snippet inspection)"
+    },
+    {
+      "product": "Black Diamond Spot 400-R headlamp",
+      "retailer": "karstsports.com",
+      "price_usd": 69.95,
+      "kind": "new, variant 400-R",
+      "url": "https://karstsports.com/black-diamond-spot-400-r-headlamp",
+      "verified": true,
+      "how": "search basic"
+    },
+    {
+      "product": "Hydro Flask 32 oz Wide Mouth bottle",
+      "retailer": "hydroflask.com",
+      "price_usd": 44.95,
+      "kind": "new, brand site",
+      "url": "https://www.hydroflask.com/32-oz-wide-mouth",
+      "verified": true,
+      "how": "search basic"
+    },
+    {
+      "product": "Hydro Flask 32 oz Wide Mouth bottle",
+      "retailer": "eastsidesports.com",
+      "price_usd": 44.95,
+      "kind": "new",
+      "url": "https://eastsidesports.com/products/hydroflask-wide-mouth",
+      "verified": true,
+      "how": "search basic"
+    },
+    {
+      "product": "Hydro Flask 32 oz Wide Mouth bottle",
+      "retailer": "samsclub.com",
+      "price_usd": 36.98,
+      "kind": "new, club store",
+      "url": "https://www.samsclub.com/ip/Hydro-Flask-32-oz-Wide-Mouth-Insulated-Water-Bottle/",
+      "verified": false,
+      "how": "tavily answer"
+    },
+    {
+      "product": "Hydro Flask 32 oz Wide Mouth bottle",
+      "retailer": "rei.com",
+      "price_usd": 44.95,
+      "kind": "new, from tavily answer",
+      "url": "https://www.rei.com/b/hydro-flask/c/water-bottles",
+      "verified": false,
+      "how": "tavily answer (allowlist run)"
+    },
+    {
+      "product": "Hydro Flask 32 oz Wide Mouth bottle",
+      "retailer": "dickssportinggoods.com",
+      "price_usd": 49.95,
+      "kind": "new, from tavily answer",
+      "url": "https://www.dickssportinggoods.com/p/hydro-flask-wide-mouth-32-ozbottle-19hflu32zwdmt",
+      "verified": false,
+      "how": "tavily answer (allowlist run)"
+    },
+    {
+      "product": "Salomon ADV Skin 5 running vest",
+      "retailer": "salomon.com",
+      "price_usd": 145.0,
+      "kind": "new, brand site",
+      "url": "https://www.salomon.com/en-us/product/adv-skin-5-lc13270/LC2464900",
+      "verified": true,
+      "how": "search basic"
+    },
+    {
+      "product": "Salomon ADV Skin 5 running vest",
+      "retailer": "rei.com",
+      "price_usd": 145.0,
+      "kind": "new",
+      "url": "https://www.rei.com/product/244099/salomon-adv-skin-5-set-hydration-vest",
+      "verified": true,
+      "how": "search basic"
+    },
+    {
+      "product": "Salomon ADV Skin 5 running vest",
+      "retailer": "runpacers.com",
+      "price_usd": 145.0,
+      "kind": "new",
+      "url": "",
+      "verified": true,
+      "how": "check_competitor_price"
+    },
+    {
+      "product": "Salomon ADV Skin 5 running vest",
+      "retailer": "wenatcheeoutdoors.org",
+      "price_usd": 140.0,
+      "kind": "blog post 2022, not a live offer",
+      "url": "",
+      "verified": false,
+      "how": "check_competitor_price"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "halfmoonoutfitters.com",
+      "price_usd": 99.98,
+      "kind": "new, sale",
+      "url": "https://www.halfmoonoutfitters.com/products/pat_ms_84242",
+      "verified": true,
+      "how": "search basic + research"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "alabamaoutdoors.com",
+      "price_usd": 132.3,
+      "kind": "new",
+      "url": "https://alabamaoutdoors.com/patagonia-mens-nano-puff-vest",
+      "verified": true,
+      "how": "research"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "buckmans.com",
+      "price_usd": 132.3,
+      "kind": "new, range $132.30-$189.00",
+      "url": "https://www.buckmans.com/product/28655/patagonia-nano-puff-vest-mens",
+      "verified": true,
+      "how": "search + extract advanced"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "evo.com",
+      "price_usd": 84.99,
+      "kind": "outlet, SOLD OUT (0 remaining), reg $149.00",
+      "url": "https://www.evo.com/outlet/vests/patagonia-nano-puff-vest",
+      "verified": true,
+      "how": "extract advanced"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "moosejaw.com",
+      "price_usd": 99.0,
+      "kind": "new, from search snippet",
+      "url": "https://www.moosejaw.com/p/patagonia-mens-nano-puff-vest-16ptgmmnnpffvstxxapo/16ptgmmnnpffvstxxapo",
+      "verified": false,
+      "how": "search advanced"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "backcountry.com",
+      "price_usd": 149.25,
+      "kind": "new",
+      "url": "https://www.backcountry.com/patagonia-nano-puff-vest-mens",
+      "verified": false,
+      "how": "check_competitor_price"
+    },
+    {
+      "product": "Patagonia Nano Puff Vest men",
+      "retailer": "wornwear.patagonia.com",
+      "price_usd": 69.0,
+      "kind": "USED (Worn Wear), exclude",
+      "url": "https://wornwear.patagonia.com/products/mens-nano-puff-vest_84242_fge",
+      "verified": false,
+      "how": "search advanced"
+    }
+  ]
+}

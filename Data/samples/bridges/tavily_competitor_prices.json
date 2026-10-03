@@ -1,0 +1,22 @@
+{
+  "endpoint": "POST {TAVILY_BRIDGE_URL}/competitor_prices",
+  "input": {
+    "sku": "TR-VEST",
+    "query": "Salomon ADV Skin 5 running vest",
+    "our_price": 68.0
+  },
+  "output": {
+    "competitors": [
+      {
+        "retailer": "Summit Outfitters",
+        "price": 64.0,
+        "url": "https://example.com/summit/trail-vest"
+      },
+      {
+        "retailer": "Ridge & Co",
+        "price": 72.0,
+        "url": "https://example.com/ridge/trail-vest"
+      }
+    ]
+  }
+}

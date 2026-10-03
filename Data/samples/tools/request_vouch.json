@@ -1,0 +1,36 @@
+{
+  "tool": "request_vouch",
+  "endpoint": "POST /api/tools/request_vouch",
+  "input": {
+    "recipient_handle": "sarah-gift-vouch",
+    "skus": [
+      "TR-LAMP",
+      "TR-VEST",
+      "TR-BOTTLE"
+    ]
+  },
+  "output": {
+    "vouched": true,
+    "ranked": [
+      {
+        "sku": "TR-VEST",
+        "wants": true,
+        "owns": false,
+        "confidence": 0.9,
+        "size": "M",
+        "contribute_signal": true
+      },
+      {
+        "sku": "TR-LAMP",
+        "wants": false,
+        "owns": false,
+        "confidence": 0.5,
+        "size": null,
+        "contribute_signal": true
+      }
+    ],
+    "dropped_owned": [
+      "TR-BOTTLE"
+    ]
+  }
+}

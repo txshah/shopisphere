@@ -1,0 +1,105 @@
+/* Shopisphere dashboard theme, shared by index.html (ops view) and wireframe.html (run editor).
+   Layout concept: a cool off-white editing room. Big quiet type, one ink, four track hues that
+   always mean the same sponsor (ZooWork, BAND, Tavily, phone). Track hues pass the dataviz
+   palette validator (colorblind separation + contrast) in light and dark. */
+@import url("https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap");
+
+:root {
+  --bg: #F5F6F6; --panel: #FFFFFF; --sunk: #ECEEEF; --ink: #1A1D1E; --ink-2: #3A3F41; --muted: #6E7578; --line: #DFE3E4;
+  --hero-grad: linear-gradient(180deg, #DADFE0 0%, #F5F6F6 100%);
+  --zoo: #1E9BC0; --tav: #B8960A; --band: #B04FC0; --phone: #4E9A33; --store: #868C8E; --human: #1A1D1E;
+  --good: #2E7D32; --good-bg: #E3F1E4; --warn: #94600A; --warn-bg: #F8ECD6; --bad: #C8372A; --bad-bg: #FAE5E2;
+  --glow: 0 0 0 1px #4DC5E5, 0 0 14px -2px rgba(77, 197, 229, .55);
+  --shadow: 0 1px 2px rgba(20, 30, 32, .05), 0 8px 24px -16px rgba(20, 30, 32, .18);
+
+  --f-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* One height per control role, so buttons and status chips line up everywhere. */
+  --h-ctl: 36px;   /* buttons, segmented controls, status chips in bars */
+  --h-chip: 24px;  /* inline chips inside cards and tables */
+  --r-xl: 28px; --r-l: 18px; --r-m: 12px; --r-s: 8px;
+  --gutter: 24px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1011; --panel: #17191A; --sunk: #202324; --ink: #ECEFEF; --ink-2: #CDD2D3; --muted: #8D9496; --line: #2A2E2F;
+    --hero-grad: linear-gradient(180deg, #1E2223 0%, #0E1011 100%);
+    --zoo: #2A9FC4; --tav: #A88A08; --band: #B45BBE; --phone: #4C9A30; --store: #6C7274; --human: #ECEFEF;
+    --good: #6CC070; --good-bg: #1A2E1C; --warn: #E0A84A; --warn-bg: #33291A; --bad: #F07A6E; --bad-bg: #3A1E1B;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1011; --panel: #17191A; --sunk: #202324; --ink: #ECEFEF; --ink-2: #CDD2D3; --muted: #8D9496; --line: #2A2E2F;
+  --hero-grad: linear-gradient(180deg, #1E2223 0%, #0E1011 100%);
+  --zoo: #2A9FC4; --tav: #A88A08; --band: #B45BBE; --phone: #4C9A30; --store: #6C7274; --human: #ECEFEF;
+  --good: #6CC070; --good-bg: #1A2E1C; --warn: #E0A84A; --warn-bg: #33291A; --bad: #F07A6E; --bad-bg: #3A1E1B;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); }
+body { font: 15px/1.5 var(--f-body); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, .display { font-family: var(--f-display); font-weight: 400; letter-spacing: -0.02em; text-wrap: balance; }
+.mono { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0; }
+.eyebrow { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1440px; margin: 0 auto; padding-inline: var(--gutter); }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--zoo); outline-offset: 2px; }
+
+/* Nav */
+.nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+.logo { font-family: var(--f-display); font-size: 21px; font-weight: 500; letter-spacing: -0.02em; display: flex; align-items: center; gap: 9px; margin-right: 12px; color: var(--ink); text-decoration: none; }
+.logo i { width: 18px; height: 18px; border-radius: 50%; background: conic-gradient(var(--zoo), var(--phone), var(--tav), var(--band), var(--zoo)); }
+.nav .links { display: flex; gap: 4px; }
+.nav .links a { height: var(--h-ctl); display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+.nav .links a:hover { color: var(--ink); }
+.nav .links a[aria-current="page"] { color: var(--ink); background: var(--sunk); }
+.nav .spacer { flex: 1; }
+
+/* Buttons: one height, one radius, one font size. Variants change color only. */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: var(--h-ctl); min-width: var(--h-ctl);
+       padding: 0 16px; border: 0; border-radius: 999px; background: var(--sunk); color: var(--ink); font-size: 14px; font-weight: 500;
+       white-space: nowrap; transition: filter .15s, background .15s; }
+.btn:hover { filter: brightness(.96); }
+.btn.primary { background: var(--ink); color: var(--bg); }
+.btn.ghost { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.btn.danger { background: transparent; color: var(--bad); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.icon { width: var(--h-ctl); padding: 0; }
+.btn[disabled] { opacity: .45; cursor: default; filter: none; }
+
+/* Status chips: --h-ctl in bars (next to buttons), --h-chip inline. */
+.chip { display: inline-flex; align-items: center; gap: 6px; height: var(--h-chip); padding: 0 10px; border-radius: 999px;
+        background: var(--sunk); color: var(--ink-2); font-size: 12px; font-weight: 500; white-space: nowrap; }
+.chip.bar { height: var(--h-ctl); padding: 0 14px; font-size: 13px; }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+.chip.ok { background: var(--good-bg); color: var(--good); }
+.chip.warn { background: var(--warn-bg); color: var(--warn); }
+.chip.bad { background: var(--bad-bg); color: var(--bad); }
+.chip.ink { background: var(--ink); color: var(--bg); }
+
+/* Segmented control (tabs, speeds): same outer height as buttons. */
+.seg { display: inline-flex; height: var(--h-ctl); padding: 3px; gap: 2px; background: var(--sunk); border-radius: 999px; }
+.seg button { border: 0; background: transparent; border-radius: 999px; padding: 0 14px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.seg button.on { background: var(--panel); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+
+/* Surfaces */
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-l); min-width: 0; }
+.swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
+  .nav .links { display: none; }
+  .nav .wrap { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

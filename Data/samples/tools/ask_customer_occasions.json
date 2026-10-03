@@ -1,0 +1,33 @@
+{
+  "tool": "ask_customer_occasions",
+  "endpoint": "POST /api/tools/ask_customer_occasions",
+  "input": {
+    "customer_id": "cust_t"
+  },
+  "output": {
+    "customer_id": "cust_t",
+    "occasions": [
+      {
+        "friend_handle": "sarah-gift-vouch",
+        "occasion": "birthday",
+        "occasion_date": "2026-10-24",
+        "budget": 60.0,
+        "sharing_level": "occasion_budget"
+      },
+      {
+        "friend_handle": "jo-no-agent",
+        "occasion": "anniversary",
+        "occasion_date": "2026-11-12",
+        "sharing_level": "occasion_only"
+      },
+      {
+        "friend_handle": "sam-gift-vouch",
+        "occasion": "housewarming",
+        "occasion_date": "2026-12-05",
+        "budget": 50.0,
+        "hints": "new climber",
+        "sharing_level": "occasion_budget_hints"
+      }
+    ]
+  }
+}

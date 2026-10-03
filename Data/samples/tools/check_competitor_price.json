@@ -1,0 +1,26 @@
+{
+  "tool": "check_competitor_price",
+  "endpoint": "POST /api/tools/check_competitor_price",
+  "input": {
+    "sku": "TR-VEST"
+  },
+  "output": {
+    "sku": "TR-VEST",
+    "our_price": 68.0,
+    "competitors": [
+      {
+        "retailer": "Summit Outfitters",
+        "price": 64.0,
+        "url": "https://example.com/summit/trail-vest"
+      },
+      {
+        "retailer": "Ridge & Co",
+        "price": 72.0,
+        "url": "https://example.com/ridge/trail-vest"
+      }
+    ],
+    "lowest": 64.0,
+    "suggested_discount_pct": 15,
+    "reason": "Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%"
+  }
+}

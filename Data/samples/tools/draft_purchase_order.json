@@ -1,0 +1,15 @@
+{
+  "tool": "draft_purchase_order",
+  "endpoint": "POST /api/tools/draft_purchase_order",
+  "input": {
+    "sku": "TR-VEST",
+    "size": "M",
+    "quantity": 8,
+    "reason": "9 vouched wants, 3 on hand: draft PO for 8"
+  },
+  "output": {
+    "po_id": 1,
+    "approval_id": 2,
+    "status": "draft"
+  }
+}

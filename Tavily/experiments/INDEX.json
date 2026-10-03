@@ -1,0 +1,450 @@
+{
+  "captured": "2026-10-03",
+  "base_url": "https://api.tavily.com",
+  "auth": "Authorization: Bearer $TAV",
+  "files": {
+    "01_search_basic.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Patagonia Nano Puff Vest men price",
+        "search_depth": "basic",
+        "max_results": 5,
+        "include_answer": true
+      }
+    },
+    "02_search_adv_domains.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Patagonia Nano Puff Vest men price",
+        "search_depth": "advanced",
+        "max_results": 8,
+        "include_answer": "advanced",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "patagonia.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "amazon.com"
+        ],
+        "chunks_per_source": 3
+      },
+      "latency_s": 8.85,
+      "http_status": 200
+    },
+    "03_extract_basic.json": {
+      "endpoint": "POST /extract",
+      "body": {
+        "urls": [
+          "moosejaw PDP",
+          "patagonia.com PDP",
+          "rei.com PDP",
+          "backcountry.com PDP"
+        ],
+        "extract_depth": "basic",
+        "format": "markdown",
+        "query": "current sale price and regular price",
+        "chunks_per_source": 3
+      },
+      "note": "full URLs appear in results/failed_results",
+      "latency_s": 10.37,
+      "http_status": 200
+    },
+    "04_extract_advanced.json": {
+      "endpoint": "POST /extract",
+      "body": {
+        "urls": [
+          "moosejaw PDP",
+          "patagonia.com PDP",
+          "rei.com PDP",
+          "buckmans.com PDP",
+          "evo.com PDP"
+        ],
+        "extract_depth": "advanced",
+        "format": "markdown",
+        "query": "current sale price and regular price",
+        "chunks_per_source": 3,
+        "timeout": 30
+      },
+      "latency_s": 19.08,
+      "http_status": 200
+    },
+    "05_research_create.json": {
+      "endpoint": "POST /research",
+      "body": "see Rules.md Research sample (model mini + output_schema offers[])",
+      "http_status": 200
+    },
+    "06_research_result.json": {
+      "endpoint": "GET /research/3ab2b0f0-9859-441f-ad7f-798b10cb88ff",
+      "latency_s": 43.42,
+      "http_status": 200,
+      "note": "server-side response_time of async task"
+    },
+    "07_basic_Black_Diamond_Spot_4.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Black Diamond Spot 400 headlamp price",
+        "search_depth": "basic",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 2.93,
+      "http_status": 200
+    },
+    "07_basic_Hydro_Flask_32_oz_Wi.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Hydro Flask 32 oz Wide Mouth bottle price",
+        "search_depth": "basic",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 4.76,
+      "http_status": 200
+    },
+    "07_basic_Salomon_ADV_Skin_5_r.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Salomon ADV Skin 5 running vest price",
+        "search_depth": "basic",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 3.19,
+      "http_status": 200
+    },
+    "07_fast_Black_Diamond_Spot_4.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Black Diamond Spot 400 headlamp price",
+        "search_depth": "fast",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 1.79,
+      "http_status": 200
+    },
+    "07_fast_Hydro_Flask_32_oz_Wi.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Hydro Flask 32 oz Wide Mouth bottle price",
+        "search_depth": "fast",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 1.66,
+      "http_status": 200
+    },
+    "07_fast_Salomon_ADV_Skin_5_r.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Salomon ADV Skin 5 running vest price",
+        "search_depth": "fast",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 1.73,
+      "http_status": 200
+    },
+    "07_ultra-fast_Black_Diamond_Spot_4.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Black Diamond Spot 400 headlamp price",
+        "search_depth": "ultra-fast",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 1.7,
+      "http_status": 200
+    },
+    "07_ultra-fast_Hydro_Flask_32_oz_Wi.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Hydro Flask 32 oz Wide Mouth bottle price",
+        "search_depth": "ultra-fast",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 1.64,
+      "http_status": 200
+    },
+    "07_ultra-fast_Salomon_ADV_Skin_5_r.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Salomon ADV Skin 5 running vest price",
+        "search_depth": "ultra-fast",
+        "max_results": 6,
+        "include_answer": true,
+        "exclude_domains": [
+          "wornwear.patagonia.com",
+          "ebay.com",
+          "poshmark.com",
+          "reddit.com",
+          "youtube.com"
+        ]
+      },
+      "latency_s": 1.64,
+      "http_status": 200
+    },
+    "08_basic_allow_Black_Diamond_Spot_4.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Black Diamond Spot 400 headlamp price",
+        "search_depth": "basic",
+        "max_results": 6,
+        "include_answer": true,
+        "country": "united states",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "campsaver.com",
+          "sunandski.com",
+          "scheels.com",
+          "zappos.com",
+          "amazon.com",
+          "target.com",
+          "halfmoonoutfitters.com",
+          "rogansshoes.com",
+          "sportsbasement.com"
+        ]
+      },
+      "latency_s": 4.24,
+      "http_status": 200
+    },
+    "08_basic_allow_Hydro_Flask_32_oz_Wi.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Hydro Flask 32 oz Wide Mouth bottle price",
+        "search_depth": "basic",
+        "max_results": 6,
+        "include_answer": true,
+        "country": "united states",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "campsaver.com",
+          "sunandski.com",
+          "scheels.com",
+          "zappos.com",
+          "amazon.com",
+          "target.com",
+          "halfmoonoutfitters.com",
+          "rogansshoes.com",
+          "sportsbasement.com"
+        ]
+      },
+      "latency_s": 4.64,
+      "http_status": 200
+    },
+    "08_basic_allow_Salomon_ADV_Skin_5_r.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Salomon ADV Skin 5 running vest price",
+        "search_depth": "basic",
+        "max_results": 6,
+        "include_answer": true,
+        "country": "united states",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "campsaver.com",
+          "sunandski.com",
+          "scheels.com",
+          "zappos.com",
+          "amazon.com",
+          "target.com",
+          "halfmoonoutfitters.com",
+          "rogansshoes.com",
+          "sportsbasement.com"
+        ]
+      },
+      "latency_s": 4.41,
+      "http_status": 200
+    },
+    "08_fast_allow_Black_Diamond_Spot_4.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Black Diamond Spot 400 headlamp price",
+        "search_depth": "fast",
+        "max_results": 6,
+        "include_answer": true,
+        "country": "united states",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "campsaver.com",
+          "sunandski.com",
+          "scheels.com",
+          "zappos.com",
+          "amazon.com",
+          "target.com",
+          "halfmoonoutfitters.com",
+          "rogansshoes.com",
+          "sportsbasement.com"
+        ]
+      },
+      "latency_s": 0.31,
+      "http_status": 400
+    },
+    "08_fast_allow_Hydro_Flask_32_oz_Wi.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Hydro Flask 32 oz Wide Mouth bottle price",
+        "search_depth": "fast",
+        "max_results": 6,
+        "include_answer": true,
+        "country": "united states",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "campsaver.com",
+          "sunandski.com",
+          "scheels.com",
+          "zappos.com",
+          "amazon.com",
+          "target.com",
+          "halfmoonoutfitters.com",
+          "rogansshoes.com",
+          "sportsbasement.com"
+        ]
+      },
+      "latency_s": 0.41,
+      "http_status": 400
+    },
+    "08_fast_allow_Salomon_ADV_Skin_5_r.json": {
+      "endpoint": "POST /search",
+      "body": {
+        "query": "Salomon ADV Skin 5 running vest price",
+        "search_depth": "fast",
+        "max_results": 6,
+        "include_answer": true,
+        "country": "united states",
+        "include_domains": [
+          "rei.com",
+          "backcountry.com",
+          "moosejaw.com",
+          "evo.com",
+          "dickssportinggoods.com",
+          "campsaver.com",
+          "sunandski.com",
+          "scheels.com",
+          "zappos.com",
+          "amazon.com",
+          "target.com",
+          "halfmoonoutfitters.com",
+          "rogansshoes.com",
+          "sportsbasement.com"
+        ]
+      },
+      "latency_s": 0.32,
+      "http_status": 400
+    },
+    "09_Black_Diamon.json": {
+      "endpoint": "check_competitor_price.py (POST /search basic, country US, exclude list)",
+      "body": {
+        "product": "Black Diamond Spot 400 headlamp",
+        "our_price": 64.0
+      },
+      "note": "this is our tool's processed output, not raw Tavily"
+    },
+    "09_Hydro_Flask_.json": {
+      "endpoint": "check_competitor_price.py (POST /search basic, country US, exclude list)",
+      "body": {
+        "product": "Hydro Flask 32 oz Wide Mouth bottle",
+        "our_price": 45.0
+      },
+      "note": "this is our tool's processed output, not raw Tavily"
+    },
+    "09_Patagonia_Na.json": {
+      "endpoint": "check_competitor_price.py (POST /search basic, country US, exclude list)",
+      "body": {
+        "product": "Patagonia Nano Puff Vest men",
+        "our_price": 149.0
+      },
+      "note": "this is our tool's processed output, not raw Tavily"
+    },
+    "09_Salomon_ADV_.json": {
+      "endpoint": "check_competitor_price.py (POST /search basic, country US, exclude list)",
+      "body": {
+        "product": "Salomon ADV Skin 5 running vest",
+        "our_price": 145.0
+      },
+      "note": "this is our tool's processed output, not raw Tavily"
+    },
+    "10_usage.json": {
+      "endpoint": "GET /usage"
+    }
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "agent_passports": [
+    {
+      "agent_handle": "t-gift-planner",
+      "owner": "T",
+      "owner_phone_verified": 1,
+      "token": "pp_signed_t_7f3a",
+      "registered_band": 1,
+      "approved_contact": 1
+    },
+    {
+      "agent_handle": "sarah-gift-vouch",
+      "owner": "Sarah",
+      "owner_phone_verified": 1,
+      "token": "pp_signed_sarah_91c2",
+      "registered_band": 1,
+      "approved_contact": 1
+    },
+    {
+      "agent_handle": "unverified-shopper",
+      "owner": null,
+      "owner_phone_verified": 0,
+      "token": null,
+      "registered_band": 0,
+      "approved_contact": 0
+    }
+  ],
+  "trust_events": [
+    {
+      "id": 1,
+      "ts": "2026-10-03T12:07:26",
+      "agent_handle": "t-gift-planner",
+      "requests_per_min": 1,
+      "decision": "allow",
+      "score": 1.0,
+      "layers": "{\"identity\": true, \"provenance\": true, \"history\": true, \"behavior\": true}",
+      "reasons": "[]"
+    },
+    {
+      "id": 2,
+      "ts": "2026-10-03T12:07:26",
+      "agent_handle": "unverified-shopper",
+      "requests_per_min": 40,
+      "decision": "decline",
+      "score": 0.0,
+      "layers": "{\"identity\": false, \"provenance\": false, \"history\": false, \"behavior\": false}",
+      "reasons": "[\"identity: no signed passport / owner not phone-verified\", \"provenance: unknown handle, not an approved contact\", \"history: no prior orders here\", \"behavior: 40 req/min, discount-first ask\"]"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "ts": "2026-10-03T12:07:26",
+      "source": "backend",
+      "kind": "seed",
+      "summary": "Stores reset and seeded with mock data",
+      "payload": null
+    },
+    {
+      "id": 2,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "get_top_customers(limit=3)",
+      "payload": "{\"args\": {\"limit\": 3}, \"result\": [{\"customer_id\": \"cust_t\", \"name\": \"T\", \"agent_handle\": \"t-gift-planner\", \"phone\": \"+15550100\", \"order_count\": 6, \"favorite_lines\": \"trail\"}, {\"customer_id\": \"cust_ana\", \"name\": \"Ana\", \"agent_handle\": null, \"phone\": \"+15550101\", \"order_count\": 4, \"favorite_lines\": \"camp,water\"}, {\"customer_id\": \"cust_raj\", \"name\": \"Raj\", \"agent_handle\": null, \"phone\": \"+15550102\", \"order_count\": 3, \"favorite_lines\": \"climb\"}]}"
+    },
+    {
+      "id": 3,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "score_agent_trust(agent_handle='t-gift-planner')",
+      "payload": "{\"args\": {\"agent_handle\": \"t-gift-planner\"}, \"result\": {\"agent_handle\": \"t-gift-planner\", \"decision\": \"allow\", \"score\": 1.0, \"layers\": {\"identity\": true, \"provenance\": true, \"history\": true, \"behavior\": true}, \"reasons\": []}}"
+    },
+    {
+      "id": 4,
+      "ts": "2026-10-03T12:07:26",
+      "source": "band",
+      "kind": "mock",
+      "summary": "/share_occasions",
+      "payload": "{\"request\": {\"customer_handle\": \"t-gift-planner\"}, \"response\": [{\"friend_handle\": \"sarah-gift-vouch\", \"occasion\": \"birthday\", \"occasion_date\": \"2026-10-24\", \"budget\": 60.0, \"sharing_level\": \"occasion_budget\"}, {\"friend_handle\": \"jo-no-agent\", \"occasion\": \"anniversary\", \"occasion_date\": \"2026-11-12\", \"sharing_level\": \"occasion_only\"}, {\"friend_handle\": \"sam-gift-vouch\", \"occasion\": \"housewarming\", \"occasion_date\": \"2026-12-05\", \"budget\": 50.0, \"hints\": \"new climber\", \"sharing_level\": \"occasion_budget_hints\"}]}"
+    },
+    {
+      "id": 5,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "ask_customer_occasions(customer_id='cust_t')",
+      "payload": "{\"args\": {\"customer_id\": \"cust_t\"}, \"result\": {\"customer_id\": \"cust_t\", \"occasions\": [{\"friend_handle\": \"sarah-gift-vouch\", \"occasion\": \"birthday\", \"occasion_date\": \"2026-10-24\", \"budget\": 60.0, \"sharing_level\": \"occasion_budget\"}, {\"friend_handle\": \"jo-no-agent\", \"occasion\": \"anniversary\", \"occasion_date\": \"2026-11-12\", \"sharing_level\": \"occasion_only\"}, {\"friend_handle\": \"sam-gift-vouch\", \"occasion\": \"housewarming\", \"occasion_date\": \"2026-12-05\", \"budget\": 50.0, \"hints\": \"new climber\", \"sharing_level\": \"occasion_budget_hints\"}]}}"
+    },
+    {
+      "id": 6,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "match_catalog(customer_id='cust_t', budget=60.0)",
+      "payload": "{\"args\": {\"customer_id\": \"cust_t\", \"budget\": 60.0}, \"result\": [{\"sku\": \"TR-LAMP\", \"name\": \"Trail Headlamp 400\", \"line\": \"trail\", \"price\": 55.0, \"cost\": 24.0, \"tags\": \"night,running,gift\", \"stock\": 14, \"competitor_query\": \"Black Diamond Spot 400 headlamp\"}, {\"sku\": \"TR-VEST\", \"name\": \"Trail Running Vest\", \"line\": \"trail\", \"price\": 68.0, \"cost\": 34.0, \"tags\": \"running,hydration,apparel\", \"stock\": 9, \"competitor_query\": \"Salomon ADV Skin 5 running vest\"}, {\"sku\": \"TR-BOTTLE\", \"name\": \"Insulated Trail Bottle 32oz\", \"line\": \"trail\", \"price\": 42.0, \"cost\": 15.0, \"tags\": \"hydration,gift\", \"stock\": 25, \"competitor_query\": \"Hydro Flask 32 oz Wide Mouth\"}]}"
+    },
+    {
+      "id": 7,
+      "ts": "2026-10-03T12:07:26",
+      "source": "band",
+      "kind": "mock",
+      "summary": "/vouch_for",
+      "payload": "{\"request\": {\"recipient_handle\": \"sarah-gift-vouch\", \"sku\": \"TR-LAMP\"}, \"response\": {\"sku\": \"TR-LAMP\", \"wants\": false, \"owns\": false, \"confidence\": 0.5, \"size\": null, \"contribute_signal\": true}}"
+    },
+    {
+      "id": 8,
+      "ts": "2026-10-03T12:07:26",
+      "source": "band",
+      "kind": "mock",
+      "summary": "/vouch_for",
+      "payload": "{\"request\": {\"recipient_handle\": \"sarah-gift-vouch\", \"sku\": \"TR-VEST\"}, \"response\": {\"sku\": \"TR-VEST\", \"wants\": true, \"owns\": false, \"confidence\": 0.9, \"size\": \"M\", \"contribute_signal\": true}}"
+    },
+    {
+      "id": 9,
+      "ts": "2026-10-03T12:07:26",
+      "source": "band",
+      "kind": "mock",
+      "summary": "/vouch_for",
+      "payload": "{\"request\": {\"recipient_handle\": \"sarah-gift-vouch\", \"sku\": \"TR-BOTTLE\"}, \"response\": {\"sku\": \"TR-BOTTLE\", \"wants\": false, \"owns\": true, \"confidence\": 0.9, \"size\": null, \"contribute_signal\": true}}"
+    },
+    {
+      "id": 10,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "request_vouch(recipient_handle='sarah-gift-vouch', skus=['TR-LAMP', 'TR-VEST', 'TR-BOTTLE'])",
+      "payload": "{\"args\": {\"recipient_handle\": \"sarah-gift-vouch\", \"skus\": [\"TR-LAMP\", \"TR-VEST\", \"TR-BOTTLE\"]}, \"result\": {\"vouched\": true, \"ranked\": [{\"sku\": \"TR-VEST\", \"wants\": true, \"owns\": false, \"confidence\": 0.9, \"size\": \"M\", \"contribute_signal\": true}, {\"sku\": \"TR-LAMP\", \"wants\": false, \"owns\": false, \"confidence\": 0.5, \"size\": null, \"contribute_signal\": true}], \"dropped_owned\": [\"TR-BOTTLE\"]}}"
+    },
+    {
+      "id": 11,
+      "ts": "2026-10-03T12:07:26",
+      "source": "tavily",
+      "kind": "mock",
+      "summary": "/competitor_prices",
+      "payload": "{\"request\": {\"sku\": \"TR-VEST\", \"query\": \"Salomon ADV Skin 5 running vest\", \"our_price\": 68.0}, \"response\": {\"competitors\": [{\"retailer\": \"Summit Outfitters\", \"price\": 64.0, \"url\": \"https://example.com/summit/trail-vest\"}, {\"retailer\": \"Ridge & Co\", \"price\": 72.0, \"url\": \"https://example.com/ridge/trail-vest\"}]}}"
+    },
+    {
+      "id": 12,
+      "ts": "2026-10-03T12:07:26",
+      "source": "tavily",
+      "kind": "price_check",
+      "summary": "Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%",
+      "payload": null
+    },
+    {
+      "id": 13,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "check_competitor_price(sku='TR-VEST')",
+      "payload": "{\"args\": {\"sku\": \"TR-VEST\"}, \"result\": {\"sku\": \"TR-VEST\", \"our_price\": 68.0, \"competitors\": [{\"retailer\": \"Summit Outfitters\", \"price\": 64.0, \"url\": \"https://example.com/summit/trail-vest\"}, {\"retailer\": \"Ridge & Co\", \"price\": 72.0, \"url\": \"https://example.com/ridge/trail-vest\"}], \"lowest\": 64.0, \"suggested_discount_pct\": 15, \"reason\": \"Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%\"}}"
+    },
+    {
+      "id": 14,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "make_offer(customer_id='cust_t', sku='TR-VEST', occasion_ref='sarah-gift-vouch:birthday:2026-10-24', discount_pct=15, trust_score=1.0, vouch_result={'sku': 'TR-VEST', 'wants': True, 'owns': False, 'confidence': 0.9, 'size': 'M', 'contribute_signal': True}, size='M', budget=60.0)",
+      "payload": "{\"args\": {\"customer_id\": \"cust_t\", \"sku\": \"TR-VEST\", \"occasion_ref\": \"sarah-gift-vouch:birthday:2026-10-24\", \"discount_pct\": 15, \"trust_score\": 1.0, \"vouch_result\": {\"sku\": \"TR-VEST\", \"wants\": true, \"owns\": false, \"confidence\": 0.9, \"size\": \"M\", \"contribute_signal\": true}, \"size\": \"M\", \"budget\": 60.0}, \"result\": {\"ok\": true, \"offer_id\": 1, \"final_price\": 57.8, \"discount_pct\": 15, \"reason\": \"From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off\"}}"
+    },
+    {
+      "id": 15,
+      "ts": "2026-10-03T12:07:26",
+      "source": "sms",
+      "kind": "mock",
+      "summary": "/send",
+      "payload": "{\"request\": {\"to\": \"+15550100\", \"body\": \"A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES.\"}, \"response\": {\"status\": \"delivered to fake phone\"}}"
+    },
+    {
+      "id": 16,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "send_message(customer_id='cust_t', offer_id=1, body=\"A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES.\")",
+      "payload": "{\"args\": {\"customer_id\": \"cust_t\", \"offer_id\": 1, \"body\": \"A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES.\"}, \"result\": {\"sent\": true, \"status\": \"delivered to fake phone\"}}"
+    },
+    {
+      "id": 17,
+      "ts": "2026-10-03T12:07:26",
+      "source": "backend",
+      "kind": "approval.requested",
+      "summary": "place_order for offer #1",
+      "payload": null
+    },
+    {
+      "id": 18,
+      "ts": "2026-10-03T12:07:26",
+      "source": "backend",
+      "kind": "storefront",
+      "summary": "unverified-shopper asked '15% discount please' \u2192 decline",
+      "payload": null
+    },
+    {
+      "id": 19,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "handle_storefront_request(agent_handle='unverified-shopper', ask='15% discount please', requests_per_min=40)",
+      "payload": "{\"args\": {\"agent_handle\": \"unverified-shopper\", \"ask\": \"15% discount please\", \"requests_per_min\": 40}, \"result\": {\"ask\": \"15% discount please\", \"agent_handle\": \"unverified-shopper\", \"decision\": \"decline\", \"score\": 0.0, \"layers\": {\"identity\": false, \"provenance\": false, \"history\": false, \"behavior\": false}, \"reasons\": [\"identity: no signed passport / owner not phone-verified\", \"provenance: unknown handle, not an approved contact\", \"history: no prior orders here\", \"behavior: 40 req/min, discount-first ask\"]}}"
+    },
+    {
+      "id": 20,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "forecast_from_vouches()",
+      "payload": "{\"args\": {}, \"result\": [{\"sku\": \"TR-VEST\", \"size\": \"M\", \"wants\": 9, \"owns\": 0, \"on_hand\": 3, \"name\": \"Trail Running Vest\", \"suggested_qty\": 8, \"note\": \"9 vouched wants, 3 on hand: draft PO for 8\"}, {\"sku\": \"TR-LAMP\", \"size\": \"OS\", \"wants\": 4, \"owns\": 1, \"on_hand\": 14, \"name\": \"Trail Headlamp 400\", \"suggested_qty\": 0, \"note\": \"4 vouched wants, 14 on hand\"}, {\"sku\": \"TR-VEST\", \"size\": \"L\", \"wants\": 3, \"owns\": 0, \"on_hand\": 3, \"name\": \"Trail Running Vest\", \"suggested_qty\": 0, \"note\": \"3 vouched wants, 3 on hand\"}, {\"sku\": \"AP-FLEECE\", \"size\": \"M\", \"wants\": 2, \"owns\": 0, \"on_hand\": 4, \"name\": \"Grid Fleece Quarter-Zip\", \"suggested_qty\": 0, \"note\": \"2 vouched wants, 4 on hand\"}, {\"sku\": \"TR-BOTTLE\", \"size\": \"OS\", \"wants\": 2, \"owns\": 7, \"on_hand\": 25, \"name\": \"Insulated Trail Bottle 32oz\", \"suggested_qty\": 0, \"note\": \"already-owns answers outweigh wants: don't over-order\"}, {\"sku\": \"TR-VEST\", \"size\": \"S\", \"wants\": 2, \"owns\": 1, \"on_hand\": 3, \"name\": \"Trail Running Vest\", \"suggested_qty\": 0, \"note\": \"2 vouched wants, 3 on hand\"}, {\"sku\": \"CP-MUG\", \"size\": \"OS\", \"wants\": 1, \"owns\": 0, \"on_hand\": 50, \"name\": \"Enamel Camp Mug\", \"suggested_qty\": 0, \"note\": \"1 vouched wants, 50 on hand\"}]}"
+    },
+    {
+      "id": 21,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "draft_purchase_order(sku='TR-VEST', size='M', quantity=8, reason='9 vouched wants, 3 on hand: draft PO for 8')",
+      "payload": "{\"args\": {\"sku\": \"TR-VEST\", \"size\": \"M\", \"quantity\": 8, \"reason\": \"9 vouched wants, 3 on hand: draft PO for 8\"}, \"result\": {\"po_id\": 1, \"approval_id\": 2, \"status\": \"draft\"}}"
+    },
+    {
+      "id": 22,
+      "ts": "2026-10-03T12:07:26",
+      "source": "backend",
+      "kind": "approval.approved",
+      "summary": "Place order: TR-VEST M at $57.8",
+      "payload": null
+    },
+    {
+      "id": 23,
+      "ts": "2026-10-03T12:07:26",
+      "source": "sms",
+      "kind": "mock",
+      "summary": "/send",
+      "payload": "{\"request\": {\"to\": \"+15550100\", \"body\": \"Order placed: TR-VEST (M). Tagged vouched, return risk low.\"}, \"response\": {\"status\": \"delivered to fake phone\"}}"
+    },
+    {
+      "id": 24,
+      "ts": "2026-10-03T12:07:26",
+      "source": "backend",
+      "kind": "approval.approved",
+      "summary": "PO: 8 \u00d7 TR-VEST M \u2014 9 vouched wants, 3 on hand: draft PO for 8",
+      "payload": null
+    },
+    {
+      "id": 25,
+      "ts": "2026-10-03T12:07:26",
+      "source": "capture",
+      "kind": "tool",
+      "summary": "screen_return_risk()",
+      "payload": "{\"args\": {}, \"result\": {\"orders\": [{\"order_id\": 5, \"customer_id\": \"cust_t\", \"sku\": \"TR-SOCKS\", \"size\": \"OS\", \"price\": 24.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 1, \"return_reason\": \"already owned\", \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 7, \"customer_id\": \"cust_ana\", \"sku\": \"CP-MUG\", \"size\": \"OS\", \"price\": 18.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 8, \"customer_id\": \"cust_ana\", \"sku\": \"CP-BLANKET\", \"size\": \"OS\", \"price\": 99.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 1, \"return_reason\": \"not their style\", \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 10, \"customer_id\": \"cust_ana\", \"sku\": \"CP-LANTERN\", \"size\": \"OS\", \"price\": 49.0, \"is_gift\": 1, \"vouched\": 1, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"low\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 12, \"customer_id\": \"cust_raj\", \"sku\": \"CL-HARNESS\", \"size\": \"OS\", \"price\": 75.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 1, \"return_reason\": \"wrong size\", \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 14, \"customer_id\": \"cust_mei\", \"sku\": \"AP-FLEECE\", \"size\": \"S\", \"price\": 89.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 1, \"return_reason\": \"too small\", \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 15, \"customer_id\": \"cust_mei\", \"sku\": \"TR-VEST\", \"size\": \"M\", \"price\": 68.0, \"is_gift\": 1, \"vouched\": 1, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"low\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 16, \"customer_id\": \"cust_mei\", \"sku\": \"TR-BOTTLE\", \"size\": \"OS\", \"price\": 42.0, \"is_gift\": 1, \"vouched\": 1, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"low\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 17, \"customer_id\": \"cust_lou\", \"sku\": \"CP-STOVE\", \"size\": \"OS\", \"price\": 59.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 18, \"customer_id\": \"cust_lou\", \"sku\": \"CP-HAMMOCK\", \"size\": \"OS\", \"price\": 79.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 1, \"return_reason\": \"duplicate gift\", \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 19, \"customer_id\": \"cust_kim\", \"sku\": \"AP-SHELL\", \"size\": \"L\", \"price\": 139.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 1, \"return_reason\": \"wrong color\", \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 20, \"customer_id\": \"cust_kim\", \"sku\": \"AP-BEANIE\", \"size\": \"OS\", \"price\": 32.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 21, \"customer_id\": \"cust_mei\", \"sku\": \"TR-SOCKS\", \"size\": \"OS\", \"price\": 24.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 22, \"customer_id\": \"cust_ana\", \"sku\": \"WA-TOWEL\", \"size\": \"OS\", \"price\": 29.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 23, \"customer_id\": \"cust_lou\", \"sku\": \"CP-MUG\", \"size\": \"OS\", \"price\": 18.0, \"is_gift\": 1, \"vouched\": 0, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"medium\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 24, \"customer_id\": \"cust_raj\", \"sku\": \"CL-CHALK\", \"size\": \"OS\", \"price\": 26.0, \"is_gift\": 1, \"vouched\": 1, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"low\", \"offer_id\": null, \"created_at\": \"2026-09-01\"}, {\"order_id\": 25, \"customer_id\": \"cust_t\", \"sku\": \"TR-VEST\", \"size\": \"M\", \"price\": 57.8, \"is_gift\": 1, \"vouched\": 1, \"returned\": 0, \"return_reason\": null, \"return_risk\": \"low\", \"offer_id\": 1, \"created_at\": \"2026-10-03T12:07:26\"}], \"gift_return_rates\": {\"unvouched\": 0.5, \"vouched\": 0.0}}}"
+    },
+    {
+      "id": 26,
+      "ts": "2026-10-03T12:07:26",
+      "source": "tavily",
+      "kind": "mock",
+      "summary": "/competitor_prices",
+      "payload": "{\"request\": {\"sku\": \"TR-VEST\", \"query\": \"Salomon ADV Skin 5 running vest\", \"our_price\": 68.0}, \"response\": {\"competitors\": [{\"retailer\": \"Summit Outfitters\", \"price\": 64.0, \"url\": \"https://example.com/summit/trail-vest\"}, {\"retailer\": \"Ridge & Co\", \"price\": 72.0, \"url\": \"https://example.com/ridge/trail-vest\"}]}}"
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "ts": "2026-10-03T12:07:26",
+      "direction": "out",
+      "party": "T",
+      "body": "A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES.",
+      "offer_id": 1
+    },
+    {
+      "id": 2,
+      "ts": "2026-10-03T12:07:26",
+      "direction": "in",
+      "party": "T",
+      "body": "YES",
+      "offer_id": null
+    },
+    {
+      "id": 3,
+      "ts": "2026-10-03T12:07:26",
+      "direction": "out",
+      "party": "T",
+      "body": "Order placed: TR-VEST (M). Tagged vouched, return risk low.",
+      "offer_id": null
+    }
+  ],
+  "approvals": [
+    {
+      "id": 1,
+      "ts": "2026-10-03T12:07:26",
+      "kind": "order",
+      "ref_id": 1,
+      "summary": "Place order: TR-VEST M at $57.8",
+      "status": "approved",
+      "resolved_at": "2026-10-03T12:07:26"
+    },
+    {
+      "id": 2,
+      "ts": "2026-10-03T12:07:26",
+      "kind": "purchase_order",
+      "ref_id": 1,
+      "summary": "PO: 8 \u00d7 TR-VEST M \u2014 9 vouched wants, 3 on hand: draft PO for 8",
+      "status": "approved",
+      "resolved_at": "2026-10-03T12:07:26"
+    }
+  ]
+}

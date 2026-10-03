@@ -1,0 +1,266 @@
+[
+  {
+    "name": "get_top_customers",
+    "description": "Top customers from the merchant's own order history.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "score_agent_trust",
+    "description": "Four simulated KYA layers: identity, provenance, history, behavior.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "agent_handle": {
+          "type": "string"
+        },
+        "requests_per_min": {
+          "type": "integer"
+        },
+        "discount_first": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "agent_handle"
+      ]
+    }
+  },
+  {
+    "name": "ask_customer_occasions",
+    "description": "Consent room: ask the customer's agent; get back only what their sharing level allows.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "customer_id"
+      ]
+    }
+  },
+  {
+    "name": "match_catalog",
+    "description": "Candidates from the customer's favorite lines, in stock, near budget.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string"
+        },
+        "budget": {
+          "type": "number"
+        },
+        "hints": {
+          "type": "string"
+        },
+        "k": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "customer_id"
+      ]
+    }
+  },
+  {
+    "name": "request_vouch",
+    "description": "Vouch room: the recipient's agent answers wants/owns/confidence per SKU. Opted-in answers are added to anonymous per-SKU/size counts (no person ids).",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "recipient_handle": {
+          "type": "string"
+        },
+        "skus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "recipient_handle",
+        "skus"
+      ]
+    }
+  },
+  {
+    "name": "check_competitor_price",
+    "description": "Tavily price check that sets the discount.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "sku": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "sku"
+      ]
+    }
+  },
+  {
+    "name": "make_offer",
+    "description": "Outcome rubric: passing trust, in stock, within budget, above margin floor, one-line reason.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "occasion_ref": {
+          "type": "string"
+        },
+        "discount_pct": {
+          "type": "number"
+        },
+        "trust_score": {
+          "type": "number"
+        },
+        "vouch_result": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "size": {
+          "type": "string"
+        },
+        "budget": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "customer_id",
+        "sku",
+        "occasion_ref",
+        "discount_pct",
+        "trust_score"
+      ]
+    }
+  },
+  {
+    "name": "send_message",
+    "description": "Text the customer (Twilio bridge or fake phone panel).",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "offer_id": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "customer_id",
+        "body"
+      ]
+    }
+  },
+  {
+    "name": "place_order",
+    "description": "Opens the approval gate; the order is created only when a human approves.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "offer_id": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "offer_id"
+      ]
+    }
+  },
+  {
+    "name": "screen_return_risk",
+    "description": "Vouched gift orders = low risk; unvouched gift orders = medium.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "handle_storefront_request",
+    "description": "An unknown agent asks for a discount at the storefront; trust check decides.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "agent_handle": {
+          "type": "string"
+        },
+        "ask": {
+          "type": "string"
+        },
+        "requests_per_min": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "agent_handle",
+        "ask"
+      ]
+    }
+  },
+  {
+    "name": "forecast_from_vouches",
+    "description": "Anonymous vouch counts per SKU/size vs. stock.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "safety_stock": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    }
+  },
+  {
+    "name": "draft_purchase_order",
+    "description": "Draft PO behind the approval gate.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "sku": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "sku",
+        "size",
+        "quantity"
+      ]
+    }
+  }
+]

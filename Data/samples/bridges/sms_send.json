@@ -1,0 +1,10 @@
+{
+  "endpoint": "POST {SMS_BRIDGE_URL}/send",
+  "input": {
+    "to": "+15550100",
+    "body": "\u2026Reply YES."
+  },
+  "output": {
+    "status": "delivered"
+  }
+}

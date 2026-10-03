@@ -1,0 +1,26 @@
+{
+  "product": "Patagonia Nano Puff Vest men",
+  "our_price": 149.0,
+  "lowest_competitor": 99.98,
+  "gap": 49.02,
+  "competitors": [
+    {
+      "retailer": "halfmoonoutfitters.com",
+      "price": 99.98,
+      "url": "https://www.halfmoonoutfitters.com/products/pat_ms_84242"
+    },
+    {
+      "retailer": "backcountry.com",
+      "price": 149.25,
+      "url": "https://www.backcountry.com/patagonia-nano-puff-vest-mens"
+    },
+    {
+      "retailer": "pinnaclepromotions.com",
+      "price": 268.0,
+      "url": "https://www.pinnaclepromotions.com/patagoniar-men-s-nano-puff-vest.html"
+    }
+  ],
+  "tavily_answer": "The sources provide varying prices for the Patagonia Nano Puff Vest for Men. Half-Moon Outfitters lists it for $99.98, while Backcountry.com shows a price range from $149.25 to $199.00. Pinnacle Promotions offers bulk pricing starting at $268.00 for 12 units, decreasing to $230.08 for 144 units. High Country Outfitters lists it from $189.00. The Dick's Sporting Goods listing does not provide a specific price.",
+  "label": "Tavily: Patagonia Nano Puff Vest men at 3 competitors, lowest $99.98",
+  "source": "tavily_live"
+}

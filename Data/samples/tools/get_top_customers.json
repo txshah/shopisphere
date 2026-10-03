@@ -1,0 +1,33 @@
+{
+  "tool": "get_top_customers",
+  "endpoint": "POST /api/tools/get_top_customers",
+  "input": {
+    "limit": 3
+  },
+  "output": [
+    {
+      "customer_id": "cust_t",
+      "name": "T",
+      "agent_handle": "t-gift-planner",
+      "phone": "+15550100",
+      "order_count": 6,
+      "favorite_lines": "trail"
+    },
+    {
+      "customer_id": "cust_ana",
+      "name": "Ana",
+      "agent_handle": null,
+      "phone": "+15550101",
+      "order_count": 4,
+      "favorite_lines": "camp,water"
+    },
+    {
+      "customer_id": "cust_raj",
+      "name": "Raj",
+      "agent_handle": null,
+      "phone": "+15550102",
+      "order_count": 3,
+      "favorite_lines": "climb"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "sarah_profile": [
+    {
+      "id": 1,
+      "likes": "[\"TR-VEST\", \"trail running\", \"bright colors\"]",
+      "owns": "[\"TR-BOTTLE\"]",
+      "sizes": "{\"apparel\": \"M\"}",
+      "contributes_signals": 1
+    }
+  ]
+}

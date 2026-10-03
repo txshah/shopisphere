@@ -1,0 +1,28 @@
+{
+  "tool": "make_offer",
+  "endpoint": "POST /api/tools/make_offer",
+  "input": {
+    "customer_id": "cust_t",
+    "sku": "TR-VEST",
+    "occasion_ref": "sarah-gift-vouch:birthday:2026-10-24",
+    "discount_pct": 15,
+    "trust_score": 1.0,
+    "vouch_result": {
+      "sku": "TR-VEST",
+      "wants": true,
+      "owns": false,
+      "confidence": 0.9,
+      "size": "M",
+      "contribute_signal": true
+    },
+    "size": "M",
+    "budget": 60.0
+  },
+  "output": {
+    "ok": true,
+    "offer_id": 1,
+    "final_price": 57.8,
+    "discount_pct": 15,
+    "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off"
+  }
+}

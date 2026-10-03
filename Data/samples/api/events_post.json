@@ -1,0 +1,14 @@
+{
+  "endpoint": "POST /api/events",
+  "input": {
+    "source": "band",
+    "kind": "room.message",
+    "summary": "Sarah's Gift Vouch: wants TR-VEST (0.9)",
+    "payload": {
+      "room_id": "\u2026"
+    }
+  },
+  "output": {
+    "ok": true
+  }
+}

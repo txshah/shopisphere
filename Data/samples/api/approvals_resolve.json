@@ -1,0 +1,18 @@
+{
+  "endpoint": "POST /api/approvals/<id>",
+  "input": {
+    "decision": "approve"
+  },
+  "output": [
+    {
+      "approval_id": 1,
+      "status": "approved",
+      "order_id": 25,
+      "return_risk": "low"
+    },
+    {
+      "approval_id": 2,
+      "status": "approved"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "product": "Hydro Flask 32 oz Wide Mouth bottle",
+  "our_price": 45.0,
+  "lowest_competitor": 44.95,
+  "gap": 0.05,
+  "competitors": [
+    {
+      "retailer": "eastsidesports.com",
+      "price": 44.95,
+      "url": "https://eastsidesports.com/products/hydroflask-wide-mouth"
+    },
+    {
+      "retailer": "hydroflask.com",
+      "price": 44.95,
+      "url": "https://www.hydroflask.com/32-oz-wide-mouth"
+    }
+  ],
+  "tavily_answer": "The Hydro Flask 32 oz Wide Mouth bottle is priced at $44.95 on Eastside Sports and Hydro Flask's official website. However, the product is out of stock on Hydro Flask's main page, and the price on the shop page is listed as $32.95. The price on the 32 oz Travel Bottle with Flex Straw Cap page is also $44.95. The sources do not provide a definitive answer to the current price due to stock status and potential price variations.",
+  "label": "Tavily: Hydro Flask 32 oz Wide Mouth bottle at 2 competitors, lowest $44.95",
+  "source": "tavily_live"
+}

@@ -1,0 +1,869 @@
+{
+  "merchant_customers": [
+    {
+      "customer_id": "cust_t",
+      "name": "T",
+      "agent_handle": "t-gift-planner",
+      "phone": "+15550100",
+      "order_count": 6,
+      "favorite_lines": "trail"
+    },
+    {
+      "customer_id": "cust_ana",
+      "name": "Ana",
+      "agent_handle": null,
+      "phone": "+15550101",
+      "order_count": 4,
+      "favorite_lines": "camp,water"
+    },
+    {
+      "customer_id": "cust_raj",
+      "name": "Raj",
+      "agent_handle": null,
+      "phone": "+15550102",
+      "order_count": 3,
+      "favorite_lines": "climb"
+    },
+    {
+      "customer_id": "cust_mei",
+      "name": "Mei",
+      "agent_handle": null,
+      "phone": "+15550103",
+      "order_count": 3,
+      "favorite_lines": "trail,apparel"
+    },
+    {
+      "customer_id": "cust_lou",
+      "name": "Lou",
+      "agent_handle": null,
+      "phone": "+15550104",
+      "order_count": 2,
+      "favorite_lines": "camp"
+    },
+    {
+      "customer_id": "cust_kim",
+      "name": "Kim",
+      "agent_handle": null,
+      "phone": "+15550105",
+      "order_count": 1,
+      "favorite_lines": "apparel"
+    }
+  ],
+  "catalog": [
+    {
+      "sku": "TR-VEST",
+      "name": "Trail Running Vest",
+      "line": "trail",
+      "price": 68.0,
+      "cost": 34.0,
+      "tags": "running,hydration,apparel",
+      "stock": 9,
+      "competitor_query": "Salomon ADV Skin 5 running vest"
+    },
+    {
+      "sku": "TR-BOTTLE",
+      "name": "Insulated Trail Bottle 32oz",
+      "line": "trail",
+      "price": 42.0,
+      "cost": 15.0,
+      "tags": "hydration,gift",
+      "stock": 25,
+      "competitor_query": "Hydro Flask 32 oz Wide Mouth"
+    },
+    {
+      "sku": "TR-LAMP",
+      "name": "Trail Headlamp 400",
+      "line": "trail",
+      "price": 55.0,
+      "cost": 24.0,
+      "tags": "night,running,gift",
+      "stock": 14,
+      "competitor_query": "Black Diamond Spot 400 headlamp"
+    },
+    {
+      "sku": "TR-CAP",
+      "name": "Trail Running Cap",
+      "line": "trail",
+      "price": 28.0,
+      "cost": 9.0,
+      "tags": "running,apparel",
+      "stock": 30,
+      "competitor_query": null
+    },
+    {
+      "sku": "TR-SOCKS",
+      "name": "Merino Trail Socks (3pk)",
+      "line": "trail",
+      "price": 24.0,
+      "cost": 8.0,
+      "tags": "running,apparel,gift",
+      "stock": 40,
+      "competitor_query": null
+    },
+    {
+      "sku": "TR-POLES",
+      "name": "Carbon Trekking Poles",
+      "line": "trail",
+      "price": 129.0,
+      "cost": 61.0,
+      "tags": "hiking",
+      "stock": 6,
+      "competitor_query": null
+    },
+    {
+      "sku": "TR-GAITERS",
+      "name": "Trail Gaiters",
+      "line": "trail",
+      "price": 32.0,
+      "cost": 11.0,
+      "tags": "running",
+      "stock": 12,
+      "competitor_query": null
+    },
+    {
+      "sku": "CP-MUG",
+      "name": "Enamel Camp Mug",
+      "line": "camp",
+      "price": 18.0,
+      "cost": 5.0,
+      "tags": "camp,gift",
+      "stock": 50,
+      "competitor_query": null
+    },
+    {
+      "sku": "CP-LANTERN",
+      "name": "Rechargeable Camp Lantern",
+      "line": "camp",
+      "price": 49.0,
+      "cost": 20.0,
+      "tags": "camp,night",
+      "stock": 10,
+      "competitor_query": null
+    },
+    {
+      "sku": "CP-HAMMOCK",
+      "name": "Ultralight Hammock",
+      "line": "camp",
+      "price": 79.0,
+      "cost": 33.0,
+      "tags": "camp,relax",
+      "stock": 7,
+      "competitor_query": null
+    },
+    {
+      "sku": "CP-STOVE",
+      "name": "Pocket Camp Stove",
+      "line": "camp",
+      "price": 59.0,
+      "cost": 26.0,
+      "tags": "camp,cooking",
+      "stock": 8,
+      "competitor_query": null
+    },
+    {
+      "sku": "CP-BLANKET",
+      "name": "Packable Down Blanket",
+      "line": "camp",
+      "price": 99.0,
+      "cost": 45.0,
+      "tags": "camp,gift",
+      "stock": 5,
+      "competitor_query": null
+    },
+    {
+      "sku": "CL-CHALK",
+      "name": "Chalk Bag + Chalk",
+      "line": "climb",
+      "price": 26.0,
+      "cost": 8.0,
+      "tags": "climbing,gift",
+      "stock": 22,
+      "competitor_query": null
+    },
+    {
+      "sku": "CL-BRUSH",
+      "name": "Boar-Hair Climbing Brush Set",
+      "line": "climb",
+      "price": 16.0,
+      "cost": 4.0,
+      "tags": "climbing",
+      "stock": 18,
+      "competitor_query": null
+    },
+    {
+      "sku": "CL-HARNESS",
+      "name": "All-Round Harness",
+      "line": "climb",
+      "price": 75.0,
+      "cost": 36.0,
+      "tags": "climbing",
+      "stock": 6,
+      "competitor_query": null
+    },
+    {
+      "sku": "WA-DRYBAG",
+      "name": "Roll-Top Dry Bag 20L",
+      "line": "water",
+      "price": 35.0,
+      "cost": 12.0,
+      "tags": "paddling,gift",
+      "stock": 20,
+      "competitor_query": null
+    },
+    {
+      "sku": "WA-TOWEL",
+      "name": "Quick-Dry Towel",
+      "line": "water",
+      "price": 29.0,
+      "cost": 9.0,
+      "tags": "travel,gift",
+      "stock": 35,
+      "competitor_query": null
+    },
+    {
+      "sku": "AP-FLEECE",
+      "name": "Grid Fleece Quarter-Zip",
+      "line": "apparel",
+      "price": 89.0,
+      "cost": 38.0,
+      "tags": "apparel,layering",
+      "stock": 11,
+      "competitor_query": null
+    },
+    {
+      "sku": "AP-BEANIE",
+      "name": "Merino Beanie",
+      "line": "apparel",
+      "price": 32.0,
+      "cost": 10.0,
+      "tags": "apparel,gift",
+      "stock": 28,
+      "competitor_query": null
+    },
+    {
+      "sku": "AP-SHELL",
+      "name": "Packable Rain Shell",
+      "line": "apparel",
+      "price": 139.0,
+      "cost": 64.0,
+      "tags": "apparel,rain",
+      "stock": 4,
+      "competitor_query": null
+    }
+  ],
+  "orders": [
+    {
+      "order_id": 1,
+      "customer_id": "cust_t",
+      "sku": "TR-CAP",
+      "size": "OS",
+      "price": 28.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 2,
+      "customer_id": "cust_t",
+      "sku": "TR-SOCKS",
+      "size": "OS",
+      "price": 24.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 3,
+      "customer_id": "cust_t",
+      "sku": "TR-GAITERS",
+      "size": "OS",
+      "price": 32.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 4,
+      "customer_id": "cust_t",
+      "sku": "TR-POLES",
+      "size": "OS",
+      "price": 129.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 5,
+      "customer_id": "cust_t",
+      "sku": "TR-SOCKS",
+      "size": "OS",
+      "price": 24.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 1,
+      "return_reason": "already owned",
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 6,
+      "customer_id": "cust_t",
+      "sku": "TR-LAMP",
+      "size": "OS",
+      "price": 55.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 7,
+      "customer_id": "cust_ana",
+      "sku": "CP-MUG",
+      "size": "OS",
+      "price": 18.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 8,
+      "customer_id": "cust_ana",
+      "sku": "CP-BLANKET",
+      "size": "OS",
+      "price": 99.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 1,
+      "return_reason": "not their style",
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 9,
+      "customer_id": "cust_ana",
+      "sku": "WA-DRYBAG",
+      "size": "OS",
+      "price": 35.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 10,
+      "customer_id": "cust_ana",
+      "sku": "CP-LANTERN",
+      "size": "OS",
+      "price": 49.0,
+      "is_gift": 1,
+      "vouched": 1,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "low",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 11,
+      "customer_id": "cust_raj",
+      "sku": "CL-CHALK",
+      "size": "OS",
+      "price": 26.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 12,
+      "customer_id": "cust_raj",
+      "sku": "CL-HARNESS",
+      "size": "OS",
+      "price": 75.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 1,
+      "return_reason": "wrong size",
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 13,
+      "customer_id": "cust_raj",
+      "sku": "CL-BRUSH",
+      "size": "OS",
+      "price": 16.0,
+      "is_gift": 0,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": null,
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 14,
+      "customer_id": "cust_mei",
+      "sku": "AP-FLEECE",
+      "size": "S",
+      "price": 89.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 1,
+      "return_reason": "too small",
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 15,
+      "customer_id": "cust_mei",
+      "sku": "TR-VEST",
+      "size": "M",
+      "price": 68.0,
+      "is_gift": 1,
+      "vouched": 1,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "low",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 16,
+      "customer_id": "cust_mei",
+      "sku": "TR-BOTTLE",
+      "size": "OS",
+      "price": 42.0,
+      "is_gift": 1,
+      "vouched": 1,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "low",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 17,
+      "customer_id": "cust_lou",
+      "sku": "CP-STOVE",
+      "size": "OS",
+      "price": 59.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 18,
+      "customer_id": "cust_lou",
+      "sku": "CP-HAMMOCK",
+      "size": "OS",
+      "price": 79.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 1,
+      "return_reason": "duplicate gift",
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 19,
+      "customer_id": "cust_kim",
+      "sku": "AP-SHELL",
+      "size": "L",
+      "price": 139.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 1,
+      "return_reason": "wrong color",
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 20,
+      "customer_id": "cust_kim",
+      "sku": "AP-BEANIE",
+      "size": "OS",
+      "price": 32.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 21,
+      "customer_id": "cust_mei",
+      "sku": "TR-SOCKS",
+      "size": "OS",
+      "price": 24.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 22,
+      "customer_id": "cust_ana",
+      "sku": "WA-TOWEL",
+      "size": "OS",
+      "price": 29.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 23,
+      "customer_id": "cust_lou",
+      "sku": "CP-MUG",
+      "size": "OS",
+      "price": 18.0,
+      "is_gift": 1,
+      "vouched": 0,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "medium",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 24,
+      "customer_id": "cust_raj",
+      "sku": "CL-CHALK",
+      "size": "OS",
+      "price": 26.0,
+      "is_gift": 1,
+      "vouched": 1,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "low",
+      "offer_id": null,
+      "created_at": "2026-09-01"
+    },
+    {
+      "order_id": 25,
+      "customer_id": "cust_t",
+      "sku": "TR-VEST",
+      "size": "M",
+      "price": 57.8,
+      "is_gift": 1,
+      "vouched": 1,
+      "returned": 0,
+      "return_reason": null,
+      "return_risk": "low",
+      "offer_id": 1,
+      "created_at": "2026-10-03T12:07:26"
+    }
+  ],
+  "offers": [
+    {
+      "offer_id": 1,
+      "customer_id": "cust_t",
+      "occasion_ref": "sarah-gift-vouch:birthday:2026-10-24",
+      "sku": "TR-VEST",
+      "size": "M",
+      "price": 68.0,
+      "discount_pct": 15.0,
+      "final_price": 57.8,
+      "vouch_result": "{\"sku\": \"TR-VEST\", \"wants\": true, \"owns\": false, \"confidence\": 0.9, \"size\": \"M\", \"contribute_signal\": true}",
+      "trust_score": 1.0,
+      "reason": "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off",
+      "status": "ordered",
+      "created_at": "2026-10-03T12:07:26"
+    }
+  ],
+  "vouch_signals": [
+    {
+      "sku": "TR-VEST",
+      "size": "M",
+      "time_window": "2026-Q4",
+      "wants": 9,
+      "owns": 0
+    },
+    {
+      "sku": "TR-VEST",
+      "size": "L",
+      "time_window": "2026-Q4",
+      "wants": 3,
+      "owns": 0
+    },
+    {
+      "sku": "TR-VEST",
+      "size": "S",
+      "time_window": "2026-Q4",
+      "wants": 2,
+      "owns": 1
+    },
+    {
+      "sku": "TR-BOTTLE",
+      "size": "OS",
+      "time_window": "2026-Q4",
+      "wants": 2,
+      "owns": 7
+    },
+    {
+      "sku": "TR-LAMP",
+      "size": "OS",
+      "time_window": "2026-Q4",
+      "wants": 4,
+      "owns": 1
+    },
+    {
+      "sku": "AP-FLEECE",
+      "size": "M",
+      "time_window": "2026-Q4",
+      "wants": 2,
+      "owns": 0
+    },
+    {
+      "sku": "CP-MUG",
+      "size": "OS",
+      "time_window": "2026-Q4",
+      "wants": 1,
+      "owns": 0
+    }
+  ],
+  "inventory": [
+    {
+      "sku": "TR-VEST",
+      "size": "S",
+      "on_hand": 3,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "TR-VEST",
+      "size": "M",
+      "on_hand": 2,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "TR-VEST",
+      "size": "L",
+      "on_hand": 3,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "TR-BOTTLE",
+      "size": "OS",
+      "on_hand": 25,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "TR-LAMP",
+      "size": "OS",
+      "on_hand": 14,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "TR-CAP",
+      "size": "OS",
+      "on_hand": 30,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "TR-SOCKS",
+      "size": "OS",
+      "on_hand": 40,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "TR-POLES",
+      "size": "OS",
+      "on_hand": 6,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "TR-GAITERS",
+      "size": "OS",
+      "on_hand": 12,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CP-MUG",
+      "size": "OS",
+      "on_hand": 50,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CP-LANTERN",
+      "size": "OS",
+      "on_hand": 10,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CP-HAMMOCK",
+      "size": "OS",
+      "on_hand": 7,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CP-STOVE",
+      "size": "OS",
+      "on_hand": 8,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CP-BLANKET",
+      "size": "OS",
+      "on_hand": 5,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CL-CHALK",
+      "size": "OS",
+      "on_hand": 22,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CL-BRUSH",
+      "size": "OS",
+      "on_hand": 18,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "CL-HARNESS",
+      "size": "OS",
+      "on_hand": 6,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "WA-DRYBAG",
+      "size": "OS",
+      "on_hand": 20,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "WA-TOWEL",
+      "size": "OS",
+      "on_hand": 35,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "AP-FLEECE",
+      "size": "S",
+      "on_hand": 4,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "AP-FLEECE",
+      "size": "M",
+      "on_hand": 4,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "AP-FLEECE",
+      "size": "L",
+      "on_hand": 3,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "AP-BEANIE",
+      "size": "OS",
+      "on_hand": 28,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 10
+    },
+    {
+      "sku": "AP-SHELL",
+      "size": "S",
+      "on_hand": 4,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "AP-SHELL",
+      "size": "M",
+      "on_hand": 4,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    },
+    {
+      "sku": "AP-SHELL",
+      "size": "L",
+      "on_hand": 3,
+      "supplier": "Summit Supply Co",
+      "lead_time_days": 14
+    }
+  ],
+  "purchase_orders": [
+    {
+      "po_id": 1,
+      "sku": "TR-VEST",
+      "size": "M",
+      "quantity": 8,
+      "reason": "9 vouched wants, 3 on hand: draft PO for 8",
+      "status": "approved",
+      "created_at": "2026-10-03T12:07:26"
+    }
+  ]
+}

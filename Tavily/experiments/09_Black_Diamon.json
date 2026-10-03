@@ -1,0 +1,21 @@
+{
+  "product": "Black Diamond Spot 400 headlamp",
+  "our_price": 64.0,
+  "lowest_competitor": 59.95,
+  "gap": 4.05,
+  "competitors": [
+    {
+      "retailer": "blackdiamondequipment.com",
+      "price": 59.95,
+      "url": "https://blackdiamondequipment.com/products/spot-400-headlamp"
+    },
+    {
+      "retailer": "karstsports.com",
+      "price": 69.95,
+      "url": "https://karstsports.com/black-diamond-spot-400-r-headlamp"
+    }
+  ],
+  "tavily_answer": "The Black Diamond Spot 400 headlamp has a regular price of $59.95 USD according to Black Diamond's official website, but it is currently out of stock. On another retailer's site, the Spot 400-R Headlamp is listed with an MSRP of $69.95, but it is also out of stock. Another listing on Black Diamond's collection page shows the Spot 400 Headlamp with a regular price of $59.95 USD, and the Spot 400-R Rechargeable Headlamp is listed with a regular price of $63.96 USD. The sources do not provide a definitive answer on the current price of the Spot 400 Headlamp.",
+  "label": "Tavily: Black Diamond Spot 400 headlamp at 2 competitors, lowest $59.95",
+  "source": "tavily_live"
+}

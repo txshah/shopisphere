@@ -1,0 +1,12 @@
+{
+  "endpoint": "POST /api/phone/reply",
+  "input": {
+    "body": "YES",
+    "customer_id": "cust_t"
+  },
+  "output": {
+    "accepted": true,
+    "approval_id": 1,
+    "status": "pending"
+  }
+}

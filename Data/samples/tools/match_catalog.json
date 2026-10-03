@@ -1,0 +1,40 @@
+{
+  "tool": "match_catalog",
+  "endpoint": "POST /api/tools/match_catalog",
+  "input": {
+    "customer_id": "cust_t",
+    "budget": 60.0
+  },
+  "output": [
+    {
+      "sku": "TR-LAMP",
+      "name": "Trail Headlamp 400",
+      "line": "trail",
+      "price": 55.0,
+      "cost": 24.0,
+      "tags": "night,running,gift",
+      "stock": 14,
+      "competitor_query": "Black Diamond Spot 400 headlamp"
+    },
+    {
+      "sku": "TR-VEST",
+      "name": "Trail Running Vest",
+      "line": "trail",
+      "price": 68.0,
+      "cost": 34.0,
+      "tags": "running,hydration,apparel",
+      "stock": 9,
+      "competitor_query": "Salomon ADV Skin 5 running vest"
+    },
+    {
+      "sku": "TR-BOTTLE",
+      "name": "Insulated Trail Bottle 32oz",
+      "line": "trail",
+      "price": 42.0,
+      "cost": 15.0,
+      "tags": "hydration,gift",
+      "stock": 25,
+      "competitor_query": "Hydro Flask 32 oz Wide Mouth"
+    }
+  ]
+}

@@ -1,0 +1,752 @@
+[
+  {
+    "model": "litellm/claude-fable-5",
+    "display_name": "Claude Fable 5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-haiku-4-5",
+    "display_name": "Claude Haiku 4.5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-opus-4-8",
+    "display_name": "Claude Opus 4.8",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-opus-5",
+    "display_name": "Claude Opus 5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-sonnet-4-6",
+    "display_name": "Claude Sonnet 4.6",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-sonnet-5",
+    "display_name": "Claude Sonnet 5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/deepseek-v4-pro",
+    "display_name": "DeepSeek V4 Pro",
+    "family": "deepseek",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gemini-3-flash-preview",
+    "display_name": "Gemini 3 Flash Preview",
+    "family": "google",
+    "api": "google-vertex",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active",
+    "default_for": [
+      "imageModel"
+    ]
+  },
+  {
+    "model": "litellm/gemini-3.1-flash-lite",
+    "display_name": "Gemini 3.1 Flash Lite",
+    "family": "google",
+    "api": "google-vertex",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gemini-3.1-flash-tts-preview",
+    "display_name": "Gemini 3.1 Flash TTS Preview",
+    "family": "google",
+    "api": "anthropic-messages",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gemini-3.1-pro-preview",
+    "display_name": "Gemini 3.1 Pro Preview",
+    "family": "google",
+    "api": "google-vertex",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gemini-3.8-flash",
+    "display_name": "Gemini 3.8 Flash",
+    "family": "google",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/glm-5",
+    "display_name": "GLM 5",
+    "family": "zhipu",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/glm-5.2",
+    "display_name": "GLM 5.2",
+    "family": "zhipu",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/glm-5.3-flash",
+    "display_name": "GLM 5.3 Flash",
+    "family": "zhipu",
+    "api": "openai-completions",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1310720,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-5.5",
+    "display_name": "GPT 5.5",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-5.6-luna",
+    "display_name": "GPT 5.6 Luna",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-5.6-sol",
+    "display_name": "GPT 5.6 Sol",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-5.6-terra",
+    "display_name": "GPT 5.6 Terra",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active",
+    "default_for": [
+      "model",
+      "pdfModel"
+    ]
+  },
+  {
+    "model": "litellm/grok-4.5",
+    "display_name": "Grok 4.5",
+    "family": "xai",
+    "api": "openai-completions",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 500000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/grok-4.6",
+    "display_name": "Grok 4.6",
+    "family": "xai",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 500000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/grok-build-0.1",
+    "display_name": "Grok Build 0.1",
+    "family": "xai",
+    "api": "openai-completions",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 256000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/kimi-k2.6",
+    "display_name": "Kimi K2.6",
+    "family": "moonshot",
+    "api": "anthropic-messages",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/qwen35-122B",
+    "display_name": "Qwen 3.5 122B",
+    "family": "alibaba",
+    "api": "anthropic-messages",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/deepseek-v4-flash-0731",
+    "display_name": "DeepSeek V4 Flash 0731",
+    "family": "deepseek",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/deepseek-v4-flash-vision-exp",
+    "display_name": "DeepSeek V4 Flash Vision Exp",
+    "family": "deepseek",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": "2026-09-17T13:21:40.283Z",
+    "expired_fallback_to": "litellm/deepseek-flash",
+    "retired_at": null,
+    "revision": 6,
+    "retire_not_before": "2026-09-24T13:21:40.283Z",
+    "selectable": false,
+    "lifecycle_status": "draining"
+  },
+  {
+    "model": "litellm/qwen3.8-max",
+    "display_name": "Qwen 3.8 Max",
+    "family": "alibaba",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/agent-studio-sonnet-4-6",
+    "display_name": "Agent Studio Sonnet 4.6",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/agent-studio-sonnet-5",
+    "display_name": "Agent Studio Sonnet 5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/dola-seed-2.1-turbo",
+    "display_name": "Dola Seed 2.1 Turbo",
+    "family": "bytedance",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/seed-2.0-mini",
+    "display_name": "Seed 2.0 Mini",
+    "family": "bytedance",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 200000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/kimi-k3",
+    "display_name": "Kimi K3",
+    "family": "moonshot",
+    "api": "openai-completions",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-fable-5-1",
+    "display_name": "Claude Fable 5.1",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-6-astra",
+    "display_name": "GPT-6 Astra",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 922000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/glm-5.3",
+    "display_name": "GLM-5.3",
+    "family": "zhipu",
+    "api": "openai-completions",
+    "input": [
+      "text"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/deepseek-flash",
+    "display_name": "DeepSeek Flash Latest",
+    "family": "deepseek",
+    "api": "openai-completions",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1048576,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 5,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-opus-5-5",
+    "display_name": "Claude Opus 5.5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 4,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-6-luna",
+    "display_name": "GPT-6 Luna",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 922000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 4,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-6-sol",
+    "display_name": "GPT-6 Sol",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 922000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 4,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/claude-sonnet-5-5",
+    "display_name": "Claude Sonnet 5.5",
+    "family": "anthropic",
+    "api": "anthropic-messages",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 1000000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 2,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/grok-4.7",
+    "display_name": "Grok 4.7",
+    "family": "xai",
+    "api": "openai-completions",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 500000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 2,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  },
+  {
+    "model": "litellm/gpt-6.1-sol",
+    "display_name": "GPT-6.1 Sol",
+    "family": "openai",
+    "api": "openai-responses",
+    "input": [
+      "text",
+      "image"
+    ],
+    "context_window_tokens": 922000,
+    "expired_at": null,
+    "expired_fallback_to": null,
+    "retired_at": null,
+    "revision": 1,
+    "retire_not_before": null,
+    "selectable": true,
+    "lifecycle_status": "active"
+  }
+]

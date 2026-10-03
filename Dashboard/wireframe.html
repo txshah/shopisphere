@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopisphere Run Editor</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* Run editor. Tokens, fonts, nav, buttons and chips come from theme.css. */
+  /* Hero */
+  .hero { background: var(--hero-grad); padding: 56px 0 40px; }
+  .hero h1 { font-size: clamp(48px, 8vw, 112px); line-height: 0.92; letter-spacing: -0.035em; margin: 0 0 20px; max-width: 12ch; }
+  .hero p { font-size: 18px; color: var(--ink-2); max-width: 56ch; margin: 0 0 28px; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .tile { background: var(--panel); border-radius: var(--r-l); padding: 18px 20px; border: 1px solid var(--line); transition: box-shadow .4s; }
+  .tile.on { box-shadow: var(--glow); }
+  .tile .k { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+  .tile .v { font-family: var(--f-display); font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; margin: 8px 0 2px; }
+  .tile .s { color: var(--ink-2); font-size: 14px; }
+
+  /* Editor shell */
+  .section-h { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 48px 0 16px; flex-wrap: wrap; }
+  .section-h h2 { font-size: clamp(32px, 4.5vw, 64px); line-height: 0.95; letter-spacing: -0.03em; margin: 0; }
+  .section-h p { margin: 0; color: var(--muted); max-width: 46ch; }
+  .editor { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-xl); overflow: hidden; }
+  .editor-top { display: grid; grid-template-columns: 220px minmax(0, 1fr) 340px; min-height: 460px; border-bottom: 1px solid var(--line); }
+  .pane-h { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); padding: 16px 16px 10px; }
+
+  /* Block library */
+  .library { border-right: 1px solid var(--line); overflow: auto; max-height: 520px; }
+  .block-btn { display: flex; align-items: center; gap: 8px; width: calc(100% - 16px); margin: 0 8px 4px; padding: 7px 10px; border: 0; border-radius: var(--r-s); background: transparent; text-align: left; font-size: 13px; }
+  .block-btn:hover { background: var(--sunk); }
+  .block-btn.active { background: var(--sunk); box-shadow: inset 0 0 0 1px var(--line); }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .block-btn small { margin-left: auto; color: var(--muted); }
+
+  /* Preview monitor */
+  .monitor { padding: 18px 22px 22px; display: flex; flex-direction: column; min-width: 0; }
+  .monitor-h { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .monitor-title { font-size: clamp(28px, 3.2vw, 44px); line-height: 1; margin: 10px 0 4px; }
+  .monitor-sub { color: var(--muted); margin: 0 0 16px; }
+  .stage { flex: 1; background: var(--sunk); border-radius: var(--r-l); padding: 22px; display: flex; align-items: center; justify-content: center; min-height: 280px; position: relative; overflow: hidden; }
+  .stage > * { animation: rise .35s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* Inspector */
+  .inspector { border-left: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; max-height: 520px; }
+  .inspector pre { margin: 0 12px 12px; padding: 12px; background: var(--sunk); border-radius: var(--r-m); overflow: auto; white-space: pre-wrap; word-break: break-word; line-height: 1.45; flex: 1; }
+  .io-tabs { margin: 0 12px 8px; align-self: flex-start; }
+  .endpoint { margin: 0 12px 8px; color: var(--muted); }
+
+  /* Transport + timeline */
+  .transport { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .timecode { font-family: var(--f-mono); font-size: 18px; font-variant-numeric: tabular-nums; min-width: 84px; }
+  .timeline { display: grid; grid-template-columns: 170px minmax(0, 1fr); }
+  .track-labels { border-right: 1px solid var(--line); }
+  .track-label { height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 14px; font-size: 13px; border-bottom: 1px solid var(--line); }
+  .track-label.ruler { height: 28px; }
+  .lanes-scroll { overflow-x: auto; position: relative; }
+  .lanes { position: relative; }
+  .ruler { height: 28px; position: relative; border-bottom: 1px solid var(--line); }
+  .tick { position: absolute; top: 0; height: 100%; border-left: 1px solid var(--line); font-size: 10px; color: var(--muted); padding: 6px 0 0 4px; }
+  .lane { height: 44px; position: relative; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .clip { position: absolute; top: 7px; height: 30px; border-radius: var(--r-s); padding: 0 8px; display: flex; align-items: center; gap: 6px;
+          font-size: 12px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 0;
+          box-shadow: 0 0 0 2px var(--panel); opacity: .45; transition: opacity .25s, transform .25s; }
+  .clip.done { opacity: 1; }
+  .clip.current { opacity: 1; transform: translateY(-1px); box-shadow: 0 0 0 2px var(--panel), var(--glow); }
+  .clip.human { color: var(--bg); }
+  .clip .x { font-weight: 600; }
+  .playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--bad); pointer-events: none; z-index: 2; }
+  .playhead::before { content: ""; position: absolute; top: 0; left: -5px; width: 12px; height: 12px; border-radius: 3px; background: var(--bad); }
+
+  /* Stage scenes */
+  .scene { width: 100%; max-width: 620px; }
+  .center { text-align: center; }
+  .big { font-size: clamp(36px, 5vw, 64px); line-height: 1; }
+  .card { background: var(--panel); border-radius: var(--r-m); padding: 14px 16px; border: 1px solid var(--line); }
+  .row { display: flex; gap: 10px; align-items: center; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .prod { position: relative; text-align: left; }
+  .prod .ph { height: 64px; border-radius: var(--r-s); background: var(--hero-grad); margin-bottom: 10px; display: grid; place-items: center; font-size: 26px; }
+  .prod b { display: block; font-weight: 500; font-size: 14px; }
+  .prod.dropped { opacity: .45; }
+  .stamp { position: absolute; top: 10px; right: 10px; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 3px 8px; border-radius: 6px; transform: rotate(4deg); }
+  .stamp.want { background: var(--good-bg); color: var(--good); }
+  .stamp.own { background: var(--bad-bg); color: var(--bad); }
+  .stamp.meh { background: var(--sunk); color: var(--muted); }
+  .bubble { padding: 10px 14px; border-radius: 16px; max-width: 85%; margin: 6px 0; font-size: 14px; }
+  .bubble.them { background: var(--panel); border: 1px solid var(--line); }
+  .bubble.me { background: var(--ink); color: var(--bg); margin-left: auto; }
+  .who { font-size: 11px; color: var(--muted); margin: 8px 0 -2px; }
+  .redact { display: inline-block; background: var(--ink); color: transparent; border-radius: 4px; padding: 0 6px; user-select: none; }
+  .slider { display: flex; background: var(--panel); border-radius: 999px; padding: 4px; border: 1px solid var(--line); margin-top: 14px; }
+  .slider span { flex: 1; text-align: center; font-size: 12px; padding: 6px; border-radius: 999px; color: var(--muted); }
+  .slider span.on { background: var(--ink); color: var(--bg); }
+  .layer { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-m); background: var(--panel); border: 1px solid var(--line); }
+  .layer .ic { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; flex: none; }
+  .layer.ok .ic { background: var(--good-bg); color: var(--good); }
+  .layer.no .ic { background: var(--bad-bg); color: var(--bad); }
+  .layer small { display: block; color: var(--muted); font-size: 12px; }
+  .verdict { display: inline-flex; align-items: center; gap: 8px; height: var(--h-ctl); padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 600; margin-top: 14px; }
+  .verdict.ok { background: var(--good-bg); color: var(--good); } .verdict.no { background: var(--bad-bg); color: var(--bad); }
+  .bars .bar-row { display: grid; grid-template-columns: 150px 1fr 64px; gap: 10px; align-items: center; margin: 8px 0; font-size: 14px; }
+  .bars .track { height: 14px; border-radius: 0 4px 4px 0; background: transparent; }
+  .bars .fill { height: 100%; border-radius: 0 4px 4px 0; background: var(--muted); }
+  .bars .fill.us { background: var(--tav); }
+  .phone { width: 260px; margin: 0 auto; background: var(--panel); border-radius: 34px; padding: 18px 12px; border: 1px solid var(--line); box-shadow: 0 20px 40px -24px rgba(0,0,0,.35); }
+  .phone .notch { width: 70px; height: 6px; border-radius: 3px; background: var(--sunk); margin: 0 auto 10px; }
+  .check { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  .check:last-child { border: 0; }
+  .check .ic { color: var(--good); font-weight: 600; }
+  .muted { color: var(--muted); }
+
+  /* Beats + stores */
+  .beats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .beat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-l); padding: 20px; transition: box-shadow .4s; }
+  .beat.on { box-shadow: var(--glow); }
+  .beat h3 { font-size: 30px; margin: 10px 0 6px; line-height: 1; }
+  .beat p { margin: 0; color: var(--ink-2); font-size: 14px; }
+  .stores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 64px; }
+  .store { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-l); padding: 18px; }
+  .store h3 { font-size: 24px; margin: 8px 0 10px; line-height: 1.05; }
+  .store .t { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-top: 1px solid var(--line); }
+  .store .t span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .store .wall { margin-top: 10px; font-size: 12px; color: var(--muted); }
+  footer { color: var(--muted); font-size: 13px; padding: 24px 0 40px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 1100px) {
+    .editor-top { grid-template-columns: minmax(0, 1fr); }
+    .library { border-right: 0; border-bottom: 1px solid var(--line); max-height: 180px; }
+    .inspector { border-left: 0; border-top: 1px solid var(--line); max-height: 320px; }
+    .beats, .stores { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    #backend { display: none; }
+    .tiles, .beats, .stores, .grid3, .grid4 { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: 96px minmax(0, 1fr); }
+    .track-label { font-size: 12px; padding: 0 8px; line-height: 1.15; } .track-label small { display: none; }
+    .bars .bar-row { grid-template-columns: 100px 1fr 56px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="wireframe.html"><i></i>Shopisphere</a>
+    <div class="links"><a href="wireframe.html" aria-current="page">Run editor</a><a href="index.html">Ops view</a><a href="#beats">Workflow</a><a href="#stores">Data</a></div>
+    <span class="spacer"></span>
+    <span id="backend" class="chip bar"><span class="dot"></span>Sample data</span>
+    <button class="btn primary" onclick="restart()">▶ Play the run</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 class="display">Agents narrow. People choose.</h1>
+    <p>Trailhead's merchant agent finds the gift moment, asks with consent, gets a vouch from the recipient's own agent, and turns every answer into fewer returns and smarter restocking.</p>
+    <div class="tiles">
+      <div class="tile" id="tile-lose"><div class="k">Lose less · gift returns</div><div class="v display" id="v-lose">—</div><div class="s" id="s-lose">Vouched vs. unvouched gift return rate</div></div>
+      <div class="tile" id="tile-lean"><div class="k">Run leaner · restock</div><div class="v display" id="v-lean">—</div><div class="s" id="s-lean">Purchase order from anonymous vouches</div></div>
+      <div class="tile" id="tile-sell"><div class="k">Sell more · vouched offer</div><div class="v display" id="v-sell">—</div><div class="s" id="s-sell">Gift offer to a loyal customer</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="section-h" id="run">
+    <h2 class="display">It's a whole new run.</h2>
+    <p>One weekly run of the merchant agent, laid out like an edit timeline. Every block is a real tool call with its real input and output.</p>
+  </div>
+
+  <div class="editor">
+    <div class="editor-top">
+      <aside class="library">
+        <div class="pane-h">Blocks · tools</div>
+        <div id="library"></div>
+      </aside>
+      <section class="monitor">
+        <div class="monitor-h"><span class="chip" id="m-track"></span><span class="chip mono" id="m-tool"></span><span class="chip" id="m-dur"></span></div>
+        <div class="monitor-title display" id="m-title"></div>
+        <p class="monitor-sub" id="m-sub"></p>
+        <div class="stage" id="stage"></div>
+      </section>
+      <aside class="inspector">
+        <div class="pane-h">Inspector</div>
+        <div class="endpoint mono" id="i-endpoint"></div>
+        <div class="seg io-tabs"><button data-io="input">Input</button><button class="on" data-io="output">Output</button></div>
+        <pre class="mono" id="i-json"></pre>
+      </aside>
+    </div>
+    <div class="transport">
+      <button class="btn icon" aria-label="Previous block" onclick="stepBy(-1)">⏮</button>
+      <button class="btn icon primary" id="playBtn" aria-label="Play or pause" onclick="toggle()">▶</button>
+      <button class="btn icon" aria-label="Next block" onclick="stepBy(1)">⏭</button>
+      <span class="timecode display" id="timecode">00:00.0</span>
+      <span class="muted" style="font-size:13px">real latencies from BAND &amp; Tavily tests</span>
+      <span class="spacer" style="flex:1"></span>
+      <div class="seg" id="speed"><button data-s="1">1×</button><button data-s="4" class="on">4×</button><button data-s="10">10×</button></div>
+    </div>
+    <div class="timeline">
+      <div class="track-labels" id="trackLabels"></div>
+      <div class="lanes-scroll" id="lanesScroll"><div class="lanes" id="lanes"></div></div>
+    </div>
+  </div>
+
+  <div class="section-h" id="beats">
+    <h2 class="display">Find. Ask. Vouch. Ship.</h2>
+    <p>The same four beats every week. The beat cards light up as the run reaches them.</p>
+  </div>
+  <div class="beats">
+    <div class="beat" id="beat-0"><span class="chip"><span class="dot" style="color:var(--zoo)"></span>ZooWork</span><h3 class="display">Find</h3><p>The weekly schedule picks top customers from the merchant's own order history and checks their agent is real.</p></div>
+    <div class="beat" id="beat-1"><span class="chip"><span class="dot" style="color:var(--band)"></span>BAND consent room</span><h3 class="display">Ask</h3><p>T's agent shares upcoming occasions, only at the sharing level T set for each friend.</p></div>
+    <div class="beat" id="beat-2"><span class="chip"><span class="dot" style="color:var(--band)"></span>BAND vouch room</span><h3 class="display">Vouch</h3><p>Sarah's agent answers wants / owns / confidence. Her profile never leaves her agent.</p></div>
+    <div class="beat" id="beat-3"><span class="chip"><span class="dot" style="color:var(--phone)"></span>Phone + approvals</span><h3 class="display">Ship</h3><p>T says YES, a human approves, the order is tagged low return risk, and stock follows the anonymous signal.</p></div>
+  </div>
+
+  <div class="section-h" id="stores">
+    <h2 class="display">Every agent holds only its owner's data.</h2>
+    <p>Four separate stores. The merchant never opens T's or Sarah's.</p>
+  </div>
+  <div class="stores" id="storeGrid"></div>
+</main>
+
+<footer><div class="wrap">Wireframe · runs on saved samples from <span class="mono">Data/samples/</span>; when served by <span class="mono">Data/server.py</span> it also drives the real backend.</div></footer>
+
+<script>
+/* ---------- Tracks (colors validated with the dataviz palette checker) ---------- */
+const TRACKS = [
+  { id: 'zoo',   name: 'Merchant agent', sub: 'ZooWork', color: 'var(--zoo)' },
+  { id: 'band',  name: 'BAND rooms',     sub: 'BAND',    color: 'var(--band)' },
+  { id: 'tav',   name: 'Price check',    sub: 'Tavily',  color: 'var(--tav)' },
+  { id: 'phone', name: "T's phone",      sub: 'SMS',     color: 'var(--phone)' },
+  { id: 'store', name: 'Storefront',     sub: 'Trust',   color: 'var(--store)' },
+  { id: 'human', name: 'Humans',         sub: 'Approve', color: 'var(--human)' },
+];
+
+/* ---------- The run: timing (s) + real I/O from Data/samples ---------- */
+const VEST = { sku: 'TR-VEST', name: 'Trail Running Vest', price: 68 };
+const STEPS = [
+  { track: 'zoo', t: 0, d: 2, tool: 'schedule.trigger', title: 'Weekly schedule fires', sub: 'Mon 09:00 · gifting playbook Skill loaded', scene: 'schedule', beat: 0,
+    endpoint: 'POST /api/demo/run', input: { schedule: 'weekly-gifting', trigger: 'manual (on stage)' }, output: { session: 'started' } },
+  { track: 'zoo', t: 2, d: 2, tool: 'get_top_customers', title: 'Find the moment', sub: "From the merchant's own order history", scene: 'customers', beat: 0,
+    input: { limit: 3 }, output: [{ customer_id: 'cust_t', name: 'T', agent_handle: 't-gift-planner', order_count: 6, favorite_lines: 'trail' },
+      { customer_id: 'cust_ana', name: 'Ana', agent_handle: null, order_count: 4, favorite_lines: 'camp,water' },
+      { customer_id: 'cust_raj', name: 'Raj', agent_handle: null, order_count: 3, favorite_lines: 'climb' }] },
+  { track: 'zoo', t: 4, d: 2, tool: 'score_agent_trust', title: "T's agent is real", sub: 'Four layers before the merchant talks to it', scene: 'trustT', beat: 0,
+    input: { agent_handle: 't-gift-planner' }, output: { agent_handle: 't-gift-planner', decision: 'allow', score: 1.0, layers: { identity: true, provenance: true, history: true, behavior: true }, reasons: [] } },
+  { track: 'band', t: 6, d: 15, tool: 'ask_customer_occasions', title: 'Ask with consent', sub: "BAND consent room · Trailhead Merchant ↔ T's Gift Planner", scene: 'consent', beat: 1,
+    input: { customer_id: 'cust_t' }, output: { customer_id: 'cust_t', occasions: [{ friend_handle: 'sarah-gift-vouch', occasion: 'birthday', occasion_date: '2026-10-24', budget: 60.0, sharing_level: 'occasion_budget' }] } },
+  { track: 'zoo', t: 21, d: 2, tool: 'match_catalog', title: "Match from T's side", sub: 'Trail line, in stock, near the $60 budget', scene: 'match', beat: 2,
+    input: { customer_id: 'cust_t', budget: 60.0 }, output: [{ sku: 'TR-LAMP', name: 'Trail Headlamp 400', price: 55.0 }, { sku: 'TR-VEST', name: 'Trail Running Vest', price: 68.0 }, { sku: 'TR-BOTTLE', name: 'Insulated Trail Bottle 32oz', price: 42.0 }] },
+  { track: 'band', t: 23, d: 16, tool: 'request_vouch', title: "Vouch from Sarah's side", sub: "BAND vouch room · her profile never leaves her agent", scene: 'vouch', beat: 2,
+    input: { recipient_handle: 'sarah-gift-vouch', skus: ['TR-LAMP', 'TR-VEST', 'TR-BOTTLE'] },
+    output: { vouched: true, ranked: [{ sku: 'TR-VEST', wants: true, owns: false, confidence: 0.9, size: 'M' }, { sku: 'TR-LAMP', wants: false, owns: false, confidence: 0.5, size: null }], dropped_owned: ['TR-BOTTLE'] } },
+  { track: 'store', t: 26, d: 4, tool: 'handle_storefront_request', title: 'A bot wants the same 15%', sub: 'Unverified Shopper · 40 discount asks a minute', scene: 'bot', beat: 3,
+    input: { agent_handle: 'unverified-shopper', ask: '15% discount please', requests_per_min: 40 },
+    output: { decision: 'decline', score: 0.0, layers: { identity: false, provenance: false, history: false, behavior: false },
+      reasons: ['identity: no signed passport / owner not phone-verified', 'provenance: unknown handle, not an approved contact', 'history: no prior orders here', 'behavior: 40 req/min, discount-first ask'] } },
+  { track: 'tav', t: 39, d: 3, tool: 'check_competitor_price', title: 'Price the offer', sub: 'Tavily search · competitor prices set the discount', scene: 'price', beat: 2,
+    input: { sku: 'TR-VEST' }, output: { sku: 'TR-VEST', our_price: 68.0, competitors: [{ retailer: 'Summit Outfitters', price: 64.0 }, { retailer: 'Ridge & Co', price: 72.0 }], lowest: 64.0, suggested_discount_pct: 15,
+      reason: "Tavily: Trail Running Vest at 2 competitors, lowest $64.0; we're $4.0 above, offer 15%" } },
+  { track: 'zoo', t: 42, d: 2, tool: 'make_offer', title: 'Outcome rubric passes', sub: 'Trust, stock, budget, margin floor, one-line reason', scene: 'offer', beat: 3,
+    input: { customer_id: 'cust_t', sku: 'TR-VEST', occasion_ref: 'sarah-gift-vouch:birthday:2026-10-24', discount_pct: 15, trust_score: 1.0, size: 'M', budget: 60.0 },
+    output: { ok: true, offer_id: 1, final_price: 57.8, discount_pct: 15, reason: "From the store you love, a gift she'll want: Trail Running Vest (her agent confirmed it), 15% off" } },
+  { track: 'phone', t: 44, d: 2, tool: 'send_message', title: 'Text T', sub: 'Twilio SMS or the fake phone panel', scene: 'phone', beat: 3,
+    input: { customer_id: 'cust_t', offer_id: 1, body: "A friend's birthday is on 2026-10-24. They'd love the Trail Running Vest; their agent confirmed it. 15% off ($57.8). Reply YES." }, output: { sent: true, status: 'delivered to fake phone' } },
+  { track: 'phone', t: 46, d: 6, tool: 'phone.reply', title: 'T says YES', sub: 'Humans choose: the agent only narrowed', scene: 'phoneYes', beat: 3, live: 'reply',
+    endpoint: 'POST /api/phone/reply', input: { body: 'YES', customer_id: 'cust_t' }, output: { accepted: true, approval_id: 1, status: 'pending' } },
+  { track: 'human', t: 52, d: 4, tool: 'approval · place_order', title: 'Approval gate', sub: 'ZooWork asks before it commits', scene: 'approveOrder', beat: 3, live: 'order',
+    endpoint: 'POST /api/approvals/1', input: { decision: 'approve' }, output: { approval_id: 1, status: 'approved', order_id: 25, return_risk: 'low' } },
+  { track: 'zoo', t: 56, d: 2, tool: 'forecast_from_vouches', title: 'Run leaner', sub: 'Anonymous vouch counts vs. stock, no person ids', scene: 'forecast', beat: 3,
+    input: {}, output: [{ sku: 'TR-VEST', size: 'M', wants: 9, owns: 0, on_hand: 3, suggested_qty: 8, note: '9 vouched wants, 3 on hand: draft PO for 8' },
+      { sku: 'TR-LAMP', size: 'OS', wants: 4, owns: 1, on_hand: 14, suggested_qty: 0 }, { sku: 'TR-VEST', size: 'L', wants: 3, owns: 0, on_hand: 3, suggested_qty: 0 },
+      { sku: 'TR-BOTTLE', size: 'OS', wants: 2, owns: 7, on_hand: 25, suggested_qty: 0, note: "already-owns answers outweigh wants: don't over-order" }] },
+  { track: 'zoo', t: 58, d: 2, tool: 'draft_purchase_order', title: 'Draft the PO', sub: 'Behind the approval gate', scene: 'po', beat: 3,
+    input: { sku: 'TR-VEST', size: 'M', quantity: 8, reason: '9 vouched wants, 3 on hand: draft PO for 8' }, output: { po_id: 1, approval_id: 2, status: 'draft' } },
+  { track: 'human', t: 60, d: 4, tool: 'approval · purchase_order', title: 'Merchant approves the PO', sub: '8 × Trail Running Vest, size M', scene: 'approvePO', beat: 3, live: 'purchase_order',
+    endpoint: 'POST /api/approvals/2', input: { decision: 'approve' }, output: { approval_id: 2, status: 'approved' } },
+  { track: 'zoo', t: 64, d: 2, tool: 'screen_return_risk', title: 'Lose less', sub: 'Vouched gift orders come back less', scene: 'returns', beat: 3,
+    input: {}, output: { gift_return_rates: { vouched: 0.0, unvouched: 0.5 }, orders: [{ order_id: 25, sku: 'TR-VEST', vouched: 1, return_risk: 'low' }] } },
+];
+const END = 66;
+// Short labels for clips too narrow for the tool name (the full name is in the tooltip and library).
+const CLIP = { 'schedule.trigger': 'cron', get_top_customers: 'top', score_agent_trust: 'trust', match_catalog: 'match',
+  check_competitor_price: 'Tavily', make_offer: 'offer', send_message: 'SMS', handle_storefront_request: 'bot',
+  'approval · place_order': 'order', forecast_from_vouches: 'fcst', draft_purchase_order: 'PO',
+  'approval · purchase_order': 'PO ✓', screen_return_risk: 'risk' };
+const STORES = [
+  { owner: "Merchant", name: 'Trailhead', color: 'var(--zoo)', tables: [['merchant_customers', 6], ['catalog', 20], ['orders', 25], ['offers', 1], ['vouch_signals', 7], ['inventory', 26], ['purchase_orders', 1]], wall: 'Only its own customers, orders and catalog. Vouches arrive as anonymous counts.' },
+  { owner: "T's agent", name: "T's Gift Planner", color: 'var(--band)', tables: [['t_occasions', 3]], wall: 'Shares occasions per friend, at the sharing level T set.' },
+  { owner: "Sarah's agent", name: "Sarah's Gift Vouch", color: 'var(--band)', tables: [['sarah_profile', 1]], wall: 'Answers wants / owns / confidence. Refused the leak probe in BAND tests.' },
+  { owner: 'Backend', name: 'Trust + messaging', color: 'var(--store)', tables: [['agent_passports', 3], ['trust_events', 2], ['messages', 3], ['approvals', 2], ['events', '…']], wall: 'Passports, trust checks, texts and the approval-gate mirror.' },
+];
+
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const trackOf = id => TRACKS.find(t => t.id === id);
+const PX = () => Math.max(12, Math.min(18, ($('lanesScroll').clientWidth - 20) / END));
+
+/* ---------- Scenes ---------- */
+const layerRows = (layers, reasons = []) => Object.entries(layers).map(([k, ok]) => {
+  const why = reasons.find(r => r.startsWith(k));
+  const desc = { identity: 'Real person behind it (phone OTP + signed passport)', provenance: 'Registered BAND agent, approved contact', history: 'Prior orders at this store', behavior: 'Acts like a buyer, not a scraper' }[k];
+  return `<div class="layer ${ok ? 'ok' : 'no'}"><span class="ic">${ok ? '✓' : '✗'}</span><div><b style="text-transform:capitalize">${k}</b><small>${esc(why ? why.split(': ')[1] : desc)}</small></div></div>`;
+}).join('');
+const prodCard = (emoji, name, price, stamp = '', cls = '') => `<div class="card prod ${cls}">${stamp}<div class="ph">${emoji}</div><b>${esc(name)}</b><span class="muted">$${price}</span></div>`;
+
+const SCENES = {
+  schedule: () => `<div class="scene center"><div class="chip mono">cron · weekly · Mon 09:00</div><div class="big display" style="margin:18px 0 8px">Gifting run #41</div><p class="muted">Skill: <b>Trailhead gifting playbook</b> · Outcome rubric on · 13 custom tools</p></div>`,
+  customers: s => `<div class="scene grid3">${s.output.map((c, i) => `<div class="card" style="${i ? 'opacity:.5' : 'box-shadow:var(--glow)'}"><div class="display" style="font-size:34px">${esc(c.name)}</div><div class="muted">${c.order_count} orders · loves ${esc(c.favorite_lines)}</div><div style="margin-top:8px">${c.agent_handle ? `<span class="chip mono">${esc(c.agent_handle)}</span>` : '<span class="chip">no agent</span>'}</div></div>`).join('')}</div>`,
+  trustT: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers)}</div><div class="center"><span class="verdict ok">✓ Allowed · 4/4 layers</span></div></div>`,
+  consent: () => `<div class="scene"><div class="who">Trailhead Merchant</div><div class="bubble them">@T's Gift Planner any upcoming occasions we can help with?</div>
+      <div class="who" style="text-align:right">T's Gift Planner</div><div class="bubble me">A friend, birthday Oct 24, about $60. <span class="redact">Sarah · trail running</span></div>
+      <div class="slider"><span>Occasion only</span><span class="on">+ Budget</span><span>+ Hints</span></div>
+      <p class="muted center" style="font-size:13px;margin:8px 0 0">T's sharing level for this friend. Name and hints stay hidden.</p></div>`,
+  match: () => `<div class="scene grid3">${prodCard('🔦', 'Trail Headlamp 400', 55)}${prodCard('🦺', 'Trail Running Vest', 68)}${prodCard('🧴', 'Insulated Trail Bottle', 42)}</div>`,
+  vouch: () => `<div class="scene"><div class="grid3">${prodCard('🔦', 'Trail Headlamp 400', 55, '<span class="stamp meh">NEUTRAL 0.5</span>')}${prodCard('🦺', 'Trail Running Vest', 68, '<span class="stamp want">WANTS · M · 0.9</span>')}${prodCard('🧴', 'Insulated Trail Bottle', 42, '<span class="stamp own">OWNS · DROPPED</span>', 'dropped')}</div>
+      <p class="muted center" style="font-size:13px;margin:14px 0 0">3 <span class="mono">vouch_for</span> calls in the room. The answer adds +1 to the anonymous count for vest M.</p></div>`,
+  bot: s => `<div class="scene"><div class="grid4" style="grid-template-columns:repeat(2,1fr)">${layerRows(s.output.layers, s.output.reasons)}</div><div class="center"><span class="verdict no">✗ Declined · 0/4 layers · no discount</span></div></div>`,
+  price: s => { const all = [{ retailer: 'Trailhead (us)', price: 68, us: 1 }, ...s.output.competitors]; const max = 80;
+    return `<div class="scene bars">${all.map(c => `<div class="bar-row"><span>${esc(c.retailer)}</span><div class="track"><div class="fill ${c.us ? 'us' : ''}" style="width:${c.price / max * 100}%"></div></div><span style="text-align:right">$${c.price.toFixed(2)}</span></div>`).join('')}
+      <p style="margin:16px 0 0">We're <b>$4 above</b> the lowest competitor → offer <b>15%</b>.</p></div>`; },
+  offer: () => `<div class="scene card"><div class="row" style="justify-content:space-between"><b>Offer #1 · Trail Running Vest (M)</b><span class="display" style="font-size:32px">$57.80</span></div>
+      ${[['Trust check passing', '1.0 ≥ 0.75'], ['In stock', '3 on hand, size M'], ['Within budget', '$57.80 ≤ $66'], ['Above margin floor', '$57.80 ≥ $44.20'], ['One-line reason', '"From the store you love, a gift she\'ll want"']].map(([a, b]) => `<div class="check"><span class="ic">✓</span><span>${a}</span><span class="muted" style="margin-left:auto">${esc(b)}</span></div>`).join('')}</div>`,
+  phone: s => `<div class="scene"><div class="phone"><div class="notch"></div><div class="who">Trailhead</div><div class="bubble them">${esc(s.input.body)}</div></div></div>`,
+  phoneYes: () => `<div class="scene"><div class="phone"><div class="notch"></div><div class="who">Trailhead</div><div class="bubble them">${esc(STEPS[9].input.body)}</div><div class="bubble me">YES</div></div></div>`,
+  approveOrder: () => `<div class="scene card center"><div class="chip">approval.requested · place_order</div><div class="display" style="font-size:34px;margin:12px 0">Trail Running Vest · M · $57.80</div>
+      <button class="btn primary">✓ Approved</button><p style="margin:14px 0 0">Order <b>#25</b> placed · tagged <span class="chip ok">vouched · return risk low</span></p></div>`,
+  forecast: s => { const max = 10; return `<div class="scene bars">${s.output.map(r => `<div class="bar-row"><span>${r.sku.replace('TR-', '')} ${r.size}</span>
+      <div class="track" style="position:relative"><div class="fill" style="width:${r.wants / max * 100}%;background:var(--zoo)"></div><div title="on hand" style="position:absolute;top:-3px;bottom:-3px;left:${Math.min(r.on_hand, max) / max * 100}%;width:2px;background:var(--ink)"></div></div>
+      <span style="text-align:right">${r.suggested_qty ? '+' + r.suggested_qty : '—'}</span></div>`).join('')}
+      <p class="muted" style="font-size:13px;margin:12px 0 0">Bar = vouched wants · line = on hand (capped at 10) · right = suggested order. Bottle: owners outnumber wants, so don't over-order.</p></div>`; },
+  po: () => `<div class="scene card center"><div class="chip">Draft PO #1 · Summit Supply Co · 14-day lead</div><div class="big display" style="margin:14px 0 6px">8 × vest M</div><p class="muted">9 vouched wants + 2 safety − 3 on hand</p></div>`,
+  approvePO: () => `<div class="scene card center"><div class="chip">approval.requested · purchase_order</div><div class="big display" style="margin:14px 0 10px">8 × vest M</div><button class="btn primary">✓ Approved by merchant</button></div>`,
+  returns: () => `<div class="scene grid3" style="grid-template-columns:1fr 1fr"><div class="card center"><div class="big display" style="color:var(--good)">0%</div><div>vouched gift returns</div><small class="muted">0 of 5 orders</small></div>
+      <div class="card center"><div class="big display" style="color:var(--bad)">50%</div><div>unvouched gift returns</div><small class="muted">6 of 12 orders</small></div></div>`,
+};
+
+/* ---------- Build static UI ---------- */
+function build() {
+  $('library').innerHTML = STEPS.map((s, i) => `<button class="block-btn" data-i="${i}" onclick="seek(${s.t + 0.01})"><span class="swatch" style="background:${trackOf(s.track).color}"></span><span class="mono">${esc(s.tool)}</span><small>${s.d}s</small></button>`).join('');
+  $('trackLabels').innerHTML = '<div class="track-label ruler"></div>' + TRACKS.map(t => `<div class="track-label"><span class="swatch" style="background:${t.color}"></span><span>${t.name}<br><small class="muted">${t.sub}</small></span></div>`).join('');
+  $('storeGrid').innerHTML = STORES.map(s => `<div class="store"><span class="chip"><span class="dot" style="color:${s.color}"></span>${esc(s.owner)}</span><h3 class="display">${esc(s.name)}</h3>
+      ${s.tables.map(([t, n]) => `<div class="t"><span class="mono">${t}</span><span>${n}</span></div>`).join('')}<div class="wall">${esc(s.wall)}</div></div>`).join('');
+  layoutTimeline();
+}
+function layoutTimeline() {
+  const px = PX(), w = END * px + 20;
+  let ticks = ''; for (let s = 0; s <= END; s += 5) ticks += `<div class="tick" style="left:${s * px}px">${s}s</div>`;
+  $('lanes').style.width = w + 'px';
+  $('lanes').innerHTML = `<div class="ruler">${ticks}</div>` + TRACKS.map(tr => `<div class="lane" data-track="${tr.id}">${STEPS.map((s, i) => s.track !== tr.id ? '' :
+      `<button class="clip ${tr.id === 'human' ? 'human' : ''}" data-i="${i}" style="left:${s.t * px}px;width:${Math.max(s.d * px - 3, 18)}px;background:${tr.color}" title="${esc(s.tool)} · ${s.d}s">${s.scene === 'bot' ? '<span class="x">✗</span>' : ''}${esc(s.d >= 6 ? s.tool : CLIP[s.tool] || s.tool)}</button>`).join('')}</div>`).join('') +
+    '<div class="playhead" id="playhead"></div>';
+  $('lanes').querySelectorAll('.lane').forEach(l => l.addEventListener('click', e => {
+    const r = $('lanes').getBoundingClientRect(); seek((e.clientX - r.left) / PX());
+  }));
+  render(true);
+}
+
+/* ---------- Playback ---------- */
+let t = 0, playing = false, speed = 4, last = 0, curIdx = -1, io = 'output';
+const fired = new Set();
+function currentIndex() {
+  let idx = 0; STEPS.forEach((s, i) => { if (s.t <= t) idx = i; });
+  return idx;
+}
+function render(force) {
+  const px = PX();
+  $('playhead').style.left = (t * px) + 'px';
+  $('timecode').textContent = `00:${String(Math.floor(t)).padStart(2, '0')}.${Math.floor((t % 1) * 10)}`;
+  const idx = currentIndex();
+  $('lanes').querySelectorAll('.clip').forEach(c => {
+    const s = STEPS[+c.dataset.i];
+    c.classList.toggle('done', s.t + s.d <= t);
+    c.classList.toggle('current', +c.dataset.i === idx);
+  });
+  if (idx !== curIdx || force) { curIdx = idx; showStep(idx); }
+  updateOutcomes();
+}
+function showStep(i) {
+  const s = STEPS[i], tr = trackOf(s.track);
+  $('m-track').innerHTML = `<span class="dot" style="color:${tr.color}"></span>${tr.sub}`;
+  $('m-tool').textContent = s.tool;
+  $('m-dur').textContent = `${s.t}s → ${s.t + s.d}s`;
+  $('m-title').textContent = s.title;
+  $('m-sub').textContent = s.sub;
+  $('stage').innerHTML = SCENES[s.scene](s);
+  $('i-endpoint').textContent = s.endpoint || `POST /api/tools/${s.tool}`;
+  $('i-json').textContent = JSON.stringify(s[io], null, 2);
+  document.querySelectorAll('.block-btn').forEach(b => b.classList.toggle('active', +b.dataset.i === i));
+  for (let b = 0; b < 4; b++) $('beat-' + b).classList.toggle('on', s.beat === b);
+  if (playing && s.live) liveAction(s.live);
+}
+function updateOutcomes() {
+  const passed = tool => { const s = STEPS.find(x => x.tool === tool); return t >= s.t + s.d; };
+  const set = (k, on, v) => { $('tile-' + k).classList.toggle('on', on); $('v-' + k).textContent = on ? v : '—'; };
+  set('sell', passed('make_offer'), '$57.80');
+  set('lean', passed('approval · purchase_order'), '+8 vest M');
+  set('lose', passed('screen_return_risk'), '0% vs 50%');
+}
+function frame(now) {
+  if (!playing) return;
+  t = Math.min(END, t + (now - last) / 1000 * speed); last = now;
+  render();
+  if (t >= END) { playing = false; $('playBtn').textContent = '▶'; return; }
+  requestAnimationFrame(frame);
+}
+function toggle() {
+  playing = !playing; $('playBtn').textContent = playing ? '❚❚' : '▶';
+  if (playing) { if (t >= END) restart(); if (t === 0) liveAction('run'); last = performance.now(); requestAnimationFrame(frame); }
+}
+function restart() { fired.clear(); t = 0; curIdx = -1; playing = false; render(true); toggle(); }
+function seek(x) { t = Math.max(0, Math.min(END, x)); render(); }
+function stepBy(d) { const i = Math.max(0, Math.min(STEPS.length - 1, currentIndex() + d)); seek(STEPS[i].t + 0.01); }
+
+/* ---------- Live backend (only when served by Data/server.py) ---------- */
+let live = false;
+const api = (url, body = {}) => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Source': 'dashboard' }, body: JSON.stringify(body) }).then(r => r.json());
+async function liveAction(kind) {
+  if (!live || fired.has(kind)) return; fired.add(kind);
+  try {
+    if (kind === 'run') { await api('/api/demo/reset'); await api('/api/demo/run'); }
+    if (kind === 'reply') await api('/api/phone/reply', { body: 'YES' });
+    if (kind === 'order' || kind === 'purchase_order') {
+      const s = await (await fetch('/api/state')).json();
+      const a = s.approvals.find(x => x.status === 'pending' && x.kind === kind);
+      if (a) await api('/api/approvals/' + a.id, { decision: 'approve' });
+    }
+  } catch (e) { console.warn('live action failed', kind, e); }
+}
+fetch('/api/state').then(r => r.ok ? r.json() : null).then(s => {
+  if (!s) return; live = true;
+  $('backend').className = 'chip bar ok'; $('backend').innerHTML = `<span class="dot"></span>Live backend · ${s.modes.demo_mode ? 'DEMO_MODE' : 'LIVE'}`;
+}).catch(() => {});
+
+/* ---------- Wire controls ---------- */
+document.querySelectorAll('.io-tabs button').forEach(b => b.onclick = () => {
+  io = b.dataset.io; document.querySelectorAll('.io-tabs button').forEach(x => x.classList.toggle('on', x === b));
+  $('i-json').textContent = JSON.stringify(STEPS[curIdx][io], null, 2);
+});
+$('speed').querySelectorAll('button').forEach(b => b.onclick = () => {
+  speed = +b.dataset.s; $('speed').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+});
+addEventListener('resize', () => layoutTimeline());
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  if (e.code === 'ArrowRight') stepBy(1);
+  if (e.code === 'ArrowLeft') stepBy(-1);
+});
+build();
+const q = new URLSearchParams(location.search);   // ?t=40 jumps to a moment, ?theme=dark|light
+if (q.get('theme')) document.documentElement.dataset.theme = q.get('theme');
+if (q.has('t')) seek(+q.get('t'));
+</script>
+</body>
+</html>

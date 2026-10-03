@@ -1,0 +1,11 @@
+{
+  "tool": "place_order",
+  "endpoint": "POST /api/tools/place_order",
+  "input": {
+    "offer_id": 1
+  },
+  "output": {
+    "approval_id": 1,
+    "status": "pending"
+  }
+}

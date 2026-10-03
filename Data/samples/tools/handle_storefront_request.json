@@ -1,0 +1,27 @@
+{
+  "tool": "handle_storefront_request",
+  "endpoint": "POST /api/tools/handle_storefront_request",
+  "input": {
+    "agent_handle": "unverified-shopper",
+    "ask": "15% discount please",
+    "requests_per_min": 40
+  },
+  "output": {
+    "ask": "15% discount please",
+    "agent_handle": "unverified-shopper",
+    "decision": "decline",
+    "score": 0.0,
+    "layers": {
+      "identity": false,
+      "provenance": false,
+      "history": false,
+      "behavior": false
+    },
+    "reasons": [
+      "identity: no signed passport / owner not phone-verified",
+      "provenance: unknown handle, not an approved contact",
+      "history: no prior orders here",
+      "behavior: 40 req/min, discount-first ask"
+    ]
+  }
+}

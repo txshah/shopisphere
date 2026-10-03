@@ -1,0 +1,12 @@
+{
+  "bridge": "Gmail → carrier email-to-SMS gateway (adapters.ping_merchant)",
+  "live_when": "DEMO_MODE=0 and GMAIL_APP_PASSWORD set",
+  "smtp": {"host": "smtp.gmail.com", "port": 465, "from": "GMAIL_FROM", "to": "MERCHANT_SMS_TO", "subject": "Approval needed"},
+  "examples": [
+    {"trigger": "place_order(offer_id=1) after T replies YES",
+     "body": "Trailhead: T said YES. Place order TR-VEST M at $57.8?\nApprove: <PUBLIC_URL>/a/2/approve/<token>"},
+    {"trigger": "draft_purchase_order(TR-VEST, M, 8, '9 vouched wants, 3 on hand: draft PO for 8')",
+     "body": "Trailhead: PO for 8 × TR-VEST M (9 vouched wants, 3 on hand). Approve?\nApprove: <PUBLIC_URL>/a/3/approve/<token>"}
+  ],
+  "approve_link": {"GET /a/<approval_id>/<approve|reject>/<token>": ["Approved. The dashboard is updated.", "link expired or invalid", "no pending approval with that id"]}
+}
