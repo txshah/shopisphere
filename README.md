@@ -2,7 +2,7 @@
 
 **A verified shopping network, built from the merchant's side.** Trailhead, an outdoor gear boutique, runs a merchant agent that only deals with shopper agents proven to have a real person behind them. Before it sells a gift, it asks the recipient's own agent whether they want it. Agents narrow the options; people make every choice.
 
-Built for the ZooWork hackathon brief: *"Pick a real merchant. Pick one line of their P&L. Move it."* Our line is **gift returns**.
+*"Pick a real merchant. Pick one line of their P&L. Move it."* Our line is **gift returns**.
 
 > "Nearly a quarter of all returns occur around Christmastime." [Optoro](https://www.optoro.com/returns-news/your-holiday-gift-returns-cost-retailers-billions/)
 
